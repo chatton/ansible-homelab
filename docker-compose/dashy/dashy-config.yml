@@ -20,6 +20,7 @@ sections:
       - title: Plex
         icon: hl-plex
         url: "http://qnap:32400"
+        statusCheck: false
       - title: Sonarr
         icon: hl-sonarr
         url: "http://qnap:8989"
@@ -32,9 +33,23 @@ sections:
       - title: Jackett
         icon: hl-jackett
         url: "http://qnap:9117"
+        statusCheckUrl: "http://qnap:9117/health"
       - title: Qbittorrent
         icon: hl-qbittorrent
         url: "http://qnap:15000"
+  - name: Tools
+    items:
+      - title: Photoprism
+        description: Manager photos
+        icon: hl-photoprism
+        url: "http://qnap:2342"
+      - title: Linkding
+        description: Manager photos
+        icon: hl-linkding
+        url: "http://qnap:9090"
+      - title: Nextcloud
+        icon: hl-nextcloud
+        url: "http://qnap:8081"
   - name: System Admin
     items:
     - title: Portainer
@@ -48,6 +63,10 @@ sections:
       description: Manage MariaDB
       icon: hl-adminer
       url: "http://qnap:3307"
+    - title: Nginx Proxy Manager
+      description: Manage reverse proxies
+      icon: hl-nginx
+      url: "http://qnap:8181"
 
 appConfig:
   statusCheck: true
