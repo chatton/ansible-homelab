@@ -1,8 +1,8 @@
 ---
 - hosts: servers
+  become: true
   tasks:
   - name: Update and upgrade apt packages
-    become: true
     apt:
       upgrade: yes
       update_cache: yes
@@ -14,6 +14,9 @@
       state: latest
       update_cache: true
 
+  - name: Checkout Git Repos
+    import_tasks: ../tasks/checkout-git-repos-tasks.yml
+
   - name: Install & Configure Sudo
     import_tasks: ../tasks/install-sudo-tasks.yml
 
@@ -22,3 +25,6 @@
 
   - name: Install Docker
     import_tasks: ../tasks/install-docker-tasks.yml
+
+  - name: Start Portainer
+    command: chdir=/home/cianhatton/checkouts/HomeLab/docker-compose/portainer docker compose up -d
