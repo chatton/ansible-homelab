@@ -11,6 +11,7 @@
       list-backups 
       --host-path /mnt/hdds/backups/ 
       --volume-name-filter {{container_name}}
+      --newest-only
     register: out
   - name: Stop the container
     docker_container:
