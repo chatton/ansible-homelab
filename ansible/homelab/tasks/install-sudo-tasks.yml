@@ -1,0 +1,27 @@
+---
+# https://stackoverflow.com/questions/37333305/ansible-create-a-user-with-sudo-privileges
+- name: Install Sudo
+  apt:
+    pkg:
+      - sudo
+    state: latest
+    update_cache: true
+
+- name: Make sure we have a 'cianhatton' group
+  group:
+    name: cianhatton
+    state: present
+- name: Allow 'cianhatton' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%cianhatton'
+    line: '%cianhatton ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: Add User
+  ansible.builtin.user:
+    name: cianhatton
+    comment: Cian Hatton
+    uid: 1000
+    group: cianhatton

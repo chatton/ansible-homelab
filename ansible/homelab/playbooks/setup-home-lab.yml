@@ -1,6 +1,5 @@
 ---
 - hosts: servers
-  connection: local
   tasks:
   - name: Update and upgrade apt packages
     become: true
@@ -15,7 +14,10 @@
       state: latest
       update_cache: true
 
-  - name: Install JQ
+  - name: Install & Configure Sudo
+    import_tasks: ../tasks/install-sudo-tasks.yml
+
+  - name: Install Dev Tooling
     import_tasks: ../tasks/install-dev-tooling-tasks.yml
 
   - name: Install Docker
