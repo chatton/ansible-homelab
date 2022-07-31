@@ -1,0 +1,6 @@
+---
+- name: Install Dev Tooling
+  ansible.builtin.apt:
+    pkg:
+    - jq
+    - fzf

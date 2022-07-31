@@ -15,5 +15,8 @@
       state: latest
       update_cache: true
 
+  - name: Install JQ
+    import_tasks: ../tasks/install-dev-tooling-tasks.yml
+
   - name: Install Docker
     import_tasks: ../tasks/install-docker-tasks.yml
