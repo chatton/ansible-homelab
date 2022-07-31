@@ -61,6 +61,9 @@ sections:
       - title: Mealie
         icon: hl-mealie
         url: "https://mealie.cianhatton.ie"
+      - title: Gitea
+        icon: hl-gitea
+        url: "https://git.cianhatton.ie"
   - name: System Admin
     items:
     - title: Portainer
