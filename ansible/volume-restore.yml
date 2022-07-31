@@ -4,7 +4,7 @@
 - hosts: servers
   tasks:
   - name: Find volumes
-    ansible.builtin.shell: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/hdds/backups/:/mnt/hdds/backups/ ghcr.io/chatton/docker-volume-backup:pr-11 list-backups --host-path /mnt/hdds/backups/ --volume-name-filter {{container_name}}
+    ansible.builtin.shell: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/hdds/backups/:/mnt/hdds/backups/ ghcr.io/chatton/docker-volume-backup:master list-backups --host-path /mnt/hdds/backups/ --volume-name-filter {{container_name}}
     register: out
   - name: Stop the container
     docker_container:
