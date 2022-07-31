@@ -23,6 +23,9 @@ sections:
       - title: Glances
         icon: hl-glances
         url: "http://qnap:8083"
+      - title: Glances
+        icon: hl-glances
+        url: "http://qnap:8083"
   - name: Media Stack
     items:
       - title: Plex

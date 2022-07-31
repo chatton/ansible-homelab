@@ -1,0 +1,12 @@
+---
+- hosts: servers
+  tasks:
+  - name: Git checkout
+    ansible.builtin.git:
+      repo: 'https://github.com/chatton/HomeLab.git'
+      dest: /home/cianhatton/checkouts/HomeLab
+      force: true
+      version: master
+
+  - name: Restart Dashy
+    ansible.builtin.command: docker restart dashy
