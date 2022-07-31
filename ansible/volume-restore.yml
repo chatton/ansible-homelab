@@ -1,30 +1,23 @@
 ### Example:
-# ansible-playbook -v ansible/volume-restore.yml -e "container_name=linkding volume_suffix=data"
-
+# ansible-playbook -v ansible/volume-restore.yml -e "container_name=mariadb"
 ---
 - hosts: servers
   tasks:
-  - name: Find backup
-    find:
-      paths: /mnt/hdds/backups/
-      patterns: "{{container_name}}"
-      use_regex: true
-      recurse: true
-    register: files_matched
+  - name: Find volumes
+    ansible.builtin.shell: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/hdds/backups/:/mnt/hdds/backups/ ghcr.io/chatton/docker-volume-backup:pr-11 list-backups --host-path /mnt/hdds/backups/ --volume-name-filter {{container_name}}
+    register: out
   - name: Stop the container
     docker_container:
       name: "{{container_name}}"
       state: stopped
   - name: Restore Volume
-    environment:
-      ARCHIVE_NAME: "{{ files_matched.files[0].path }}"
-      VOLUME_TO_CREATE: "{{container_name}}_{{volume_suffix}}"
-    ansible.builtin.command: docker run --rm  
-      -v /var/run/docker.sock:/var/run/docker.sock  
-      ghcr.io/chatton/docker-volume-backup:master  
-      restore-volume 
-      --volume ${VOLUME_TO_CREATE} 
-      --archive ${ARCHIVE_NAME}
+    ansible.builtin.command: docker run --rm
+      -v /var/run/docker.sock:/var/run/docker.sock
+      ghcr.io/chatton/docker-volume-backup:master
+      restore-volume
+      --volume {{item.volumeName}}
+      --archive {{item.absoluteFilePath}}
+    with_items: "{{ out.stdout }}"
   - name: Start the container
     docker_container:
       name: "{{container_name}}"
