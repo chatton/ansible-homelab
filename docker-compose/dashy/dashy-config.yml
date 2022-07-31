@@ -1,13 +1,15 @@
 # Details about config.
 # https://github.com/Lissy93/dashy/blob/master/docs/configuring.md
-
-
-
+# Widgets: https://github.com/Lissy93/dashy/blob/master/docs/widgets.md
 ---
 pageInfo:
   title: Home Lab
 sections:
   - name: Dashboards
+    widgets:
+      - type: gl-disk-space
+        options:
+          hostname: http://qnap:8083
     items:
       - title: Dash Dot
         icon: hl-dashdot
@@ -15,6 +17,12 @@ sections:
       - title: Uptime Kuma
         icon: hl-uptime-kuma
         url: "http://qnap:3001"
+      - title: Tautulli
+        icon: hl-tautulli
+        url: "http://qnap:8182"
+      - title: Glances
+        icon: hl-glances
+        url: "http://qnap:8083"
   - name: Media Stack
     items:
       - title: Plex
@@ -50,6 +58,9 @@ sections:
       - title: Nextcloud
         icon: hl-nextcloud
         url: "http://qnap:8081"
+      - title: Mealie
+        icon: hl-mealie
+        url: "https://mealie.cianhatton.ie"
   - name: System Admin
     items:
     - title: Portainer
@@ -71,3 +82,5 @@ sections:
 appConfig:
   statusCheck: true
   showSplashScreen: false
+  theme: dracula
+  language: en
