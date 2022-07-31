@@ -1,0 +1,7 @@
+---
+- name: Git checkout HomeLab repository
+  ansible.builtin.git:
+    repo: 'https://github.com/chatton/HomeLab.git'
+    dest: /home/cianhatton/checkouts/HomeLab
+    force: true
+    version: master

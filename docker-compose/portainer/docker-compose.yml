@@ -1,0 +1,14 @@
+version: '3.2'
+services:
+  portainer:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+    image: portainer/portainer-ce
+    ports:
+      - "9000:9000"
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  portainer_data:
