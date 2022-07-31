@@ -1,0 +1,19 @@
+---
+- hosts: servers
+  connection: local
+  tasks:
+  - name: Update and upgrade apt packages
+    become: true
+    apt:
+      upgrade: yes
+      update_cache: yes
+      cache_valid_time: 86400
+
+  - name: Install aptitude
+    apt:
+      name: aptitude
+      state: latest
+      update_cache: true
+
+  - name: Install Docker
+    import_tasks: ../tasks/install-docker-tasks.yml

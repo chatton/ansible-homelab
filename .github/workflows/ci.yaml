@@ -1,0 +1,18 @@
+---
+name: Test Playbook
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v3
+      - name: "Build docker image"
+        run : |
+          docker build . -t test
+          docker run test
