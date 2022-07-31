@@ -1,0 +1,32 @@
+---
+- hosts: servers
+  tasks:
+  - name: Find backup
+    find:
+      paths: /mnt/hdds/backups/
+      patterns: linkding
+      use_regex: true
+      recurse: true
+    register: files_matched
+  - name: Test
+    ansible.builtin.shell: "echo {{ files_matched.files[0].path }}"
+  - name: Stop the container
+    docker_container:
+      name: linkding
+      state: stopped
+  - name: Remove a volume
+    docker_volume:
+      name: linkding_data
+      state: absent
+  - name: Create Volume
+    environment:
+      ARCHIVE_NAME: "{{ files_matched.files[0].path }}"
+      VOLUME_TO_CREATE: linkding_data
+    ansible.builtin.command: docker run --rm  -v /var/run/docker.sock:/var/run/docker.sock  ghcr.io/chatton/docker-volume-backup:master  create-volume --volume ${VOLUME_TO_CREATE} --archive ${ARCHIVE_NAME}
+  - name: Start the container
+    docker_container:
+      name: linkding
+      state: started
+
+
+
