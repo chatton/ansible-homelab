@@ -11,4 +11,4 @@ RUN pip3 install ansible
 ADD ansible /ansible
 COPY ansible/homelab/hosts /etc/ansible/hosts
 
-CMD [ "ansible-playbook", "/ansible/homelab/playbooks/setup-home-lab.yml", "-v","--connection", "local"]
+CMD [ "ansible-playbook", "/ansible/homelab/playbooks/setup-home-lab.yml", "-v","--connection", "local", "--skip-tags", "skip-e2e"]
