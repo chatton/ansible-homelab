@@ -1,5 +1,7 @@
 ---
 - hosts: servers
+  vars_files:
+    - ../variables.yml
   become: true
   tasks:
   - name: Checkout Git Repos

@@ -1,6 +1,8 @@
 ---
 - hosts: servers
   become: true
+  vars_files:
+    - ../variables.yml
   tasks:
   - name: Update and upgrade apt packages
     apt:

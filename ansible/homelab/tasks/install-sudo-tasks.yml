@@ -7,21 +7,21 @@
     state: latest
     update_cache: true
 
-- name: Make sure we have a 'cianhatton' group
+- name: Make sure we have a '{{homelab_group}}' group
   group:
-    name: cianhatton
+    name: "{{homelab_group}}"
     state: present
-- name: Allow 'cianhatton' group to have passwordless sudo
+- name: Allow '{{homelab_user}}' group to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
-    regexp: '^%cianhatton'
-    line: '%cianhatton ALL=(ALL) NOPASSWD: ALL'
+    regexp: '^%{{homelab_user}}'
+    line: '%{{homelab_user}} ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
 
 - name: Add User
   ansible.builtin.user:
-    name: cianhatton
-    comment: Cian Hatton
+    name: "{{homelab_user}}"
+    comment: "{{homelab_user}} user"
     uid: 1000
-    group: cianhatton
+    group: "{{homelab_group}}"

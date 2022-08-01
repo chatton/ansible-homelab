@@ -2,6 +2,8 @@
 # ansible-playbook -v ansible/playbooks/volume-restore.yml -e "container_name=mariadb"
 ---
 - hosts: servers
+  vars_files:
+    - ../variables.yml
   tasks:
     - name: Restore Volume
       import_tasks: ../tasks/restore-volume-tasks.yml

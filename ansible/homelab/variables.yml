@@ -1,0 +1,4 @@
+---
+homelab_user: cianhatton
+homelab_group: cianhatton
+backup_dir: /mnt/hdds/backups/
