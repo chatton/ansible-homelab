@@ -17,7 +17,7 @@
   vars_files:
     - ../variables.yml
   tasks:
-    - name: Restore Tautulli
+    - name: Restore Portainer
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: "tautulli"
+        container_name: "portainer"
