@@ -5,3 +5,9 @@
     dest: /home/cianhatton/checkouts/HomeLab
     force: true
     version: master
+
+- name: Change Ownership
+  file:
+    path: /home/cianhatton/checkouts/HomeLab
+    owner: cianhatton
+    group: cianhatton

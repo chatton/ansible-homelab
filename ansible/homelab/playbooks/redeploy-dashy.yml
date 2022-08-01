@@ -1,0 +1,9 @@
+---
+- hosts: servers
+  become: true
+  tasks:
+  - name: Checkout Git Repos
+    import_tasks: ../tasks/checkout-git-repos-tasks.yml
+
+  - name: Restart Dashy
+    ansible.builtin.command: docker restart dashy
