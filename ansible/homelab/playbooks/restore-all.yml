@@ -9,6 +9,8 @@
 # If a container does not exist, the volume will be still be created.
 ###
 
+# TODO: here instead we can probably iterate through all containers with the backup label.
+
 ---
 - name: Redeploy Portainer and All Volumes
   hosts: servers

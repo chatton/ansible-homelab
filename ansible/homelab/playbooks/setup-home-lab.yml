@@ -17,11 +17,11 @@
   - name: Install Dev Tooling
     import_tasks: ../tasks/install-dev-tooling-tasks.yml
 
-  - name: Checkout Git Repos
-    import_tasks: ../tasks/checkout-git-repos-tasks.yml
-
   - name: Install & Configure Sudo
     import_tasks: ../tasks/install-sudo-tasks.yml
+
+  - name: Checkout Git Repos
+    import_tasks: ../tasks/checkout-git-repos-tasks.yml
 
   - name: Install Docker
     import_tasks: ../tasks/install-docker-tasks.yml
