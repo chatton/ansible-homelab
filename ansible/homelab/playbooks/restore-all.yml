@@ -1,0 +1,19 @@
+###
+# restore-all restores a manually specified list of volumes.
+# This is intended for user when initially setting up a home lab environment
+# and want to restore all applications from existing backups
+#
+# Restores will be skipped if there is no archive in the backup directory.
+#
+# If a container exists, it will be stopped, restored and started
+# If a container does not exist, the volume will be still be created.
+###
+
+---
+- name: Redeploy Portainer and All Volumes
+  hosts: servers
+  tasks:
+    - name: Restore Tautulli
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: "tautulli"
