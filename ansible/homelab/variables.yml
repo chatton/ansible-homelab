@@ -2,3 +2,5 @@
 homelab_user: cianhatton
 homelab_group: cianhatton
 backup_dir: /mnt/hdds/backups/
+docker_volume_backup_image: ghcr.io/chatton/docker-volume-backup:master
+home_lab_checkout_dir: /home/cianhatton/checkouts/HomeLab

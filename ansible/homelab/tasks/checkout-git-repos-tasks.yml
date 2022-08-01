@@ -2,12 +2,12 @@
 - name: Git checkout HomeLab repository
   ansible.builtin.git:
     repo: 'https://github.com/chatton/HomeLab.git'
-    dest: "/home/{{homelab_user}}/checkouts/HomeLab"
+    dest: "{{home_lab_checkout_dir}}"
     force: true
     version: master
 
 - name: Change Ownership
   file:
-    path: "/home/{{homelab_user}}/checkouts/HomeLab"
+    path: "{{home_lab_checkout_dir}}"
     owner: "{{homelab_user}}"
     group: "{{homelab_group}}"

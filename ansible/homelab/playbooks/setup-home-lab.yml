@@ -30,4 +30,4 @@
 
   - name: Start Portainer
     tags: "skip-e2e" # we can't mount volumes on test runners.
-    command: chdir=/home/cianhatton/checkouts/HomeLab/docker-compose/portainer docker compose up -d
+    command: "chdir={{home_lab_checkout_dir}}/docker-compose/portainer docker compose up -d"

@@ -8,10 +8,10 @@
 - name: Find volumes
   ansible.builtin.shell: docker run --rm
     -v /var/run/docker.sock:/var/run/docker.sock
-    -v /mnt/hdds/backups/:/mnt/hdds/backups/
-    ghcr.io/chatton/docker-volume-backup:master
+    -v "{{backup_dir}}:{{backup_dir}}"
+    "{{docker_volume_backup_image}}"
     list-backups
-    --host-path /mnt/hdds/backups/
+    --host-path "{{backup_dir}}"
     --volume-name-filter {{container_name}}
     --newest-only
   register: out
@@ -25,7 +25,7 @@
 - name: Restore Volume
   ansible.builtin.command: docker run --rm
     -v /var/run/docker.sock:/var/run/docker.sock
-    ghcr.io/chatton/docker-volume-backup:master
+    {{docker_volume_backup_image}}
     restore-volume
     --volume {{item.volumeName}}
     --archive {{item.absoluteFilePath}}
