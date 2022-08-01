@@ -1,5 +1,6 @@
 ---
 - hosts: servers
+  become: true
   tasks:
   - name: Git checkout
     ansible.builtin.git:
