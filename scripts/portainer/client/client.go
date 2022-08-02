@@ -79,11 +79,19 @@ func (c *PortainerClient) GetStackByName(name string) (*Stack, error) {
 	return nil, nil
 }
 
-func (c *PortainerClient) StartStack(stackId int) error {
+type ResponseMessage struct {
+	Message string `json:"message"`
+	Details string `json:"details"`
+}
+
+func (c *PortainerClient) StartStack(stackId int) (ResponseMessage, error) {
 	url := fmt.Sprintf("api/stacks/%d/start", stackId)
 	b, err := c.post(url, nil)
-	fmt.Println(string(b))
-	return err
+	msg := ResponseMessage{}
+	if err := json.Unmarshal(b, &msg); err != nil {
+		return msg, err
+	}
+	return msg, err
 }
 func (c *PortainerClient) post(path string, payload interface{}) ([]byte, error) {
 	jsonBytes, err := json.Marshal(payload)

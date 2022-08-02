@@ -32,6 +32,11 @@ func loadCreds() client.Credentials {
 	return creds
 }
 
+type StackResult struct {
+	Name string `json:"name"`
+	Id   int    `json:"id"`
+}
+
 func main() {
 	args := os.Args
 	if len(args) != 2 {
@@ -49,9 +54,28 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if s == nil {
+		log.Fatalf("no stack found with name: %s\n", stackName)
+	}
 
-	err = c.StartStack(s.ID)
-	if err != nil && strings.Contains(err.Error(), "is already running") {
+	msg, err := c.StartStack(s.ID)
+	if err != nil {
 		log.Fatal(err)
 	}
+
+	if msg.Details != "" && !strings.Contains(msg.Details, "is already running") {
+		log.Fatalf("problem starting stack: %s", msg.Details)
+	}
+
+	sr := StackResult{
+		Name: stackName,
+		Id:   s.ID,
+	}
+
+	bytes, err := json.Marshal(sr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// output details of the stack that was started (or is already started)
+	fmt.Println(string(bytes))
 }
