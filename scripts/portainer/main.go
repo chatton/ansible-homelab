@@ -12,7 +12,34 @@ import (
 	"github.com/chatton/portainer/client"
 )
 
+const (
+	portainerUserNameEnv = "PORTAINER_USER_NAME"
+	portainerPasswordEnv = "PORTAINER_PASSWORD"
+	portainerBaseUrlEnv  = "PORTAINER_BASE_URL"
+)
+
+func loadCredsFromEnv() client.Credentials {
+	userName, _ := os.LookupEnv(portainerUserNameEnv)
+	password, _ := os.LookupEnv(portainerPasswordEnv)
+	baseUrl, _ := os.LookupEnv(portainerBaseUrlEnv)
+	return client.Credentials{
+		Username: userName,
+		Password: password,
+		BaseUrl:  baseUrl,
+	}
+}
+
 func loadCreds() client.Credentials {
+	// look for env vars first
+	creds := loadCredsFromEnv()
+	if creds.IsValid() {
+		return creds
+	}
+	// fallback to file
+	return loadCredsFromFile()
+}
+
+func loadCredsFromFile() client.Credentials {
 	usr, _ := user.Current()
 	credPath := fmt.Sprintf("%s/.homelab/portainer-creds.json", usr.HomeDir)
 

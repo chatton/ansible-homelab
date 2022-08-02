@@ -26,6 +26,10 @@ type Credentials struct {
 	BaseUrl  string `json:"baseUrl"`
 }
 
+func (c Credentials) IsValid() bool {
+	return c.Username != "" && c.Password != "" && c.BaseUrl != ""
+}
+
 func NewPortainerClient(creds Credentials) (*PortainerClient, error) {
 	c := &PortainerClient{
 		baseUrl: creds.BaseUrl,
