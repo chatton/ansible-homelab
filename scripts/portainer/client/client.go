@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-const (
-	applicationJson = "application/json"
-)
-
 // api docs
 // https://app.swaggerhub.com/apis/portainer/portainer-ce/2.9.3
 
@@ -97,6 +93,17 @@ func (c *PortainerClient) StartStack(stackId int) (ResponseMessage, error) {
 	}
 	return msg, err
 }
+
+func (c *PortainerClient) StopStack(stackId int) (ResponseMessage, error) {
+	url := fmt.Sprintf("api/stacks/%d/stop", stackId)
+	b, err := c.post(url, nil)
+	msg := ResponseMessage{}
+	if err := json.Unmarshal(b, &msg); err != nil {
+		return msg, err
+	}
+	return msg, err
+}
+
 func (c *PortainerClient) post(path string, payload interface{}) ([]byte, error) {
 	jsonBytes, err := json.Marshal(payload)
 	if err != nil {

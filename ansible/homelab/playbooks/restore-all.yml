@@ -16,8 +16,31 @@
   hosts: servers
   vars_files:
     - ../variables.yml
+    - ~/.homelab/variables.yml
   tasks:
     - name: Restore Portainer
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
         container_name: "portainer"
+
+    - name: Restore Linkding
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: "linkding"
+
+    - name: Start Linkding Stack
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        container_name: "linkding"
+        stack_name: "linkding"
+
+    - name: Restore Nginx Proxy Manager
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: "nginx-proxy-manager"
+
+    - name: Start Nginx Proxy Manager
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        container_name: "nginx-proxy-manager"
+        stack_name: "nginx-proxy-manager"

@@ -85,6 +85,11 @@ func main() {
 		log.Fatalf("no stack found with name: %s\n", stackName)
 	}
 
+	_, err = c.StopStack(s.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	msg, err := c.StartStack(s.ID)
 	if err != nil {
 		log.Fatal(err)

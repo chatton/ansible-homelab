@@ -10,7 +10,7 @@
     source: pull
 - name: Pull docker-volume-backup
   docker_image:
-    name: {{docker_volume_backup_image}}
+    name: "{{docker_volume_backup_image}}"
     source: pull
 
 # https://stackoverflow.com/questions/45237632/ansible-w-docker-show-current-container-state
