@@ -18,31 +18,51 @@
     - ../variables.yml
     - ~/.homelab/variables.yml
   tasks:
+    - name: Create next cloud a network
+      docker_network:
+        name: nextcloud_net
+
+    # The docker volume backup image utilizes these images
+    - name: Pull ubuntu
+      docker_image:
+        name: ubuntu
+        source: pull
+    - name: Pull busybox
+      docker_image:
+        name: busybox
+        source: pull
+    - name: Pull docker-volume-backup
+      docker_image:
+        name: "{{docker_volume_backup_image}}"
+        source: pull
+    - name: Pull start-portainer-stack
+      docker_image:
+        name: ghcr.io/chatton/start-portainer-stack:master
+        source: pull
+
     - name: Restore Portainer
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: "portainer"
+        container_name: ""
 
     - name: Restore Linkding
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: "linkding"
+        container_name: ""
 
     - name: Start Linkding Stack
       import_tasks: ../tasks/create-stack-tasks.yml
       vars:
-        container_name: "linkding"
         stack_name: "linkding"
 
     - name: Restore Nginx Proxy Manager
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: "nginx-proxy-manager"
+        container_name: ""
 
     - name: Start Nginx Proxy Manager
       import_tasks: ../tasks/create-stack-tasks.yml
       vars:
-        container_name: "nginx-proxy-manager"
         stack_name: "nginx-proxy-manager"
 
     - name: Restore Vpn Stack
@@ -54,3 +74,75 @@
       import_tasks: ../tasks/create-stack-tasks.yml
       vars:
         stack_name: "vpn-stack"
+
+    # Create Network
+
+    - name: Restore MariaDB
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: ""
+
+    - name: Start MariaDB
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "mariadb"
+
+    - name: Restore Nextcloud
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: ""
+
+    - name: Start Nextcloud
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "nextcloud"
+
+    - name: Restore Photoprism
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: ""
+
+    - name: Start Photoprism
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "photoprism"
+
+    - name: Restore Plex
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: ""
+
+    - name: Start Plex
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "plex"
+
+    - name: Restore Mealie
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: ""
+
+    - name: Start Mealie
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "mealie"
+
+    - name: Restore Overseerr
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: ""
+
+    - name: Start Overseerr
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "overseerr"
+
+    - name: Restore Uptime Kuma
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: ""
+
+    - name: Start Uptime Kuma
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "uptime-kuma"

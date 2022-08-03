@@ -1,9 +1,4 @@
 ---
-- name: Pull start-portainer-stack
-  docker_image:
-    name: ghcr.io/chatton/start-portainer-stack:master
-    source: pull
-
 - name: Start stack
   ansible.builtin.command: docker run --rm
     -e PORTAINER_USER_NAME=admin 
