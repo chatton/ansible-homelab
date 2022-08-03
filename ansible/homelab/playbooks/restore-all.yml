@@ -9,7 +9,10 @@
 # If a container does not exist, the volume will be still be created.
 ###
 
-# TODO: here instead we can probably iterate through all containers with the backup label.
+############################################
+# TODO: add a command which lists all the stack, and each stack can list all the containers. From there we can iterate
+# through each container in the stack calling restore-volume-tasks.yml and then call create-stack-tasks.yml
+############################################
 
 ---
 - name: Redeploy Portainer and All Volumes
@@ -43,12 +46,12 @@
     - name: Restore Portainer
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "portainer"
 
     - name: Restore Linkding
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "linkding"
 
     - name: Start Linkding Stack
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -58,7 +61,7 @@
     - name: Restore Nginx Proxy Manager
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "nginx-proxy-manager"
 
     - name: Start Nginx Proxy Manager
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -75,12 +78,11 @@
       vars:
         stack_name: "vpn-stack"
 
-    # Create Network
 
     - name: Restore MariaDB
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "mariadb"
 
     - name: Start MariaDB
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -90,7 +92,7 @@
     - name: Restore Nextcloud
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "nextcloud"
 
     - name: Start Nextcloud
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -100,7 +102,7 @@
     - name: Restore Photoprism
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "photoprism"
 
     - name: Start Photoprism
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -110,7 +112,7 @@
     - name: Restore Plex
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "plex"
 
     - name: Start Plex
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -120,7 +122,7 @@
     - name: Restore Mealie
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "mealie"
 
     - name: Start Mealie
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -130,7 +132,7 @@
     - name: Restore Overseerr
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "overseerr"
 
     - name: Start Overseerr
       import_tasks: ../tasks/create-stack-tasks.yml
@@ -140,7 +142,7 @@
     - name: Restore Uptime Kuma
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: ""
+        container_name: "uptime-kuma"
 
     - name: Start Uptime Kuma
       import_tasks: ../tasks/create-stack-tasks.yml
