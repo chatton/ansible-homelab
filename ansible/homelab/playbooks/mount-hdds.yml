@@ -1,0 +1,13 @@
+---
+- hosts: servers
+  vars_files:
+    - ../variables.yml
+  become: true
+  tasks:
+  - name: Mount up device by UUID
+    ansible.posix.mount:
+      path: /mnt/hdds
+      src: "UUID={{hdds_uuid}}"
+      fstype: ext4
+      state: mounted
+      opts: default,nofail

@@ -44,3 +44,13 @@
       vars:
         container_name: "nginx-proxy-manager"
         stack_name: "nginx-proxy-manager"
+
+    - name: Restore Vpn Stack
+      import_tasks: ../tasks/restore-volume-tasks.yml
+      vars:
+        container_name: "vpn-stack"
+
+    - name: Start Vpn Stack
+      import_tasks: ../tasks/create-stack-tasks.yml
+      vars:
+        stack_name: "vpn-stack"
