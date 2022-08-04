@@ -5,4 +5,5 @@ backup_dir: /mnt/hdds/backups/
 docker_volume_backup_image: ghcr.io/chatton/docker-volume-backup:master
 home_lab_checkout_dir: /home/cianhatton/checkouts/HomeLab
 hdds_uuid: 8d6e8b33-7d7f-456b-9976-7baea0cf4260
+ssd0_uuid: daa00585-fa38-424c-84e7-844223362ae4
 docker_daemon_host_path: /mnt/ssds/docker

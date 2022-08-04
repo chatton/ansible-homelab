@@ -6,3 +6,6 @@
     - fzf
     - git
     - mdadm
+    - parted
+    - ncdu
+    - tree

@@ -4,10 +4,50 @@
     - ../variables.yml
   become: true
   tasks:
-  - name: Mount up device by UUID
+  - name: Ensure /mnt/hdds directory
+    file:
+      path: /mnt/hdds
+      state: directory
+
+  - name: Unmount HDDS
     ansible.posix.mount:
       path: /mnt/hdds
       src: "UUID={{hdds_uuid}}"
+      fstype: ext4
+      state: unmounted
+      opts: default,nofail
+
+  - name: Make /mnt/hdds immutable
+    ansible.builtin.shell:  chattr +i /mnt/hdds
+
+  - name: Mount HDDS
+    ansible.posix.mount:
+      path: /mnt/hdds
+      src: "UUID={{hdds_uuid}}"
+      fstype: ext4
+      state: mounted
+      opts: default,nofail
+
+  - name: Ensure /mnt/ssd0 directory
+    file:
+      path: /mnt/ssd0
+      state: directory
+
+  - name: Unmount SSD0
+    ansible.posix.mount:
+      path: /mnt/ssd0/
+      src: "UUID={{ssd0_uuid}}"
+      fstype: ext4
+      state: unmounted
+      opts: default,nofail
+
+  - name: Make /mnt/ssd0 immutable
+    ansible.builtin.shell:  chattr +i /mnt/ssd0
+
+  - name: Mount SSD0
+    ansible.posix.mount:
+      path: /mnt/ssd0/
+      src: "UUID={{ssd0_uuid}}"
       fstype: ext4
       state: mounted
       opts: default,nofail

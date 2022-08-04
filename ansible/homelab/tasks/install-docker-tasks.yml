@@ -42,9 +42,6 @@
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
 
-#- name: Stop Docker Service
-#  ansible.builtin.shell: sudo service docker stop
-
 # Change the docker dir.
 - name: Stop docker service
   ansible.builtin.service:
@@ -52,6 +49,7 @@
     state: stopped
 
 - name: Change volume path
+  tags: "skip-e2e"
   copy:
     dest: "/etc/docker/daemon.json"
     content: |
@@ -60,14 +58,17 @@
       }
 
 - name: Backup old files
+  tags: "skip-e2e"
   ansible.builtin.shell: cp -r /var/lib/docker /var/lib/docker.bak
 
 - name: Delete old docker directory
+  tags: "skip-e2e"
   file:
     state: absent
     path: /var/lib/docker
 
 - name: Start docker service
+  tags: "skip-e2e"
   ansible.builtin.service:
     name: docker
     state: started

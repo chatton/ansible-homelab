@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(portainer.NumbersCmd)
+	rootCmd.AddCommand(portainer.NewPortainerCommand())
 }
 
 var rootCmd = &cobra.Command{

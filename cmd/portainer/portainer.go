@@ -19,3 +19,7 @@ var NumbersCmd = &cobra.Command{
 		fmt.Println("--range:", rangeFlagNumbers)
 	},
 }
+
+func NewPortainerCommand() *cobra.Command {
+	return nil
+}
