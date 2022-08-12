@@ -41,34 +41,34 @@
     url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
-
-# Change the docker dir.
-- name: Stop docker service
-  ansible.builtin.service:
-    name: docker
-    state: stopped
-
-- name: Change volume path
-  tags: "skip-e2e"
-  copy:
-    dest: "/etc/docker/daemon.json"
-    content: |
-      {
-        "data-root": "{{docker_daemon_host_path}}"
-      }
-
-- name: Backup old files
-  tags: "skip-e2e"
-  ansible.builtin.shell: cp -r /var/lib/docker /var/lib/docker.bak
-
-- name: Delete old docker directory
-  tags: "skip-e2e"
-  file:
-    state: absent
-    path: /var/lib/docker
-
-- name: Start docker service
-  tags: "skip-e2e"
-  ansible.builtin.service:
-    name: docker
-    state: started
+#
+## Change the docker dir.
+#- name: Stop docker service
+#  ansible.builtin.service:
+#    name: docker
+#    state: stopped
+#
+#- name: Change volume path
+#  tags: "skip-e2e"
+#  copy:
+#    dest: "/etc/docker/daemon.json"
+#    content: |
+#      {
+#        "data-root": "{{docker_daemon_data_root}}"
+#      }
+#
+#- name: Backup old files
+#  tags: "skip-e2e"
+#  ansible.builtin.shell: cp -r /var/lib/docker /var/lib/docker.bak
+#
+#- name: Delete old docker directory
+#  tags: "skip-e2e"
+#  file:
+#    state: absent
+#    path: /var/lib/docker
+#
+#- name: Start docker service
+#  tags: "skip-e2e"
+#  ansible.builtin.service:
+#    name: docker
+#    state: started

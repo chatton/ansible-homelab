@@ -11,11 +11,11 @@
 
   - name: Unmount HDDS
     ansible.posix.mount:
-      path: /mnt/hdds
+      path: /mnt/hdds/
       src: "UUID={{hdds_uuid}}"
       fstype: ext4
       state: unmounted
-      opts: default,nofail
+      opts: defaults,nofail
 
   - name: Make /mnt/hdds immutable
     ansible.builtin.shell:  chattr +i /mnt/hdds
@@ -26,7 +26,7 @@
       src: "UUID={{hdds_uuid}}"
       fstype: ext4
       state: mounted
-      opts: default,nofail
+      opts: defaults,nofail
 
   - name: Ensure /mnt/ssd0 directory
     file:
@@ -39,7 +39,7 @@
       src: "UUID={{ssd0_uuid}}"
       fstype: ext4
       state: unmounted
-      opts: default,nofail
+      opts: defaults,nofail
 
   - name: Make /mnt/ssd0 immutable
     ansible.builtin.shell:  chattr +i /mnt/ssd0
@@ -50,4 +50,4 @@
       src: "UUID={{ssd0_uuid}}"
       fstype: ext4
       state: mounted
-      opts: default,nofail
+      opts: defaults,nofail

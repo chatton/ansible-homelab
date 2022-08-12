@@ -48,103 +48,116 @@
       vars:
         container_name: "portainer"
 
-    - name: Restore Linkding
+    - name: "Restore {{item}}"
       import_tasks: ../tasks/restore-volume-tasks.yml
       vars:
-        container_name: "linkding"
+        container_name: "{{item}}"
+      with_items: {{stacks}}
 
-    - name: Start Linkding Stack
+    - name: "Start {{item}} Stack"
       import_tasks: ../tasks/create-stack-tasks.yml
       vars:
-        stack_name: "linkding"
-
-    - name: Restore Nginx Proxy Manager
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "nginx-proxy-manager"
-
-    - name: Start Nginx Proxy Manager
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "nginx-proxy-manager"
-
-    - name: Restore Vpn Stack
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "vpn-stack"
-
-    - name: Start Vpn Stack
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "vpn-stack"
+        stack_name: "{{item}}"
+      with_items: {{stacks}}
 
 
-    - name: Restore MariaDB
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "mariadb"
-
-    - name: Start MariaDB
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "mariadb"
-
-    - name: Restore Nextcloud
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "nextcloud"
-
-    - name: Start Nextcloud
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "nextcloud"
-
-    - name: Restore Photoprism
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "photoprism"
-
-    - name: Start Photoprism
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "photoprism"
-
-    - name: Restore Plex
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "plex"
-
-    - name: Start Plex
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "plex"
-
-    - name: Restore Mealie
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "mealie"
-
-    - name: Start Mealie
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "mealie"
-
-    - name: Restore Overseerr
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "overseerr"
-
-    - name: Start Overseerr
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "overseerr"
-
-    - name: Restore Uptime Kuma
-      import_tasks: ../tasks/restore-volume-tasks.yml
-      vars:
-        container_name: "uptime-kuma"
-
-    - name: Start Uptime Kuma
-      import_tasks: ../tasks/create-stack-tasks.yml
-      vars:
-        stack_name: "uptime-kuma"
+#    - name: Restore Linkding
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "linkding"
+#
+#    - name: Start Linkding Stack
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "linkding"
+#
+#    - name: Restore Nginx Proxy Manager
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "nginx-proxy-manager"
+#
+#    - name: Start Nginx Proxy Manager
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "nginx-proxy-manager"
+#
+#    - name: Restore Vpn Stack
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "vpn-stack"
+#
+#    - name: Start Vpn Stack
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "vpn-stack"
+#
+#
+#    - name: Restore MariaDB
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "mariadb"
+#
+#    - name: Start MariaDB
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "mariadb"
+#
+#    - name: Restore Nextcloud
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "nextcloud"
+#
+#    - name: Start Nextcloud
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "nextcloud"
+#
+#    - name: Restore Photoprism
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "photoprism"
+#
+#    - name: Start Photoprism
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "photoprism"
+#
+#    - name: Restore Plex
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "plex"
+#
+#    - name: Start Plex
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "plex"
+#
+#    - name: Restore Mealie
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "mealie"
+#
+#    - name: Start Mealie
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "mealie"
+#
+#    - name: Restore Overseerr
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "overseerr"
+#
+#    - name: Start Overseerr
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "overseerr"
+#
+#    - name: Restore Uptime Kuma
+#      import_tasks: ../tasks/restore-volume-tasks.yml
+#      vars:
+#        container_name: "uptime-kuma"
+#
+#    - name: Start Uptime Kuma
+#      import_tasks: ../tasks/create-stack-tasks.yml
+#      vars:
+#        stack_name: "uptime-kuma"
