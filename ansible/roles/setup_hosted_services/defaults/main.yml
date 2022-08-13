@@ -1,10 +1,22 @@
 ---
 docker_compose_directory: /etc/docker-compose
 services:
+  - name: gitea
+    volumes: ["gitea_data"]
   - name: mealie
+    volumes: ["mealie_data"]
   - name: linkding
+    volumes: ["linkding_data"]
   - name: overseerr
+    volumes: ["overseerr_config"]
   - name: nextcloud
+    volumes: ["nextcloud_data"]
 
 docker_networks:
   - nextcloud_net
+
+aws_s3:
+  s3_url: "l8x8.ie11.idrivee2-6.com"
+  aws_access_key: "nyNMQ3fRMSV0bA1xw5uV"
+  region: "us-east-1"
+  bucket: "backups"
