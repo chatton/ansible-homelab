@@ -4,3 +4,4 @@
   roles:
     - role: 'roles/setup_users'
     - role: 'roles/setup_docker'
+    - role: 'roles/setup_portainer'
