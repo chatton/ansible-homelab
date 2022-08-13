@@ -1,10 +1,10 @@
 ---
 docker_compose_directory: /etc/docker-compose
 services:
-  - mealie
-  - linkding
-  - overseerr
-  - nextcloud
+  - name: mealie
+  - name: linkding
+  - name: overseerr
+  - name: nextcloud
 
 docker_networks:
   - nextcloud_net
