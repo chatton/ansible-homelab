@@ -1,0 +1,4 @@
+---
+# defaults file for setup_users
+homelab_group: cianhatton
+homelab_user: cianhatton
