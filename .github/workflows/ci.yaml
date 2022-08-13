@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: "pull image"
+        run: docker pull geerlingguy/docker-debian10-ansible:latest
       - name: Molecule
         uses: gofrolist/molecule-action@v2
         with:
