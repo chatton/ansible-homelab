@@ -37,3 +37,8 @@
 - name: Install Docker Compose Module for Python
   pip:
     name: docker-compose
+
+- name: Ensure docker is started
+  service:
+    name: docker
+    state: started
