@@ -37,7 +37,7 @@ extends_documentation_fragment:
     - my_namespace.my_collection.my_doc_fragment_name
 
 author:
-    - Your Name (@yourGitHubHandle)
+    - Your Name (@chatton)
 '''
 
 EXAMPLES = r'''
@@ -100,6 +100,12 @@ COMPOSE_STACK = 2
 STRING_METHOD = "string"
 
 
+def _query_params_to_string(params):
+    s = "?"
+    for k, v in params.items():
+        s += f"&{k}={v}"
+    return s
+
 class PortainerClient:
     def __init__(self, creds):
         self.base_url = creds["base_url"]
@@ -114,16 +120,112 @@ class PortainerClient:
         res.raise_for_status()
         return res.json()
 
-    def post(self, endpoint, body, query_params=None):
+    def delete(self, endpoint):
         url = f"{self.base_url}/api/{endpoint}"
-        if query_params:
-            url += "?"
-            for k, v in query_params.items():
-                url += f"&{k}={v}"
+        try:
+            # TODO: deletion works, but the request fails?
+            res = requests.delete(url, headers=self.headers)
+            res.raise_for_status()
+        except Exception:
+            pass
+        return {}
+
+    def put(self, endpoint, body):
+        url = f"{self.base_url}/api/{endpoint}"
+        res = requests.put(url, json=body, headers=self.headers)
+        res.raise_for_status()
+        return res.json()
+
+    def post(self, endpoint, body, query_params=None):
+        url = f"{self.base_url}/api/{endpoint}" + _query_params_to_string(query_params)
 
         res = requests.post(url, json=body, headers=self.headers)
         res.raise_for_status()
         return res.json()
+
+
+def _create_stack(client, module):
+    target_stack_name = module.params["stack_name"]
+    with open(module.params["docker_compose_file_path"]) as f:
+        file_contents = f.read()
+    body = {
+        "env": [],
+        "name": target_stack_name,
+        "stackFileContent": file_contents,
+    }
+
+    query_params = {
+        "type": COMPOSE_STACK,
+        "method": STRING_METHOD,
+        "endpointId": 2,
+    }
+    return client.post("stacks", body=body, query_params=query_params)
+
+
+def _update_stack(client, module, stack_id):
+    target_stack_name = module.params["stack_name"]
+    with open(module.params["docker_compose_file_path"]) as f:
+        file_contents = f.read()
+    return client.put(f"stacks/{stack_id}?&endpointId=2", body={
+        "env": [],
+        "name": target_stack_name,
+        "stackFileContent": file_contents,
+    })
+
+
+def handle_state_present(client, module):
+    result = dict(
+        changed=False,
+        stack_name=module.params["stack_name"]
+    )
+
+    already_exists = False
+    stacks = client.get("stacks")
+    result["stacks"] = stacks
+
+    target_stack_name = module.params["stack_name"]
+    for stack in stacks:
+        if stack["Name"] == target_stack_name:
+            already_exists = True
+            result["stack_id"] = stack["Id"]
+            break
+
+    if not already_exists:
+        stack = _create_stack(client, module)
+        result["changed"] = True
+        result["stack_id"] = stack["Id"]
+        module.exit_json(**result)
+        return
+
+    # TODO: is it possible to know if we've changed the stack?
+    # the stack exists, we just want to update it.
+    _update_stack(client, module, result["stack_id"])
+    result["changed"] = True
+    module.exit_json(**result)
+
+
+def handle_state_absent(client, module):
+    result = dict(
+        changed=False,
+        stack_name=module.params["stack_name"]
+    )
+    already_exists = False
+    target_stack_name = module.params["stack_name"]
+    stacks = client.get("stacks")
+    for stack in stacks:
+        if stack["Name"] == target_stack_name:
+            already_exists = True
+            result["stack_id"] = stack["Id"]
+            break
+
+    if not already_exists:
+        module.exit_json(**result)
+        return
+
+    stack_id = result['stack_id']
+    client.delete(f"stacks/{stack_id}" + _query_params_to_string({"endpointId": 2}))
+    result["changed"] = True
+    module.exit_json(**result)
 
 
 def run_module():
@@ -134,17 +236,14 @@ def run_module():
         env_file_path=dict(type='str', required=False),
         username=dict(type='str', default='admin'),
         password=dict(type='str', required=True),
-        base_url=dict(type='str', default="http://localhost:9000")
+        base_url=dict(type='str', default="http://localhost:9000"),
+        state=dict(type='str', default="present")
     )
 
-    # seed the result dict in the object
-    # we primarily care about changed and state
-    # changed is if this module effectively modified the target
-    # state will include any data that you want your module to pass back
-    # for consumption, for example, in a subsequent task
-    result = dict(
-        changed=False,
-    )
+    state_fns = {
+        "present": handle_state_present,
+        "absent": handle_state_absent
+    }
 
     # the AnsibleModule object will be our abstraction working with Ansible
     # this includes instantiation, a couple of common attr would be the
@@ -156,58 +255,13 @@ def run_module():
     )
 
     client = PortainerClient(creds=_extract_creds(module))
+    state_fns[module.params["state"]](client, module)
 
-    stacks = client.get("stacks")
-
-    result["token"] = client.token
-    result["stacks"] = stacks
-
-    file_contents = ""
-    with open(module.params["docker_compose_file_path"]) as f:
-        file_contents = f.read()
-
-    result["stacks"] = stacks
-
-    body = {
-        "env": [],
-        "name": module.params["stack_name"],
-        "stackFileContent": file_contents,
-    }
-
-    query_params = {
-        "type": COMPOSE_STACK,
-        "method": STRING_METHOD,
-        "endpointId": 2,
-    }
-
-    res = client.post("stacks", body=body, query_params=query_params)
-    result["res"] = res
-
-    # if the user is working with this module in only check mode we do not
-    # want to make any changes to the environment, just return the current
-    # state with no modifications
-    if module.check_mode:
-        module.exit_json(**result)
-
-    # manipulate or modify the state as needed (this is going to be the
-    # part where your module will do what it needs to do)
-    # result['original_message'] = module.params['name']
-    # result['message'] = 'goodbye'
-
-    # use whatever logic you need to determine whether or not this module
-    # made any modifications to your target
-    # if module.params['new']:
-    #     result['changed'] = True
-
-    # during the execution of the module, if there is an exception or a
-    # conditional state that effectively causes a failure, run
-    # AnsibleModule.fail_json() to pass in the message and the result
-    # if module.params['name'] == 'fail me':
-    #     module.fail_json(msg='You requested this to fail', **result)
-
-    # in the event of a successful module execution, you will want to
-    # simple AnsibleModule.exit_json(), passing the key/value results
-    module.exit_json(**result)
+    # # if the user is working with this module in only check mode we do not
+    # # want to make any changes to the environment, just return the current
+    # # state with no modifications
+    # if module.check_mode:
+    #     module.exit_json(**result)
 
 
 def main():
