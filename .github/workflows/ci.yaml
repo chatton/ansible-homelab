@@ -19,17 +19,3 @@ jobs:
         env:
           ANSIBLE_FORCE_COLOR: '1'
           PY_COLORS: "1"
-#      - name: Set up Python 3.8.9
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.8.9
-#      - name: Install dependencies
-#        run: pip install -r requirements.txt
-#
-#      - name: Test with molecule
-#        run: |
-#          cd ansible/roles/setup_docker
-#          molecule test
-#        env:
-#          PY_COLORS: "1"
-#          ANSIBLE_FORCE_COLOR: "1"
