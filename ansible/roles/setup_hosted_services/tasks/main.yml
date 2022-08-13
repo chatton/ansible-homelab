@@ -15,34 +15,44 @@
   ansible.builtin.pip:
     name: requests
 
-- name: Install python dependencies (boto3)
-  ansible.builtin.pip:
-    name: boto3
+- name: Find docker volumes
+  shell: docker volume ls -f name={{item.name}} --format '{{ '{{' }}  .Name {{ '}}' }}'
+  with_items: "{{services}}"
+  register: find_volumes
+  changed_when: False
 
-- name: Find relevant volume(s) in S3
-  amazon.aws.aws_s3:
-    bucket: "{{aws_s3.bucket}}"
-    mode: list
-    region: "{{aws_s3.region}}"
-    s3_url: "{{aws_s3.s3_url}}"
-    prefix: "mealie"
-    aws_access_key: "{{aws_s3.aws_access_key}}"
-    aws_secret_key: "{{aws_s3_secrets.aws_secret_key}}"
-  register: s3_list_output
+- debug: msg="{{find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
 
-- debug: msg="{{s3_list_output.s3_keys}}"
+- name: Find volumes that need to be restored
+  script: scripts/find-volumes-to-restore.py
+  environment:
+    EXISTING_VOLUMES: "{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
+    SERVICES: "{{ services }}"
+  args:
+    executable: python3
+  register: python_output
+  changed_when: False
 
-- name: Download volume(s) from S3
-  amazon.aws.aws_s3:
-    bucket: "{{aws_s3.bucket}}"
-    object: "{{item}}"
-    dest: "/tmp/{{item}}"
-    mode: get
-    region: "{{aws_s3.region}}"
-    s3_url: "{{aws_s3.s3_url}}"
-    aws_access_key: "{{aws_s3.aws_access_key}}"
-    aws_secret_key: "{{aws_s3_secrets.aws_secret_key}}"
-  with_items: "{{s3_list_output.s3_keys}}"
+- debug: msg="{{python_output.stdout_lines | list }}"
+
+- name: Restore any missing backups from S3
+  docker_container:
+    command: "restore-volume --s3 --volume {{item}}"
+    image: "ghcr.io/chatton/docker-volume-backup:v0.3.0"
+    name: "s3-restore-{{item}}"
+    cleanup: true # delete container after it's done.
+    state: started # container should execute.
+    detach: no # task fails if container exits.
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp # temp s3 archive goes here
+    env:
+      AWS_ACCESS_KEY_ID: "{{aws_s3.aws_access_key}}"
+      AWS_SECRET_ACCESS_KEY: "{{aws_s3_secrets.aws_secret_key}}"
+      AWS_DEFAULT_REGION: "{{aws_s3.region}}"
+      AWS_BUCKET: "{{aws_s3.bucket}}"
+      AWS_ENDPOINT: "{{aws_s3.s3_url}}"
+  with_items: "{{ python_output.stdout_lines  }}"
 
 - name: Create required docker networks
   docker_network:
