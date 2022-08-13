@@ -160,20 +160,18 @@ def run_module():
     stacks = client.get("stacks")
 
     result["token"] = client.token
-    # result["stacks"] = stacks
+    result["stacks"] = stacks
 
     file_contents = ""
     with open(module.params["docker_compose_file_path"]) as f:
         file_contents = f.read()
 
     result["stacks"] = stacks
-    result["stack_name"] = module.params["stack_name"]
 
     body = {
-        "body_compose_string":  {
-            "name": module.params["stack_name"],
-            "stackFileContent": file_contents,
-        },
+        "env": [],
+        "name": module.params["stack_name"],
+        "stackFileContent": file_contents,
     }
 
     query_params = {
