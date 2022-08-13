@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include chatton.setup_hosted_services"
+      include_role:
+        name: "chatton.setup_hosted_services"

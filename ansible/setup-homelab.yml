@@ -1,7 +1,10 @@
 ---
 - hosts: servers
   become: true
+  vars_files:
+    - ../secrets.yml
   roles:
     - role: 'roles/setup_users'
     - role: 'roles/setup_docker'
     - role: 'roles/setup_portainer'
+    - role: 'roles/setup_hosted_services'

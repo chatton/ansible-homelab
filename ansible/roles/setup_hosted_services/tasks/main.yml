@@ -1,0 +1,29 @@
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{docker_compose_directory}}/{{item}}"
+    state: directory
+    mode: '0755'
+  with_items: "{{services}}"
+
+- name: Copy Docker Compose Files
+  copy:
+    src: "{{item}}/docker-compose.yml"
+    dest: "{{docker_compose_directory}}/{{item}}/docker-compose.yml"
+  with_items: "{{services}}"
+
+- name: Install python dependencies
+  ansible.builtin.pip:
+    name: requests
+
+- name: Create required docker networks
+  docker_network:
+    name: "{{item}}"
+  with_items: "{{ docker_networks }}"
+
+- name: Update Portainer Stack
+  portainer:
+    username: admin
+    password: "{{portainer.password}}"
+    docker_compose_file_path: "{{docker_compose_directory}}/{{item}}/docker-compose.yml"
+    stack_name: "{{item}}"
+  with_items: "{{services}}"
