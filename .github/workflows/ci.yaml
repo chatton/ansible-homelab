@@ -11,17 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8.9
-        uses: actions/setup-python@v2
+      - name: "CD"
+        run: cd ansible/roles/setup_docker
+      - name: Molecule
+        uses: gofrolist/molecule-action@v2
         with:
-          python-version: 3.8.9
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Test with molecule
-        run: |
-          cd ansible/roles/setup_docker
-          molecule test
+          molecule_command: test
         env:
+          ANSIBLE_FORCE_COLOR: '1'
           PY_COLORS: "1"
-          ANSIBLE_FORCE_COLOR: "1"
+#      - name: Set up Python 3.8.9
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: 3.8.9
+#      - name: Install dependencies
+#        run: pip install -r requirements.txt
+#
+#      - name: Test with molecule
+#        run: |
+#          cd ansible/roles/setup_docker
+#          molecule test
+#        env:
+#          PY_COLORS: "1"
+#          ANSIBLE_FORCE_COLOR: "1"
