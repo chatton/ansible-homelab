@@ -7,12 +7,21 @@ on:
       - "master"
 
 jobs:
-  run-tests:
+  homelab-test:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout Repository"
-        uses: actions/checkout@v3
-      - name: "Build and Run Test Image"
-        run : |
-          docker build . -t test
-          docker run test
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.9
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test with molecule
+        run: |
+          cd ansible/roles/setup_docker
+          molecule test
+        env:
+          PY_COLORS: "1"
+          ANSIBLE_FORCE_COLOR: "1"
