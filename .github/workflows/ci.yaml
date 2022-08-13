@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: "pull image"
-        run: docker pull geerlingguy/docker-debian10-ansible:latest
-      - name: Molecule
-        uses: gofrolist/molecule-action@v2
-        with:
-          molecule_command: test
-          molecule_working_dir: ansible/roles/setup_docker
-        env:
-          ANSIBLE_FORCE_COLOR: '1'
-          PY_COLORS: "1"
+#      - name: "pull image"
+#        run: docker pull geerlingguy/docker-debian10-ansible:latest
+#      - name: Molecule
+#        uses: gofrolist/molecule-action@v2
+#        with:
+#          molecule_command: test
+#          molecule_working_dir: ansible/roles/setup_docker
+#        env:
+#          ANSIBLE_FORCE_COLOR: '1'
+#          PY_COLORS: "1"
