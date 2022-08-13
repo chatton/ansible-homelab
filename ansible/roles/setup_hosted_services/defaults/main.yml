@@ -1,0 +1,10 @@
+---
+docker_compose_directory: /etc/docker-compose
+services:
+  - name: mealie
+  - name: linkding
+  - name: overseerr
+  - name: nextcloud
+
+docker_networks:
+  - nextcloud_net

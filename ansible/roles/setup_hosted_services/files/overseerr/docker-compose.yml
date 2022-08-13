@@ -1,0 +1,18 @@
+version: "3"
+services:
+  overseerr:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    ports:
+      - 5055:5055
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - "config:/app/config"
+    restart: unless-stopped
+volumes:
+  config:
