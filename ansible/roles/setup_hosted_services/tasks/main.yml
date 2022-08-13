@@ -19,6 +19,31 @@
   ansible.builtin.pip:
     name: boto3
 
+- name: Find relevant volume(s) in S3
+  amazon.aws.aws_s3:
+    bucket: "{{aws_s3.bucket}}"
+    mode: list
+    region: "{{aws_s3.region}}"
+    s3_url: "{{aws_s3.s3_url}}"
+    prefix: "mealie"
+    aws_access_key: "{{aws_s3.aws_access_key}}"
+    aws_secret_key: "{{aws_s3_secrets.aws_secret_key}}"
+  register: s3_list_output
+
+- debug: msg="{{s3_list_output.s3_keys}}"
+
+- name: Download volume(s) from S3
+  amazon.aws.aws_s3:
+    bucket: "{{aws_s3.bucket}}"
+    object: "{{item}}"
+    dest: "/tmp/{{item}}"
+    mode: get
+    region: "{{aws_s3.region}}"
+    s3_url: "{{aws_s3.s3_url}}"
+    aws_access_key: "{{aws_s3.aws_access_key}}"
+    aws_secret_key: "{{aws_s3_secrets.aws_secret_key}}"
+  with_items: "{{s3_list_output.s3_keys}}"
+
 - name: Create required docker networks
   docker_network:
     name: "{{item}}"
