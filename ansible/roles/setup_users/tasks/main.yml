@@ -1,4 +1,3 @@
----
 # https://stackoverflow.com/questions/37333305/ansible-create-a-user-with-sudo-privileges
 - name: Install Sudo
   apt:
