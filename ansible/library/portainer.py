@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# Copyright: (c) 2018, Terry Jones <terry.jones@example.org>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
@@ -105,6 +103,7 @@ def _query_params_to_string(params):
     for k, v in params.items():
         s += f"&{k}={v}"
     return s
+
 
 class PortainerClient:
     def __init__(self, creds):
@@ -251,17 +250,11 @@ def run_module():
     # supports check mode
     module = AnsibleModule(
         argument_spec=module_args,
-        supports_check_mode=True
+        supports_check_mode=False
     )
 
     client = PortainerClient(creds=_extract_creds(module))
     state_fns[module.params["state"]](client, module)
-
-    # # if the user is working with this module in only check mode we do not
-    # # want to make any changes to the environment, just return the current
-    # # state with no modifications
-    # if module.check_mode:
-    #     module.exit_json(**result)
 
 
 def main():
