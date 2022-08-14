@@ -113,8 +113,11 @@ class PortainerClient:
             "Authorization": f"Bearer {self.token}"
         }
 
-    def get(self, endpoint):
+    def get(self, endpoint, query_params=None):
         url = f"{self.base_url}/api/{endpoint}"
+        if query_params:
+            url = url + _query_params_to_string(query_params)
+
         res = requests.get(url, headers=self.headers)
         res.raise_for_status()
         return res.json()
@@ -143,10 +146,8 @@ class PortainerClient:
         return res.json()
 
 
-def _create_stack(client, module):
+def _create_stack(client, module, file_contents):
     target_stack_name = module.params["stack_name"]
-    with open(module.params["docker_compose_file_path"]) as f:
-        file_contents = f.read()
     body = {
         "env": [],
         "name": target_stack_name,
@@ -182,6 +183,9 @@ def handle_state_present(client, module):
     stacks = client.get("stacks")
     result["stacks"] = stacks
 
+    with open(module.params["docker_compose_file_path"]) as f:
+        file_contents = f.read()
+
     target_stack_name = module.params["stack_name"]
     for stack in stacks:
         if stack["Name"] == target_stack_name:
@@ -190,15 +194,24 @@ def handle_state_present(client, module):
             break
 
     if not already_exists:
-        stack = _create_stack(client, module)
+        stack = _create_stack(client, module, file_contents)
         result["changed"] = True
         result["stack_id"] = stack["Id"]
         module.exit_json(**result)
         return
 
-    # TODO: is it possible to know if we've changed the stack?
-    # the stack exists, we just want to update it.
-    _update_stack(client, module, result["stack_id"])
+    stack_id = result["stack_id"]
+    current_file_contents_resp = client.get(f"stacks/{stack_id}/file", query_params={
+        "endpointId": 2
+    })
+
+    result["are_equal"] = current_file_contents_resp["StackFileContent"] == file_contents
+    if result["are_equal"]:
+        module.exit_json(**result)
+        return
+
+    # the stack exists and we have a new config.
+    _update_stack(client, module, stack_id)
     result["changed"] = True
     module.exit_json(**result)
 

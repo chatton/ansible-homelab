@@ -11,6 +11,14 @@ services:
     volumes: ["overseerr_config"]
   - name: nextcloud
     volumes: ["nextcloud_data"]
+  - name: dashboards
+    volumes: []
+  - name: nginx-proxy-manager
+    volumes: ["nginx-proxy-manager_data"]
+  - name: plex
+    volumes: ["plex_config", "plex_tautulli_config"]
+  - name: uptime-kuma
+    volumes: ["uptime-kuma_data"]
 
 docker_networks:
   - nextcloud_net
@@ -20,3 +28,13 @@ aws_s3:
   aws_access_key: "nyNMQ3fRMSV0bA1xw5uV"
   region: "us-east-1"
   bucket: "backups"
+
+# any files to be copied which are required in the docker compose files
+# as volume mounts.
+config_files:
+  - destination_directory: /etc/config/dashy
+    destination_file: dashy-config.yml
+    source_file: dashboards/dashy-config.yml
+  - destination_directory: /etc/config/olivetin
+    destination_file:  config.yml
+    source_file: olivetin/config.yml

@@ -1,0 +1,42 @@
+---
+version: "3"
+services:
+  plex:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    ports:
+      - 32400:32400
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - config:/config
+      - /mnt/hdds/media/tv:/tv
+      - /mnt/hdds/media/movies:/movies
+      - /mnt/ssd0/transcoding:/transcoding
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+
+  tautulli:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - tautulli_config:/config
+    ports:
+      - 8182:8181
+    restart: unless-stopped
+
+volumes:
+  config:
+  tautulli_config:

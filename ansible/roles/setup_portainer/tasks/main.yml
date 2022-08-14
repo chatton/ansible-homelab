@@ -1,14 +1,14 @@
-- name: Create a directory if it does not exist
+- name: Portainer | Create directory if it does not exist
   ansible.builtin.file:
     path: "{{docker_compose_directory}}"
     state: directory
     mode: '0755'
 
-- name: Copy Portainer Docker Compose File
+- name: Portainer | Copy docker compose file
   copy:
     src: docker-compose.yml
     dest: "{{docker_compose_directory}}/docker-compose.yml"
 
-- name: Create and Portainer
+- name: Portainer | Docker compose up
   community.docker.docker_compose:
     project_src: "{{docker_compose_directory}}"
