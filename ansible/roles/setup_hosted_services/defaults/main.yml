@@ -15,6 +15,10 @@ services:
     volumes: []
   - name: nginx-proxy-manager
     volumes: ["nginx-proxy-manager_data"]
+  - name: plex
+    volumes: ["plex_config", "plex_tautulli_config"]
+  - name: uptime-kuma
+    volumes: ["uptime-kuma_data"]
 
 docker_networks:
   - nextcloud_net
