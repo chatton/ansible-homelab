@@ -234,9 +234,9 @@ def run_module():
         docker_compose_file_path=dict(type='str', required=True),
         env_file_path=dict(type='str', required=False),
         username=dict(type='str', default='admin'),
-        password=dict(type='str', required=True),
+        password=dict(type='str', required=True, no_log=True),
         base_url=dict(type='str', default="http://localhost:9000"),
-        state=dict(type='str', default="present")
+        state=dict(type='str', default="present", choices=['present', 'absent'])
     )
 
     state_fns = {
