@@ -11,6 +11,12 @@
     dest: "{{docker_compose_directory}}/{{item.name}}/docker-compose.yml"
   with_items: "{{services}}"
 
+- name: Docker Compose | Copy Stack Env File
+  copy:
+    src: "{{item.name}}/stack.env"
+    dest: "{{docker_compose_directory}}/{{item.name}}/stack.env"
+  with_items: "{{services}}"
+
 - name: Config Files | Create a directory if it does not exist
   file:
     path: "{{item.destination_directory}}"
@@ -77,5 +83,6 @@
     username: admin
     password: "{{portainer.password}}"
     docker_compose_file_path: "{{docker_compose_directory}}/{{ item.name }}/docker-compose.yml"
+    env_file_path: "{{docker_compose_directory}}/{{ item.name }}/stack.env"
     stack_name: "{{ item.name }}"
   with_items: "{{services}}"

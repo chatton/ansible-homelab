@@ -19,6 +19,14 @@ services:
     volumes: ["plex_config", "plex_tautulli_config"]
   - name: uptime-kuma
     volumes: ["uptime-kuma_data"]
+  - name: vpn-stack
+    volumes: ["vpn-stack_qbittorrent_config", "vpn-stack_radarr_config", "vpn-stack_sonarr_config", "vpn-stack_jackett_config"]
+  - name: docker-volume-backup
+    volumes: []
+  - name: mariadb
+    volumes: ["mariadb_config","mariadb_data"]
+  - name: photoprism
+    volumes: []
 
 docker_networks:
   - nextcloud_net

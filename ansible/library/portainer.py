@@ -105,6 +105,20 @@ def _query_params_to_string(params):
     return s
 
 
+def _load_envs_from_file(filepath):
+    envs = []
+    with open(filepath) as f:
+        file_contents = f.read()
+    lines = file_contents.splitlines()
+    for line in lines:
+        name, value = line.split("=")
+        envs.append({
+            "name": name,
+            "value": value
+        })
+    return envs
+
+
 class PortainerClient:
     def __init__(self, creds):
         self.base_url = creds["base_url"]
@@ -146,10 +160,12 @@ class PortainerClient:
         return res.json()
 
 
-def _create_stack(client, module, file_contents):
+def _create_stack(client, module, file_contents, envs=None):
+    if not envs:
+        envs = []
     target_stack_name = module.params["stack_name"]
     body = {
-        "env": [],
+        "env": envs,
         "name": target_stack_name,
         "stackFileContent": file_contents,
     }
@@ -162,12 +178,14 @@ def _create_stack(client, module, file_contents):
     return client.post("stacks", body=body, query_params=query_params)
 
 
-def _update_stack(client, module, stack_id):
+def _update_stack(client, module, stack_id, envs=None):
+    if not envs:
+        envs = []
     target_stack_name = module.params["stack_name"]
     with open(module.params["docker_compose_file_path"]) as f:
         file_contents = f.read()
     return client.put(f"stacks/{stack_id}?&endpointId=2", body={
-        "env": [],
+        "env": envs,
         "name": target_stack_name,
         "stackFileContent": file_contents,
     })
@@ -186,6 +204,10 @@ def handle_state_present(client, module):
     with open(module.params["docker_compose_file_path"]) as f:
         file_contents = f.read()
 
+    envs = []
+    if "env_file_path" in module.params:
+        envs = _load_envs_from_file(module.params["env_file_path"])
+
     target_stack_name = module.params["stack_name"]
     for stack in stacks:
         if stack["Name"] == target_stack_name:
@@ -194,7 +216,7 @@ def handle_state_present(client, module):
             break
 
     if not already_exists:
-        stack = _create_stack(client, module, file_contents)
+        stack = _create_stack(client, module, file_contents, envs=envs)
         result["changed"] = True
         result["stack_id"] = stack["Id"]
         module.exit_json(**result)
@@ -211,7 +233,7 @@ def handle_state_present(client, module):
         return
 
     # the stack exists and we have a new config.
-    _update_stack(client, module, stack_id)
+    _update_stack(client, module, stack_id, envs=envs)
     result["changed"] = True
     module.exit_json(**result)
 
