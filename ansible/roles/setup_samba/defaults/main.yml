@@ -1,0 +1,7 @@
+---
+samba_group: smbgroup
+samba_user: smbuser
+shares:
+  - /share
+  - /share/public_files
+  - /share/private_files

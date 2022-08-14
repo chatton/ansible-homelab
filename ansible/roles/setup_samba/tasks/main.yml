@@ -1,0 +1,47 @@
+---
+- name: Install samba packages using apt
+  apt:
+    name:
+      - samba
+    state: present
+    update_cache: yes
+
+- name: Ensure samba group exists
+  ansible.builtin.group:
+    name:  "{{samba_group}}"
+    state: present
+    system: true
+  notify:
+    - restart-samba
+
+- name: Ensure samba user
+  ansible.builtin.user:
+    name: "{{samba_user}}"
+    comment: Samba user
+    group: "{{samba_group}}"
+    shell: /bin/false
+    create_home: false
+  notify:
+    - restart-samba
+
+- name: Ensure Share directories
+  ansible.builtin.file:
+    path: "{{item}}"
+    recurse: yes
+    state: directory
+    owner: "{{samba_user}}"
+    group: "{{samba_group}}"
+    mode: 'u+rw,g+rw'
+  with_items: "{{shares}}"
+  notify:
+    - restart-samba
+
+- name: Copy smb conf files
+  copy:
+    src: "{{item}}"
+    dest: "/etc/samba/{{item}}"
+  with_items:
+    - smb.conf
+    - shares.conf
+  notify:
+    - restart-samba

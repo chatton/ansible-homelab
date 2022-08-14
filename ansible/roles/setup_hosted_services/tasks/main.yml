@@ -1,3 +1,12 @@
+- name: Docker | Pull ubuntu
+  docker_image:
+    name: ubuntu
+    source: pull
+- name: Docker | Pull busybox
+  docker_image:
+    name: busybox
+    source: pull
+
 - name: Docker Compose | Create a directory if it does not exist
   file:
     path: "{{docker_compose_directory}}/{{item.name}}"
