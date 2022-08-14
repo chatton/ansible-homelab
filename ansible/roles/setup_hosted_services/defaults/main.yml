@@ -2,31 +2,18 @@
 docker_compose_directory: /etc/docker-compose
 services:
   - name: gitea
-    volumes: ["gitea_data"]
   - name: mealie
-    volumes: ["mealie_data"]
   - name: linkding
-    volumes: ["linkding_data"]
   - name: overseerr
-    volumes: ["overseerr_config"]
   - name: nextcloud
-    volumes: ["nextcloud_data"]
   - name: dashboards
-    volumes: []
   - name: nginx-proxy-manager
-    volumes: ["nginx-proxy-manager_data"]
   - name: plex
-    volumes: ["plex_config", "plex_tautulli_config"]
   - name: uptime-kuma
-    volumes: ["uptime-kuma_data"]
   - name: vpn-stack
-    volumes: ["vpn-stack_qbittorrent_config", "vpn-stack_radarr_config", "vpn-stack_sonarr_config", "vpn-stack_jackett_config"]
   - name: docker-volume-backup
-    volumes: []
   - name: mariadb
-    volumes: ["mariadb_config","mariadb_data"]
   - name: photoprism
-    volumes: []
 
 docker_networks:
   - nextcloud_net
