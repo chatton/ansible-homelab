@@ -1,8 +1,6 @@
 version: '3.5'
 services:
   dash-dot:
-    labels:
-      ie.cianhatton.backup.enabled: "true"
     container_name: dashdot
     image: mauricenino/dashdot:latest
     restart: unless-stopped
@@ -13,9 +11,6 @@ services:
       - /:/mnt/host:ro
 
   dashy:
-    labels:
-      ie.cianhatton.backup.enabled: "true"
-
     container_name: dashy
     image: lissy93/dashy
     volumes:
