@@ -11,6 +11,8 @@ services:
     volumes: ["overseerr_config"]
   - name: nextcloud
     volumes: ["nextcloud_data"]
+  - name: dashboards
+    volumes: []
 
 docker_networks:
   - nextcloud_net
@@ -20,3 +22,7 @@ aws_s3:
   aws_access_key: "nyNMQ3fRMSV0bA1xw5uV"
   region: "us-east-1"
   bucket: "backups"
+
+dashy:
+  config_directory: /etc/config/dashy
+  config_file: dashy-config.yml

@@ -1,0 +1,55 @@
+version: '3.5'
+services:
+  dash-dot:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+    container_name: dashdot
+    image: mauricenino/dashdot:latest
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - '3010:3001'
+    volumes:
+      - /:/mnt/host:ro
+
+  dashy:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+
+    container_name: dashy
+    image: lissy93/dashy
+    volumes:
+      - /etc/config/dashy/dashy-config.yml:/app/public/conf.yml
+
+    ports:
+      - 4000:80
+
+    environment:
+      - NODE_ENV=production
+      - UID=1000
+      - GID=1000
+
+    # Specify restart policy
+    restart: unless-stopped
+
+    # Configure healthchecks
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    extra_hosts:
+      - "qnap:192.168.178.42"
+
+  glances:
+    image: nicolargo/glances:latest-alpine
+    restart: always
+    pid: host
+    ports:
+      - "8083:61208"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "GLANCES_OPT=-w"

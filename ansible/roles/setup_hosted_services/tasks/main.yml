@@ -11,6 +11,17 @@
     dest: "{{docker_compose_directory}}/{{item.name}}/docker-compose.yml"
   with_items: "{{services}}"
 
+- name: Dashy | Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{dashy.config_directory}}"
+    state: directory
+    mode: '0755'
+
+- name: Dashy | Copy config file
+  copy:
+    src: "dashboards/dashy-config.yml"
+    dest: "{{dashy.config_directory}}/{{dashy.config_file}}"
+
 - name: Install python dependencies (requests)
   ansible.builtin.pip:
     name: requests
