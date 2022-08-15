@@ -12,7 +12,7 @@
     state: present
     system: true
   notify:
-    - restart-samba
+    - reload-samba
 
 - name: Ensure samba user
   ansible.builtin.user:
@@ -22,7 +22,14 @@
     shell: /bin/false
     create_home: false
   notify:
-    - restart-samba
+    - reload-samba
+
+- name: Add the User(s) to Samba group
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ samba_group }}"
+    append: yes
+  with_items: "{{users}}"
 
 - name: Ensure Share directories
   ansible.builtin.file:
@@ -34,7 +41,7 @@
     mode: 'u+rw,g+rw'
   with_items: "{{shares}}"
   notify:
-    - restart-samba
+    - reload-samba
 
 - name: Copy smb conf files
   copy:
@@ -44,4 +51,4 @@
     - smb.conf
     - shares.conf
   notify:
-    - restart-samba
+    - reload-samba
