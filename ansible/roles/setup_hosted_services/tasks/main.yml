@@ -1,11 +1,10 @@
-- name: Docker | Pull ubuntu
+- name: Docker | Pull images
   docker_image:
-    name: ubuntu
+    name: "{{item}}"
     source: pull
-- name: Docker | Pull busybox
-  docker_image:
-    name: busybox
-    source: pull
+  with_items:
+    - ubuntu
+    - busybox
 
 - name: Docker Compose | Create a directory if it does not exist
   file:
@@ -26,21 +25,32 @@
     dest: "{{docker_compose_directory}}/{{item.name}}/stack.env"
   with_items: "{{services}}"
 
+
 - name: Config Files | Create a directory if it does not exist
   file:
-    path: "{{item.destination_directory}}"
+    path: "{{item}}"
     state: directory
     mode: '0755'
-  with_items: "{{config_files}}"
+  with_items:
+    - "{{dashy.destination_dir}}"
+    - "{{olivetin.destination_dir}}"
 
-- name: Config Files | Copy config file
+- name: Dashy | Config Files
   copy:
-    src: "{{item.source_file}}"
-    dest: "{{item.destination_directory}}/{{item.destination_file}}"
-  with_items: "{{config_files}}"
+    src: "{{dashy.source_file}}"
+    dest: "{{dashy.destination_dir}}/{{dashy.destination_file}}"
+  notify:
+    - restart-dashy
+
+- name: Olivetin | Config Files
+  copy:
+    src: "{{olivetin.source_file}}"
+    dest: "{{olivetin.destination_dir}}/{{olivetin.destination_file}}"
+  notify:
+    - restart-olivetin
 
 - name: Install python dependencies (requests)
-  ansible.builtin.pip:
+  pip:
     name: requests
 
 - name: Docker | Find docker volumes

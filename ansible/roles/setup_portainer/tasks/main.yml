@@ -9,12 +9,55 @@
     src: docker-compose.yml
     dest: "{{docker_compose_directory}}/docker-compose.yml"
 
-# TODO: Look for portainer_data
+- name: Portainer | Check if volume exists
+  shell: docker volume ls -f name=portainer_portainer_data --format '{{ '{{' }}  .Name {{ '}}' }}'
+  register: portainer_volume
+  changed_when: False
+
+- name: Portainer | Pull images
+  docker_image:
+    name: "{{item}}"
+    source: pull
+  with_items:
+    - ubuntu
+    - busybox
+
+- name: Docker Volume Backup | Restore Portainer volume from S3
+  when: (portainer_volume.stdout_lines | length) == 0
+  docker_container:
+    command: "restore-volume --s3 --volume portainer_portainer_data"
+    image: "ghcr.io/chatton/docker-volume-backup:v0.3.0"
+    name: "s3-restore-portainer"
+    cleanup: true # delete container after it's done.
+    state: started # container should execute.
+    detach: no # task fails if container exits.
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp # temp s3 archive goes here
+    env:
+      AWS_ACCESS_KEY_ID: "{{aws_s3.aws_access_key}}"
+      AWS_SECRET_ACCESS_KEY: "{{aws_s3_secrets.aws_secret_key}}"
+      AWS_DEFAULT_REGION: "{{aws_s3.region}}"
+      AWS_BUCKET: "{{aws_s3.bucket}}"
+      AWS_ENDPOINT: "{{aws_s3.s3_url}}"
 
 
 - name: Portainer | Docker compose up
   community.docker.docker_compose:
     project_src: "{{docker_compose_directory}}"
 
-# TODO: if there was no portainer_data, register admin user
-# http POST <portainer url>/api/users/admin/init Username="<admin username>" Password="<adminpassword>"
+# Don't really need this as long as there is an S3 backup.
+#- name: Portainer | Register Admin User
+#  when: (portainer_volume.stdout_lines | length) == 0
+#  uri:
+#    url: http://localhost:9000/api/users/admin/init
+#    method: POST
+#    body:
+#      Username: admin
+#      Password: "{{portainer.password}}"
+#    status_code: 200
+#    body_format: json
+#  register: result
+#  until: result.status == 200
+#  retries: 60
+#  delay: 1
