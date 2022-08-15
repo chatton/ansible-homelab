@@ -1,0 +1,10 @@
+---
+- name: restart-samba
+  ansible.builtin.service:
+    name: smbd
+    state: restarted
+
+- name: reload-samba
+  ansible.builtin.service:
+    name: smbd
+    state: reloaded

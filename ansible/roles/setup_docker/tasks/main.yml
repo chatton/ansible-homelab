@@ -6,6 +6,7 @@
       - curl
       - gnupg2
       - lsb-release
+      - pip
     state: present
     update_cache: yes
 

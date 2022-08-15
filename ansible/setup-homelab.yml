@@ -4,6 +4,7 @@
   vars_files:
     - ../secrets.yml
   roles:
+    - role: 'roles/setup_samba'
     - role: 'roles/setup_users'
     - role: 'roles/setup_docker'
     - role: 'roles/setup_portainer'

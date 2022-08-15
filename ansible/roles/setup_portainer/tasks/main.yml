@@ -9,6 +9,12 @@
     src: docker-compose.yml
     dest: "{{docker_compose_directory}}/docker-compose.yml"
 
+# TODO: Look for portainer_data
+
+
 - name: Portainer | Docker compose up
   community.docker.docker_compose:
     project_src: "{{docker_compose_directory}}"
+
+# TODO: if there was no portainer_data, register admin user
+# http POST <portainer url>/api/users/admin/init Username="<admin username>" Password="<adminpassword>"
