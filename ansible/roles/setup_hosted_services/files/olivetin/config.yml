@@ -13,6 +13,10 @@ actions:
     icon: restart
     shell: docker restart dashy
     timeout: 30
+  - title: Restart Dashy 2
+    icon: restart
+    shell: docker restart dashy
+    timeout: 30
   - title: Restart Olivetin
     icon: restart
     shell: docker restart olivetin
