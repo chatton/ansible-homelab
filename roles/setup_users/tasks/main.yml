@@ -24,3 +24,9 @@
     comment: "{{homelab_user}} user"
     uid: 1000
     group: "{{homelab_group}}"
+
+- name: Set authorized key
+  authorized_key:
+    user: "{{homelab_user}}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
