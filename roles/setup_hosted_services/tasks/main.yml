@@ -1,3 +1,4 @@
+---
 - name: Include all defaults
   include_vars: defaults/main-vault.yml
 
