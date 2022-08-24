@@ -1,5 +1,4 @@
 .idea
-secrets.yml
 venv
 stack.env
 .vault-pass

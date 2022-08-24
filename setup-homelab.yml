@@ -2,7 +2,7 @@
 - hosts: servers
   become: true
   vars_files:
-    - secrets.yml
+    - secrets-vault.yml
   roles:
     - role: 'roles/setup_users'
     - role: 'roles/setup_samba'
