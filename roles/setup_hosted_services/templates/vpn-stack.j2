@@ -1,14 +1,15 @@
+---
 version: "3"
 services:
   surfshark:
     image: ilteoood/docker-surfshark
     container_name: surfshark
     environment:
-      - SURFSHARK_USER=${SURFSHARK_USER}
-      - SURFSHARK_PASSWORD=${SURFSHARK_PASSWORD}
+      - SURFSHARK_USER={{ vpn.surfshark_username }}
+      - SURFSHARK_PASSWORD={{ vpn.surfshark_password }}
       # must specify LAN_NETWORK otherwise you will not be able
       # to access ports which are exposed here.
-      - LAN_NETWORK=${LAN_NETWORK}
+      - LAN_NETWORK={{ vpn.lan_network }}
     cap_add:
       - NET_ADMIN
     devices:

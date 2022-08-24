@@ -1,3 +1,4 @@
+---
 version: '3.5'
 services:
   dash-dot:
@@ -35,8 +36,7 @@ services:
       retries: 3
       start_period: 40s
 
-    extra_hosts:
-      - "qnap:192.168.178.42"
+    extra_hosts: {{ extra_hosts }}
 
   glances:
     image: nicolargo/glances:latest-alpine
