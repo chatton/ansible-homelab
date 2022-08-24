@@ -13,7 +13,7 @@ services:
       - data:/var/lib/mysql
       - config:/etc/mysql/conf.d
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD={{ mariadb.mysql_root_password }}
 
   adminer:
     restart: unless-stopped

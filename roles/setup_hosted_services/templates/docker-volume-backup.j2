@@ -16,14 +16,13 @@ services:
       - --modes
       - "filesystem,s3"
     environment:
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
-      AWS_BUCKET: ${AWS_BUCKET}
-      AWS_ENDPOINT: ${AWS_ENDPOINT}
+      AWS_ACCESS_KEY_ID: {{ docker_volume_backup.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ docker_volume_backup.aws_secret_access_key }}
+      AWS_DEFAULT_REGION: {{ docker_volume_backup.aws_default_region }}
+      AWS_BUCKET: {{ docker_volume_backup.aws_bucket }}
+      AWS_ENDPOINT: {{ docker_volume_backup.aws_endpoint }}
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/hdds/backups:/backups
       - /tmp:/tmp
-

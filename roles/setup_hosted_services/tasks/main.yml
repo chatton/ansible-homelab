@@ -1,3 +1,6 @@
+- name: Include all defaults
+  include_vars: defaults/main-vault.yml
+
 - name: Docker | Pull images
   docker_image:
     name: "{{item}}"
@@ -13,16 +16,10 @@
     mode: '0755'
   with_items: "{{services}}"
 
-- name: Docker Compose | Copy Docker Compose Files
-  copy:
-    src: "{{item.name}}/docker-compose.yml"
+- name: Docker Compose | Template Docker Compose Files
+  template:
+    src: "{{item.name}}.j2"
     dest: "{{docker_compose_directory}}/{{item.name}}/docker-compose.yml"
-  with_items: "{{services}}"
-
-- name: Docker Compose | Copy Stack Env File
-  copy:
-    src: "{{item.name}}/stack.env"
-    dest: "{{docker_compose_directory}}/{{item.name}}/stack.env"
   with_items: "{{services}}"
 
 

@@ -1,16 +1,16 @@
 ---
 docker_compose_directory: /etc/docker-compose
 services:
-  - name: gitea
-  - name: mealie
-  - name: linkding
-  - name: overseerr
-  - name: nextcloud
-  - name: dashboards
-  - name: nginx-proxy-manager
-  - name: plex
-  - name: uptime-kuma
-  - name: vpn-stack
+#  - name: gitea
+#  - name: mealie
+#  - name: linkding
+#  - name: overseerr
+#  - name: nextcloud
+#  - name: dashboards
+#  - name: nginx-proxy-manager
+#  - name: plex
+#  - name: uptime-kuma
+#  - name: vpn-stack
   - name: docker-volume-backup
   - name: mariadb
   - name: photoprism
