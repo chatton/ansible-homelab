@@ -31,7 +31,8 @@ def main():
             missing_volumes.append(volume_name)
 
     for mv in missing_volumes:
-        print(mv)
+        if mv:
+            print(mv)
 
 
 if __name__ == "__main__":

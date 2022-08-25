@@ -1,0 +1,3 @@
+---
+# https://www.linode.com/docs/guides/deploy-linodes-using-ansible/#plugin-parameters
+plugin: linode

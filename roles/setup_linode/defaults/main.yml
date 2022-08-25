@@ -1,0 +1,5 @@
+---
+# defaults file for setup_linode
+ssh_keys:
+  - /Users/chatton/.ssh/id_rsa.pub
+label: simple-linode
