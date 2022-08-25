@@ -14,3 +14,15 @@
     group: servers
     state: present
   register: my_linode
+
+- name: Instance Details
+  debug:
+    msg: "{{my_linode}}"
+
+- name: Template Hosts File
+  vars:
+    linode_user: root
+    linode_ip: "{{my_linode.instance.ipv4[0]}}"
+  template:
+    src: hosts.j2
+    dest: linodehosts.ini
