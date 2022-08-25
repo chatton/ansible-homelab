@@ -1,0 +1,29 @@
+---
+# https://app.idrivee2.com/region/IE/buckets/backups/object-storage
+version: "3"
+services:
+  docker-volume-backup:
+    container_name: docker-volume-backup
+    restart: always
+    image: ghcr.io/chatton/docker-volume-backup:v0.3.0
+    command:
+      - periodic-backups
+      - --cron
+      - "0 3 * * *"
+      - --host-path
+      - /mnt/hdds/backups/
+      - --retention-days
+      - "7"
+      - --modes
+      - "filesystem,s3"
+    environment:
+      AWS_ACCESS_KEY_ID: {{ docker_volume_backup.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ docker_volume_backup.aws_secret_access_key }}
+      AWS_DEFAULT_REGION: {{ docker_volume_backup.aws_default_region }}
+      AWS_BUCKET: {{ docker_volume_backup.aws_bucket }}
+      AWS_ENDPOINT: {{ docker_volume_backup.aws_endpoint }}
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - {{qnap.backups_dir}}:/backups
+      - /tmp:/tmp

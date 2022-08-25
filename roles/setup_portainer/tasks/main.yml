@@ -36,7 +36,7 @@
       - /tmp:/tmp # temp s3 archive goes here
     env:
       AWS_ACCESS_KEY_ID: "{{aws_s3.aws_access_key}}"
-      AWS_SECRET_ACCESS_KEY: "{{aws_s3_secrets.aws_secret_key}}"
+      AWS_SECRET_ACCESS_KEY: "{{aws_s3.aws_secret_key}}"
       AWS_DEFAULT_REGION: "{{aws_s3.region}}"
       AWS_BUCKET: "{{aws_s3.bucket}}"
       AWS_ENDPOINT: "{{aws_s3.s3_url}}"
