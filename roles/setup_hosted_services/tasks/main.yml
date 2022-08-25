@@ -12,7 +12,7 @@
 
 - name: Docker Compose | Create a directory if it does not exist
   file:
-    path: "{{docker_compose_directory}}/{{item.name}}"
+    path: "{{qnap.docker_compose_directory}}/{{item.name}}"
     state: directory
     mode: '0755'
   with_items: "{{services}}"
@@ -20,7 +20,7 @@
 - name: Docker Compose | Template Docker Compose Files
   template:
     src: "{{item.name}}.j2"
-    dest: "{{docker_compose_directory}}/{{item.name}}/docker-compose.yml"
+    dest: "{{qnap.docker_compose_directory}}/{{item.name}}/docker-compose.yml"
   with_items: "{{services}}"
 
 
@@ -64,7 +64,7 @@
   environment:
     EXISTING_VOLUMES: "{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
     SERVICES: "{{ services }}"
-    DOCKER_COMPOSE_DIR: "{{docker_compose_directory}}"
+    DOCKER_COMPOSE_DIR: "{{qnap.docker_compose_directory}}"
   args:
     executable: python3
   register: python_output
@@ -100,7 +100,7 @@
   portainer:
     username: admin
     password: "{{portainer.password}}"
-    docker_compose_file_path: "{{docker_compose_directory}}/{{ item.name }}/docker-compose.yml"
-    env_file_path: "{{docker_compose_directory}}/{{ item.name }}/stack.env"
+    docker_compose_file_path: "{{qnap.docker_compose_directory}}/{{ item.name }}/docker-compose.yml"
+    env_file_path: "{{qnap.docker_compose_directory}}/{{ item.name }}/stack.env"
     stack_name: "{{ item.name }}"
   with_items: "{{services}}"

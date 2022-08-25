@@ -46,8 +46,8 @@ services:
       - TZ=Europe/London
       - WEBUI_PORT=15000
     volumes:
-      - "qbittorrent_config:/config"
-      - "/mnt/ssd0/downloads:/downloads"
+      - qbittorrent_config:/config
+      - {{ qnap.downloads_dir }}:/downloads
     restart: unless-stopped
 
   radarr:
@@ -63,9 +63,9 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - "radarr_config:/config"
-      - "/mnt/hdds/media/movies:/movies"
-      - "/mnt/ssd0/downloads:/downloads"
+      - radarr_config:/config
+      - {{ qnap.movies_dir }}:/movies
+      - {{ qnap.downloads_dir }}:/downloads
     restart: unless-stopped
 
   sonarr:
@@ -81,9 +81,9 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - "sonarr_config:/config"
-      - "/mnt/hdds/media/tv:/tv"
-      - "/mnt/ssd0/downloads:/downloads"
+      - sonarr_config:/config
+      - {{ qnap.tv_dir }}:/tv
+      - {{ qnap.downloads_dir }}:/downloads
     restart: unless-stopped
 
   jackett:
@@ -100,8 +100,8 @@ services:
       - TZ=Europe/London
       - AUTO_UPDATE=true
     volumes:
-      - "jackett_config:/config"
-      - "/mnt/ssd0/downloads:/downloads"
+      - jackett_config:/config
+      - {{ qnap.downloads_dir }}:/downloads
     restart: unless-stopped
 
 volumes:

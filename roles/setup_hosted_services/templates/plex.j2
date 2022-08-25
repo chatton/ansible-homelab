@@ -15,9 +15,9 @@ services:
       - VERSION=docker
     volumes:
       - config:/config
-      - /mnt/hdds/media/tv:/tv
-      - /mnt/hdds/media/movies:/movies
-      - /mnt/ssd0/transcoding:/transcoding
+      - {{ qnap.tv_dir }}:/tv
+      - {{ qnap.movies_dir }}:/movies
+      - {{ qnap.transcoding_dir }}:/transcoding
     restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri

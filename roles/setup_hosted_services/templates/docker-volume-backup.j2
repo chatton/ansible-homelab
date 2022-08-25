@@ -25,5 +25,5 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /mnt/hdds/backups:/backups
+      - {{qnap.backups_dir}}:/backups
       - /tmp:/tmp

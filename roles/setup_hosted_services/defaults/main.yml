@@ -1,5 +1,4 @@
 ---
-docker_compose_directory: /etc/docker-compose
 services:
   - name: gitea
   - name: mealie
@@ -15,14 +14,31 @@ services:
   - name: mariadb
   - name: photoprism
 
+# any additional docker networks that should be created
 docker_networks:
   - mariadb_net
 
+qnap:
+  # path on qnap where downloads go
+  downloads_dir: /mnt/ssd0/downloads
+  # path on qnap where plex transcoding happens
+  transcoding_dir: /mnt/ssd0/transcoding
+  # path on qnap where movies are stored
+  movies_dir: /mnt/test/media/movies
+  # path on qnap where tv shows are stored
+  tv_dir: /mnt/test/media/tv
+  # path on qnap where docker compose files are stored
+  docker_compose_directory: /etc/docker-compose
+  # path on qnap where backups are stored
+  backups_dir: /mnt/test/backups
+
+# dashy related config
 dashy:
   destination_dir: /etc/config/dashy
   destination_file: dashy-config.yml
   source_file: dashboards/dashy-config.yml
 
+# olivetin related config
 olivetin:
   destination_dir: /etc/config/olivetin
   destination_file: config.yml

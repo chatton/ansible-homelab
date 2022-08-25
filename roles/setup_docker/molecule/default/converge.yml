@@ -1,7 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: "Include chatton.setup_docker"
-      include_role:
-        name: "chatton.setup_docker"
