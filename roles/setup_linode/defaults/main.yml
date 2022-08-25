@@ -1,5 +1,10 @@
 ---
 # defaults file for setup_linode
 ssh_keys:
-  - /Users/chatton/.ssh/id_rsa.pub
+  - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 label: simple-linode
+
+# hosts that are added to the generated .ini file.
+hosts:
+- user: root
+  ip: "{{my_linode.instance.ipv4[0]}}"
