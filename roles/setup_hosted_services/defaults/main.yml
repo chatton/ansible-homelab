@@ -32,6 +32,8 @@ qnap:
   # path on qnap where backups are stored
   backups_dir: /mnt/test/backups
 
+  photoprism_dir: /mnt/test/photoprism
+
 # dashy related config
 dashy:
   destination_dir: /etc/config/dashy
