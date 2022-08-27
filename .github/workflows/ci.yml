@@ -45,3 +45,8 @@ jobs:
           ansible-playbook setup-linode.yml
         env:
           ANSIBLE_FORCE_COLOR: '1'
+      - name: Setup Home Lab
+        run: |
+          ansible-playbook setup-homelab.yml
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
