@@ -15,6 +15,7 @@ jobs:
       - name: Create SSH pub
         run: |
           echo "creating ~/.ssh/id_rsa.pub file"
+          mkdir -p ~/.ssh/
           echo "$SSH_PUB" > ~/.ssh/id_rsa.pub
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
