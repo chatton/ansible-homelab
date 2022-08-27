@@ -60,3 +60,4 @@ docker_networks:
 
 use_portainer: true
 use_docker_compose: false
+restore_from_s3: true

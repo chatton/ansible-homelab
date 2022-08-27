@@ -78,6 +78,7 @@
 - debug: msg="{{python_output.stdout_lines | list }}"
 
 - name: Docker Volume Backup | Restore any missing backups from S3
+  when: restore_from_s3
   docker_container:
     command: "restore-volume --s3 --volume {{item}}"
     image: "ghcr.io/chatton/docker-volume-backup:v0.3.0"

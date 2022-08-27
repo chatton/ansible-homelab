@@ -7,7 +7,11 @@ configure_samba: false
 services:
   - name: gitea
   - name: docker-volume-backup
+  - name: mealie
+  - name: linkding
+  - name: dashboards
 
 # use raw docker compose instead of portainer
 use_docker_compose: true
 use_portainer: false
+restore_from_s3: false
