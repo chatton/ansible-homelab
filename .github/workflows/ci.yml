@@ -50,3 +50,8 @@ jobs:
           ansible-playbook setup-homelab.yml
         env:
           ANSIBLE_FORCE_COLOR: '1'
+      - name: Verify Home Lab
+        run: |
+          ansible-playbook verify-homelab.yml
+        env:
+          ANSIBLE_FORCE_COLOR: '1'

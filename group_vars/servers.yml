@@ -4,7 +4,7 @@ backups:
     monthly: "monthly"
     nightly: "nightly"
 
-docker_compose_directory: /etc/docker-compose/portainer
+docker_compose_directory: /etc/docker-compose
 
 # TODO: docker_volume_backup exists in vault. Clean this up.
 dockervolumebackup:

@@ -45,7 +45,7 @@
 
 - name: Portainer | Docker compose up
   community.docker.docker_compose:
-    project_src: "{{docker_compose_directory}}"
+    project_src: "{{docker_compose_directory}}/portainer"
 
 # Don't really need this as long as there is an S3 backup.
 #- name: Portainer | Register Admin User
