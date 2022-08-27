@@ -6,10 +6,18 @@ configure_mergefs: false
 configure_samba: false
 services:
   - name: gitea
-  - name: docker-volume-backup
   - name: mealie
   - name: linkding
+  - name: overseerr
+  - name: nextcloud
   - name: dashboards
+  - name: nginx-proxy-manager
+  - name: plex
+  - name: uptime-kuma
+  - name: vpn-stack
+  - name: docker-volume-backup
+  - name: mariadb
+  - name: photoprism
 
 # use raw docker compose instead of portainer
 use_docker_compose: true
