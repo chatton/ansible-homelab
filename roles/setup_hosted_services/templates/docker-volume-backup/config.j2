@@ -1,0 +1,34 @@
+---
+periodic_backups:
+  - name: "Nightly Volume Backups"
+    schedule: "0 3 * * *"
+    backups:
+      - name: "Nightly backup to local filesystem"
+        type: "filesystem"
+        host_path: {{ qnap.backups_dir }}
+        schedule_key: {{ backups.schedule_keys.nightly }}
+      - name: "Backup to iDrive E2"
+        type: "s3"
+        schedule_key: {{ backups.schedule_keys.nightly }}
+        s3_credentials:
+            aws_access_key_id: {{ docker_volume_backup.aws_access_key_id }}
+            aws_secret_access_key: {{ docker_volume_backup.aws_secret_access_key }}
+            aws_default_region: {{ docker_volume_backup.aws_default_region }}
+            aws_bucket: {{ docker_volume_backup.aws_bucket }}
+            aws_endpoint: {{ docker_volume_backup.aws_endpoint }}
+  - name: "Monthly Volume Backups"
+    schedule: "0 3 * * *"
+    backups:
+      - name: "Monthly backup to local filesystem"
+        type: "filesystem"
+        host_path: {{ qnap.backups_dir }}
+        schedule_key: {{ backups.schedule_keys.monthly }}
+      - name: "Backup to iDrive E2"
+        type: "s3"
+        schedule_key: {{ backups.schedule_keys.monthly }}
+        s3_credentials:
+            aws_access_key_id: {{ docker_volume_backup.aws_access_key_id }}
+            aws_secret_access_key: {{ docker_volume_backup.aws_secret_access_key }}
+            aws_default_region: {{ docker_volume_backup.aws_default_region }}
+            aws_bucket: {{ docker_volume_backup.aws_bucket }}
+            aws_endpoint: {{ docker_volume_backup.aws_endpoint }}

@@ -18,6 +18,11 @@ services:
 docker_networks:
   - mariadb_net
 
+backups:
+  schedule_keys:
+    monthly: "monthly"
+    nightly: "nightly"
+
 qnap:
   # path on qnap where downloads go
   downloads_dir: /mnt/ssd0/downloads
