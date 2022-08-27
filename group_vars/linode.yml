@@ -19,6 +19,10 @@ services:
   - name: mariadb
   - name: photoprism
 
+# any additional docker networks that should be created
+docker_networks:
+  - mariadb_net
+
 # use raw docker compose instead of portainer
 use_docker_compose: true
 use_portainer: false
