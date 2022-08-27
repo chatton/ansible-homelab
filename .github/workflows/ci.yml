@@ -1,0 +1,31 @@
+---
+name: CI
+on:
+  push:
+
+env:
+  VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v3
+      - name: Install test dependencies.
+        run: |
+          sudo python3 -m pip install --upgrade pip
+          sudo pip3 install ansible
+      - name: Syntax Check
+        run: |
+          ansible-playbook setup-linode.yml --syntax-check
+          ansible-playbook setup-homelab.yml --syntax-check
+      - name: Prepare Test Files
+        run: |
+          mv tests/.vault-pass.sh ./.vault-pass.sh
+          mv tests/ansible.cfg ./ansible.cfg
+          mv tests/hosts.ini ./hosts.ini
+          ansible-playbook setup-linode.yml
+        env:
+          ANSIBLE_FORCE_COLOR: '1'

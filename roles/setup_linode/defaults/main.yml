@@ -8,3 +8,7 @@ label: simple-linode
 hosts:
 - user: root
   ip: "{{my_linode.instance.ipv4[0]}}"
+
+# https://www.linode.com/community/questions/17190/obtain-a-list-of-image-and-plan-types-using-linode-apicli
+type: g6-standard-2
+region: us-east
