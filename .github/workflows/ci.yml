@@ -32,7 +32,7 @@ jobs:
       - name: Install test dependencies.
         run: |
           sudo python3 -m pip install --upgrade pip
-          sudo pip3 install ansible
+          sudo pip3 install -r requirements.txt
       - name: Syntax Check
         run: |
           ansible-playbook setup-linode.yml --syntax-check
