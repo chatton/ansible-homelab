@@ -1,7 +1,4 @@
 ---
-- name: Include all defaults
-  include_vars: defaults/main-vault.yml
-
 - name: Docker | Pull images
   docker_image:
     name: "{{item}}"
@@ -30,21 +27,21 @@
     state: directory
     mode: '0755'
   with_items:
-    - "{{dashy.destination_dir}}"
-    - "{{olivetin.destination_dir}}"
+    - "{{dashy.config_directory}}"
+    - "{{olivetin.config_directory}}"
     - "{{dockervolumebackup.config_directory}}"
 
 - name: Dashy | Config Files
   copy:
     src: "{{dashy.source_file}}"
-    dest: "{{dashy.destination_dir}}/{{dashy.destination_file}}"
+    dest: "{{dashy.config_directory}}/{{dashy.config_file}}"
   notify:
     - restart-dashy
 
 - name: Olivetin | Config Files
   copy:
     src: "{{olivetin.source_file}}"
-    dest: "{{olivetin.destination_dir}}/{{olivetin.destination_file}}"
+    dest: "{{olivetin.config_directory}}/{{olivetin.config_file}}"
   notify:
     - restart-olivetin
 
@@ -105,10 +102,17 @@
   with_items: "{{ docker_networks }}"
 
 - name: Portainer | Update Stack
+  when: use_portainer
   portainer:
     username: admin
     password: "{{portainer.password}}"
     docker_compose_file_path: "{{qnap.docker_compose_directory}}/{{ item.name }}/docker-compose.yml"
-    env_file_path: "{{qnap.docker_compose_directory}}/{{ item.name }}/stack.env"
     stack_name: "{{ item.name }}"
+  with_items: "{{services}}"
+
+- name: Docker compose | Update Stack
+  when: use_docker_compose
+  docker_compose:
+    project_src: "{{qnap.docker_compose_directory}}/{{ item.name }}"
+    state: present
   with_items: "{{services}}"

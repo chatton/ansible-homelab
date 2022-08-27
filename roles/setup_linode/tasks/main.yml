@@ -28,8 +28,11 @@
   debug:
     msg: "{{my_linode}}"
 
-- name: Template Hosts File
-  template:
-    src: hosts.j2
-    dest: linodehosts.ini
-
+- name: Update hosts.ini
+  blockinfile:
+    path: hosts.ini
+    block: |
+      [linode]
+      {% for host in hosts %}
+      {{host.user}}@{{host.ip}}
+      {% endfor %}

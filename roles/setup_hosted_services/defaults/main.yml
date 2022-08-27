@@ -1,28 +1,4 @@
 ---
-services:
-  - name: gitea
-  - name: mealie
-  - name: linkding
-  - name: overseerr
-  - name: nextcloud
-  - name: dashboards
-  - name: nginx-proxy-manager
-  - name: plex
-  - name: uptime-kuma
-  - name: vpn-stack
-  - name: docker-volume-backup
-  - name: mariadb
-  - name: photoprism
-
-# any additional docker networks that should be created
-docker_networks:
-  - mariadb_net
-
-backups:
-  schedule_keys:
-    monthly: "monthly"
-    nightly: "nightly"
-
 qnap:
   # path on qnap where downloads go
   downloads_dir: /mnt/ssd0/downloads
@@ -39,22 +15,5 @@ qnap:
   # path where photoprism photos are stored
   photoprism_dir: /mnt/mergerfs/photoprism
 
-dockervolumebackup:
-  image: ghcr.io/chatton/docker-volume-backup
-  tag: pr-20
-  config_directory: /etc/docker-volume-backup
-
-# dashy related config
-dashy:
-  destination_dir: /etc/config/dashy
-  destination_file: dashy-config.yml
-  source_file: dashboards/dashy-config.yml
-
-# olivetin related config
-olivetin:
-  destination_dir: /etc/config/olivetin
-  destination_file: config.yml
-  source_file: olivetin/config.yml
-
-extra_hosts:
-  - "qnap:192.168.178.42"
+use_portainer: true
+use_docker_compose: false

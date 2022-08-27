@@ -204,10 +204,6 @@ def handle_state_present(client, module):
     with open(module.params["docker_compose_file_path"]) as f:
         file_contents = f.read()
 
-    envs = []
-    if "env_file_path" in module.params:
-        envs = _load_envs_from_file(module.params["env_file_path"])
-
     target_stack_name = module.params["stack_name"]
     for stack in stacks:
         if stack["Name"] == target_stack_name:
@@ -216,7 +212,7 @@ def handle_state_present(client, module):
             break
 
     if not already_exists:
-        stack = _create_stack(client, module, file_contents, envs=envs)
+        stack = _create_stack(client, module, file_contents)
         result["changed"] = True
         result["stack_id"] = stack["Id"]
         module.exit_json(**result)
@@ -233,7 +229,7 @@ def handle_state_present(client, module):
         return
 
     # the stack exists and we have a new config.
-    _update_stack(client, module, stack_id, envs=envs)
+    _update_stack(client, module, stack_id)
     result["changed"] = True
     module.exit_json(**result)
 
@@ -267,7 +263,6 @@ def run_module():
     module_args = dict(
         stack_name=dict(type='str', required=True),
         docker_compose_file_path=dict(type='str', required=True),
-        env_file_path=dict(type='str', required=False),
         username=dict(type='str', default='admin'),
         password=dict(type='str', required=True, no_log=True),
         base_url=dict(type='str', default="http://localhost:9000"),
