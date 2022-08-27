@@ -10,9 +10,9 @@ services:
   - name: linkding
   - name: overseerr
   - name: nextcloud
-  - name: dashboards
+#  - name: dashboards
   - name: nginx-proxy-manager
-  - name: plex
+#  - name: plex
   - name: uptime-kuma
   - name: vpn-stack
   - name: docker-volume-backup
