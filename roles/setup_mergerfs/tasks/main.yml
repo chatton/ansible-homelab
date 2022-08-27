@@ -1,0 +1,41 @@
+---
+# dangerous to use this as the device name changes when there are new drives.
+# can this be done with an ID?
+#- name: Create a ext4 filesystem on /dev/sdb1
+#  filesystem:
+#    fstype: ext4
+#    dev: /dev/sdb1
+#    state: present
+
+- name: Mount Volumes
+  mount:
+    path: "{{item.path}}"
+    src: "UUID={{item.uuid}}"
+    fstype: ext4
+    state: mounted
+    opts: defaults,nofail
+  loop: "{{ devices }}"
+  register: volume_out
+
+- debug: msg="{{volume_out}}"
+
+# tasks file for setup_mergerfs
+- name: Create Mergefs directory
+  file:
+    path: /mnt/mergerfs
+    state: directory
+    owner: cianhatton
+    group: cianhatton
+    mode: 0775
+  register: directory_creation
+
+# Ensure the actual folder can't be written to only when it has just been created.
+- name: Make /mnt/mergerfs immutable
+  command: chattr +i /mnt/mergerfs
+  when: directory_creation.changed == true
+
+- name: Create Mergerfs pool
+  include_role:
+    name: sprat.mergerfs
+  vars:
+    mergerfs_mounts: "{{mounts}}"
