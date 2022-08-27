@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v3
-      - name: List ssh pub
-        run: |
-          ls ~/.ssh/*.pub
       - name: Prepare Test Files
         run: |
           mv tests/.vault-pass.sh ./.vault-pass.sh
@@ -31,6 +28,6 @@ jobs:
           ansible-playbook setup-homelab.yml --syntax-check
       - name: Setup Linode Instance
         run: |
-          ansible-playbook setup-linode.yml
+          ansible-playbook -vvvvv setup-linode.yml
         env:
           ANSIBLE_FORCE_COLOR: '1'
