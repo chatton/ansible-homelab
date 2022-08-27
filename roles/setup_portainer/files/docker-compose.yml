@@ -4,6 +4,7 @@ services:
   portainer:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "nightly"
     image: portainer/portainer-ce
     container_name: "portainer"
     ports:

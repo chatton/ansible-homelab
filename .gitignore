@@ -2,3 +2,4 @@
 venv
 stack.env
 linodehosts.ini
+test-playbook.yml

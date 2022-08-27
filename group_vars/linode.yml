@@ -1,0 +1,13 @@
+---
+# all encrypted variables should go in the linked file.
+vault_file: vault_vars/linode-vault.yml
+# any linode specific variables go here
+configure_mergefs: false
+configure_samba: false
+services:
+  - name: gitea
+  - name: docker-volume-backup
+
+# use raw docker compose instead of portainer
+use_docker_compose: true
+use_portainer: false

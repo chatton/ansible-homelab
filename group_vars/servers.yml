@@ -1,0 +1,30 @@
+---
+backups:
+  schedule_keys:
+    monthly: "monthly"
+    nightly: "nightly"
+
+docker_compose_directory: /etc/docker-compose/portainer
+
+# TODO: docker_volume_backup exists in vault. Clean this up.
+dockervolumebackup:
+  image: ghcr.io/chatton/docker-volume-backup
+  tag: pr-20
+  config_directory: /etc/docker-volume-backup
+
+# dashy related config
+dashy:
+  config_file: dashy-config.yml
+  source_file: dashboards/dashy-config.yml
+  config_directory: /etc/config/olivetin
+
+# olivetin related config
+olivetin:
+  config_file: config.yml
+  source_file: olivetin/config.yml
+  config_directory: /etc/config/dashy
+
+docker_networks: []
+
+homelab_group: cianhatton
+homelab_user: cianhatton
