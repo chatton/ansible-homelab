@@ -28,6 +28,7 @@ jobs:
           ansible-playbook setup-homelab.yml --syntax-check
       - name: Setup Linode Instance
         run: |
-          ansible-playbook -vvvvv setup-linode.yml
+          ssh-keygen -t rsa 
+          ansible-playbook setup-linode.yml
         env:
           ANSIBLE_FORCE_COLOR: '1'
