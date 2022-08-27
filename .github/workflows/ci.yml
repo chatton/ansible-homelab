@@ -29,11 +29,16 @@ jobs:
           mv tests/.vault-pass.sh ./.vault-pass.sh
           mv tests/ansible.cfg ./ansible.cfg
           mv tests/hosts.ini ./hosts.ini
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8.9
+
       - name: Install test dependencies.
         run: |
-          sudo python3 -m pip install --upgrade pip
-          sudo pip3 install ansible
-          sudo pip3 install linode-api4
+#          sudo python3 -m pip install --upgrade pip
+#          sudo pip3 install ansible
+#          sudo pip3 install linode-api4
+            pip install -r requirements.txt
       - name: Syntax Check
         run: |
           ansible-playbook setup-linode.yml --syntax-check
