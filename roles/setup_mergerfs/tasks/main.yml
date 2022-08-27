@@ -20,7 +20,7 @@
 - debug: msg="{{volume_out}}"
 
 # tasks file for setup_mergerfs
-- name: Create Mergefs directory
+- name: Create Mergerfs directory
   file:
     path: /mnt/mergerfs
     state: directory

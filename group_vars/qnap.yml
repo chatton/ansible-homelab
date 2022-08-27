@@ -59,3 +59,4 @@ docker_networks:
   - mariadb_net
 
 use_portainer: true
+use_docker_compose: false
