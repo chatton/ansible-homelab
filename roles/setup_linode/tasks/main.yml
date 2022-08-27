@@ -1,0 +1,35 @@
+---
+- name: Include vault variables.
+  include_vars: defaults/main-vault.yml
+
+- name: Create a new Linode.
+  linode_v4:
+    label: "{{ label }}"
+    access_token: "{{ token }}"
+    type: g6-nanode-1
+    region: us-east
+    image: linode/debian11
+    root_pass: "{{ password }}"
+    authorized_keys: "{{ ssh_keys }}"
+    group: servers
+    state: present
+  register: my_linode
+
+
+- name: Wait for SSH to come up
+  local_action:
+    module: wait_for
+      host={{ my_linode.instance.ipv4[0] }}
+      port=22
+      search_regex=OpenSSH
+      timeout=320
+
+- name: Instance Details
+  debug:
+    msg: "{{my_linode}}"
+
+- name: Template Hosts File
+  template:
+    src: hosts.j2
+    dest: linodehosts.ini
+

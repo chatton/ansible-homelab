@@ -4,6 +4,8 @@
   vars_files:
     - secrets-vault.yml
   roles:
+    - role: 'roles/setup_mergerfs'
+      tags: ["mergerfs"]
     - role: 'roles/setup_users'
       tags: ["users"]
     - role: 'roles/setup_samba'

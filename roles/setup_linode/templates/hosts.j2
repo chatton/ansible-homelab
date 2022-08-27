@@ -1,0 +1,4 @@
+[servers]
+{% for host in hosts %}
+{{host.user}}@{{host.ip}}
+{% endfor %}

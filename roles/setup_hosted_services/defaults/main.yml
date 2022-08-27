@@ -24,13 +24,15 @@ qnap:
   # path on qnap where plex transcoding happens
   transcoding_dir: /mnt/ssd0/transcoding
   # path on qnap where movies are stored
-  movies_dir: /mnt/test/media/movies
+  movies_dir: /mnt/mergerfs/media/movies
   # path on qnap where tv shows are stored
-  tv_dir: /mnt/test/media/tv
+  tv_dir: /mnt/mergerfs/media/tv
   # path on qnap where docker compose files are stored
   docker_compose_directory: /etc/docker-compose
   # path on qnap where backups are stored
-  backups_dir: /mnt/test/backups
+  backups_dir: /mnt/mergerfs/backups
+
+  photoprism_dir: /mnt/mergerfs/photoprism
 
 # dashy related config
 dashy:

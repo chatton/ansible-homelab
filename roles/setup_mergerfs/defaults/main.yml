@@ -1,0 +1,21 @@
+---
+# defaults file for setup_mergerfs
+mounts:
+- path: /mnt/mergerfs
+  state: mounted
+  branches:
+    - "/mnt/data/device0"
+    - "/mnt/data/device1"
+    - "/mnt/data/device2"
+  options: allow_other,use_ino
+
+devices:
+  - uuid: "a54c1bde-1400-4975-bf24-08c603ca3a11" # /dev/sdc1
+    path: "/mnt/data/device0"
+  - uuid: "727dddaa-f7a1-439a-995f-5f4d35322e08" # /dev/sdd1
+    path: "/mnt/data/device1"
+  - uuid: "f3cff115-9adc-4761-b1e9-e81055f3e0af" # /dev/sda1
+    path: "/mnt/data/device2"
+    # SSD for downloads / transcoding
+  - uuid: "c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec" # /dev/sdf
+    path: "/mnt/ssd0/"

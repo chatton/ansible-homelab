@@ -1,7 +1,0 @@
----
-- name: Start stack
-  ansible.builtin.command: docker run --rm
-    -e PORTAINER_USER_NAME=admin 
-    -e PORTAINER_PASSWORD="{{portainer_password}}"
-    -e PORTAINER_BASE_URL="http://{{ansible_eth0.ipv4.address}}:9000"
-    ghcr.io/chatton/start-portainer-stack:master "{{stack_name}}"
