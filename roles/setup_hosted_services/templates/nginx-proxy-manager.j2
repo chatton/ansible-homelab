@@ -4,6 +4,7 @@ services:
   nginx-proxy-manager:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     image: jlesage/nginx-proxy-manager
     container_name: nginx-proxy-manager
     restart: unless-stopped

@@ -4,6 +4,7 @@ services:
   nextcloud:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     image: nextcloud
     container_name: nextcloud
     restart: unless-stopped

@@ -5,3 +5,6 @@
 
 - name: restart-olivetin
   shell: docker restart olivetin
+
+- name: restart-docker-volume-backup
+  shell: docker restart docker-volume-backup

@@ -34,6 +34,7 @@ services:
   qbittorrent:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
 
     depends_on:
       - surfshark
@@ -53,6 +54,7 @@ services:
   radarr:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     depends_on:
       - surfshark
     image: lscr.io/linuxserver/radarr:latest
@@ -74,6 +76,7 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     container_name: sonarr
     network_mode: service:surfshark
     environment:
@@ -89,6 +92,7 @@ services:
   jackett:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     depends_on:
       - surfshark
     image: lscr.io/linuxserver/jackett:latest

@@ -4,6 +4,7 @@ services:
   mealie:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     container_name: mealie
     image: hkotel/mealie:latest
     restart: unless-stopped

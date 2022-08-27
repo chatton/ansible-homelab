@@ -4,6 +4,7 @@ services:
   linkding:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     container_name: "linkding"
     image: sissbruecker/linkding:latest
     ports:
