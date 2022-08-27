@@ -5,12 +5,17 @@ on:
 
 env:
   VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
+  SSH_PUB: "${{ secrets.SSH_PUB }}"
 
 jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Create SSH pub
+        run: |
+          echo "creating ~/.ssh/id_rsa.pub file"
+          echo "$SSH_PUB" > ~/.ssh/id_rsa.pub
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
