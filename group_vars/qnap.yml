@@ -50,6 +50,7 @@ services:
   - name: docker-volume-backup
   - name: mariadb
   - name: photoprism
+  - name: olivetin
 
 extra_hosts:
   - "qnap:192.168.178.42"
