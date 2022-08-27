@@ -36,8 +36,13 @@ qnap:
   docker_compose_directory: /etc/docker-compose
   # path on qnap where backups are stored
   backups_dir: /mnt/mergerfs/backups
-
+  # path where photoprism photos are stored
   photoprism_dir: /mnt/mergerfs/photoprism
+
+dockervolumebackup:
+  image: ghcr.io/chatton/docker-volume-backup
+  tag: pr-20
+  config_directory: /etc/docker-volume-backup
 
 # dashy related config
 dashy:

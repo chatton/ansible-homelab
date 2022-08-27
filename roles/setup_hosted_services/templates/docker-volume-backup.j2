@@ -5,17 +5,8 @@ services:
   docker-volume-backup:
     container_name: docker-volume-backup
     restart: always
-    image: ghcr.io/chatton/docker-volume-backup:v0.3.0
-    command:
-      - periodic-backups
-      - --cron
-      - "0 3 * * *"
-      - --host-path
-      - /mnt/mergerfs/backups/
-      - --retention-days
-      - "7"
-      - --modes
-      - "filesystem,s3"
+    image: {{dockervolumebackup.image}}:{{dockervolumebackup.tag}}
+    command: periodic-backups
     environment:
       AWS_ACCESS_KEY_ID: {{ docker_volume_backup.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: {{ docker_volume_backup.aws_secret_access_key }}
@@ -27,3 +18,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - {{qnap.backups_dir}}:/backups
       - /tmp:/tmp
+      - {{dockervolumebackup.config_directory}}/config.yml:{{dockervolumebackup.config_directory}}/config.yml

@@ -32,6 +32,7 @@
   with_items:
     - "{{dashy.destination_dir}}"
     - "{{olivetin.destination_dir}}"
+    - "{{dockervolumebackup.config_directory}}"
 
 - name: Dashy | Config Files
   copy:
@@ -46,6 +47,13 @@
     dest: "{{olivetin.destination_dir}}/{{olivetin.destination_file}}"
   notify:
     - restart-olivetin
+
+- name: Docker Volume Backup | Config Files
+  template:
+    src: "docker-volume-backup/config.j2"
+    dest: "{{dockervolumebackup.config_directory}}/config.yml"
+  notify:
+    - restart-docker-volume-backup
 
 - name: Install python dependencies (requests)
   pip:

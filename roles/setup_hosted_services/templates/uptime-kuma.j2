@@ -4,6 +4,7 @@ services:
   uptime-kuma:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
     image: louislam/uptime-kuma:1
     container_name: uptime-kuma
     volumes:
