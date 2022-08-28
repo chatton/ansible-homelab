@@ -6,6 +6,11 @@
     - name: Include vault variables.
       include_vars: "{{vault_file}}"
       tags: ["always"]
+    - name: Update Packages
+      apt:
+        upgrade: dist
+        update_cache: true
+      tags: ["always"]
 
   roles:
     - role: 'roles/setup_mergerfs'
