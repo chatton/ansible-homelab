@@ -12,7 +12,7 @@
     root_pass: "{{ password }}"
     authorized_keys: "{{ ssh_keys }}"
     group: servers
-    state: present
+    state: "{{ state }}"
   register: my_linode
 
 - name: Wait for SSH to come up
