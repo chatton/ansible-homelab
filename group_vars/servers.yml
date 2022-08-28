@@ -22,7 +22,7 @@ dashy:
 olivetin:
   source_file: olivetin/config.yml
   config_file: config.yml
-  config_directory: /etc/config/olivetin
+  config_directory: /etc/config/OliveTin
 
 docker_networks: []
 
