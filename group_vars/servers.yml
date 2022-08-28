@@ -14,14 +14,14 @@ dockervolumebackup:
 
 # dashy related config
 dashy:
-  config_file: dashy-config.yml
   source_file: dashboards/dashy-config.yml
+  config_file: dashy-config.yml
   config_directory: /etc/config/dashy
 
 # olivetin related config
 olivetin:
-  config_file: config.yml
   source_file: olivetin/config.yml
+  config_file: config.yml
   config_directory: /etc/config/olivetin
 
 docker_networks: []
