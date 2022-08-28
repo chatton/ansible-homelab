@@ -1,8 +1,8 @@
 ---
-name: CI
+name: Delete test linode instance
 on:
-  workflow_dispatch: 
-  pull_request:
+  schedule:
+    - cron: "0 0 * * *" # delete at midnight every day
 
 env:
   VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
@@ -10,8 +10,8 @@ env:
   ANSIBLE_FORCE_COLOR: '1'
 
 jobs:
-  tests:
-    name: Test Ansible Playbooks
+  delete-linode-instance:
+    name: Delete Linode Instance
     runs-on: ubuntu-latest
     steps:
       - name: Create SSH pub
@@ -36,17 +36,6 @@ jobs:
           python-version: 3.8.9
       - name: Install test dependencies.
         run: pip install -r requirements.txt
-      - name: Syntax Check
-        run: |
-          ansible-playbook setup-linode.yml --syntax-check
-          ansible-playbook setup-homelab.yml --syntax-check
-          ansible-playbook verify-homelab.yml --syntax-check
-      - name: Setup Linode Instance
-        run: ansible-playbook setup-linode.yml
-      - name: Setup Home Lab
-        run: ansible-playbook setup-homelab.yml
-      - name: Verify Home Lab
-        run: ansible-playbook verify-homelab.yml
       - name: Delete Linode Instance
         run: ansible-playbook setup-linode.yml --extra-vars "state=absent"
 
