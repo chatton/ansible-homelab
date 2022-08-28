@@ -50,6 +50,7 @@ services:
   - name: docker-volume-backup
   - name: mariadb
   - name: photoprism
+  - name: olivetin
 
 extra_hosts:
   - "qnap:192.168.178.42"
@@ -60,3 +61,4 @@ docker_networks:
 
 use_portainer: true
 use_docker_compose: false
+restore_from_s3: true

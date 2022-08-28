@@ -1,7 +1,5 @@
 ---
 - hosts: localhost
   become: true
-  vars:
-    ansible_python_interpreter: /Users/chatton/checkouts/ansible-homelab/venv/bin/python
   roles:
     - role: 'roles/setup_linode'

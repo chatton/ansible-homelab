@@ -6,8 +6,24 @@ configure_mergefs: false
 configure_samba: false
 services:
   - name: gitea
+  - name: mealie
+  - name: linkding
+  - name: overseerr
+  - name: nextcloud
+#  - name: dashboards
+  - name: nginx-proxy-manager
+  - name: uptime-kuma
+#  - name: vpn-stack
   - name: docker-volume-backup
+  - name: mariadb
+  - name: photoprism
+  - name: olivetin
+
+# any additional docker networks that should be created
+docker_networks:
+  - mariadb_net
 
 # use raw docker compose instead of portainer
 use_docker_compose: true
 use_portainer: false
+restore_from_s3: false

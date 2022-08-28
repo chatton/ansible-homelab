@@ -6,15 +6,14 @@
   linode_v4:
     label: "{{ label }}"
     access_token: "{{ token }}"
-    type: g6-nanode-1
-    region: us-east
+    type: "{{ type }}"
+    region: "{{ region }}"
     image: linode/debian11
     root_pass: "{{ password }}"
     authorized_keys: "{{ ssh_keys }}"
     group: servers
     state: present
   register: my_linode
-
 
 - name: Wait for SSH to come up
   local_action:

@@ -4,7 +4,7 @@ backups:
     monthly: "monthly"
     nightly: "nightly"
 
-docker_compose_directory: /etc/docker-compose/portainer
+docker_compose_directory: /etc/docker-compose
 
 # TODO: docker_volume_backup exists in vault. Clean this up.
 dockervolumebackup:
@@ -14,15 +14,15 @@ dockervolumebackup:
 
 # dashy related config
 dashy:
-  config_file: dashy-config.yml
   source_file: dashboards/dashy-config.yml
-  config_directory: /etc/config/olivetin
+  config_file: dashy-config.yml
+  config_directory: /etc/config/dashy
 
 # olivetin related config
 olivetin:
-  config_file: config.yml
   source_file: olivetin/config.yml
-  config_directory: /etc/config/dashy
+  config_file: config.yml
+  config_directory: /etc/config/olivetin
 
 docker_networks: []
 

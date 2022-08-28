@@ -2,6 +2,7 @@
 # handlers file for setup_hosted_services
 - name: restart-dashy
   shell: docker restart dashy
+  ignore_errors: True
 
 - name: restart-olivetin
   shell: docker restart olivetin
