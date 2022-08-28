@@ -3,7 +3,6 @@
 vault_file: vault_vars/linode-vault.yml
 # any linode specific variables go here
 configure_mergefs: false
-configure_samba: false
 services:
   - name: gitea
   - name: mealie

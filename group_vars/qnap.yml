@@ -23,19 +23,6 @@ devices:
   - uuid: "c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec" # /dev/sdf
     path: "/mnt/ssd0/"
 
-
-configure_samba: true
-samba_group: smbgroup
-samba_user: smbuser
-users:
-  - name: cianhatton
-shares:
-  - /share
-  - /share/public_files
-  - /share/private_files
-  - /share/cian_files
-
-
 services:
   - name: gitea
   - name: mealie
@@ -51,9 +38,6 @@ services:
   - name: mariadb
   - name: photoprism
   - name: olivetin
-
-extra_hosts:
-  - "qnap:192.168.178.42"
 
 # any additional docker networks that should be created
 docker_networks:
