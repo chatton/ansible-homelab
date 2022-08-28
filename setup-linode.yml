@@ -4,4 +4,4 @@
   roles:
     - role: 'roles/setup_linode'
       vars:
-        state: preset
+        state: present
