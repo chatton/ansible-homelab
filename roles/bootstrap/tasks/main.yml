@@ -1,3 +1,9 @@
+# @meta author: Cian Hatton
+# @meta description: >
+# Role to bootstrap a target host. This role will add an ansible
+# user and allow paswordless sudo.
+# @end
+
 ---
 - name: Update Packages
   apt:

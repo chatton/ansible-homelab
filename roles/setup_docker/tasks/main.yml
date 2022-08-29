@@ -1,3 +1,10 @@
+# @meta author: Cian Hatton
+# @meta description: >
+# Role to install docker. It also installs the docker and docker compose python
+# modules.
+# @end
+
+
 # following official instructions here: https://docs.docker.com/engine/install/debian/
 - name: Install packages using apt
   apt:

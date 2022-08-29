@@ -1,3 +1,11 @@
+# @meta author: Cian Hatton
+# @meta description: >
+# Role to configure Portainer. This role copies the docker-compose.yml
+# onto the host and starts portainer with docker compose.
+# If there is a backup of the portainer volume stored in s3, it will
+# be restored before portainer is started.
+# @end
+
 ---
 - name: Portainer | Create directory if it does not exist
   ansible.builtin.file:
