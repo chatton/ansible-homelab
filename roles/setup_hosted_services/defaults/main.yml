@@ -14,6 +14,3 @@ qnap:
   backups_dir: /mnt/mergerfs/backups
   # path where photoprism photos are stored
   photoprism_dir: /mnt/mergerfs/photoprism
-
-use_portainer: true
-use_docker_compose: false

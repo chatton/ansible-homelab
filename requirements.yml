@@ -1,0 +1,5 @@
+---
+collections:
+  - name: https://github.com/chatton/ansible-portainer.git
+    type: git
+    version: master

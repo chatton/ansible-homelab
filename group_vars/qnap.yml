@@ -2,7 +2,6 @@
 # all encrypted variables should go in the linked file.
 vault_file: vault_vars/qnap-vault.yml
 # any qnap specific variables go here
-configure_mergefs: true
 mounts:
 - path: /mnt/mergerfs
   state: mounted
@@ -25,24 +24,38 @@ devices:
 
 services:
   - name: gitea
+    endpoint_id: 2
   - name: mealie
+    endpoint_id: 2
   - name: linkding
+    endpoint_id: 2
   - name: overseerr
+    endpoint_id: 2
   - name: nextcloud
+    endpoint_id: 2
   - name: dashboards
+    endpoint_id: 2
   - name: nginx-proxy-manager
+    endpoint_id: 2
   - name: plex
+    endpoint_id: 2
   - name: uptime-kuma
+    endpoint_id: 2
   - name: vpn-stack
+    endpoint_id: 2
   - name: docker-volume-backup
+    endpoint_id: 2
   - name: mariadb
+    endpoint_id: 2
   - name: photoprism
+    endpoint_id: 2
   - name: olivetin
+    endpoint_id: 2
 
 # any additional docker networks that should be created
 docker_networks:
   - mariadb_net
 
-use_portainer: true
-use_docker_compose: false
+# use portainer
+container_deployment_mode: "portainer"
 restore_from_s3: true

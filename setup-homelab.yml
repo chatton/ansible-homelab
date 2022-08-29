@@ -1,5 +1,5 @@
 ---
-- hosts: servers
+- hosts: qnap
   become: true
 
   pre_tasks:
@@ -15,16 +15,36 @@
   roles:
     - role: 'roles/setup_mergerfs'
       tags: ["mergerfs"]
-      when: configure_mergefs
     - role: 'roles/setup_users'
       tags: ["users"]
     - role: 'roles/setup_samba'
       tags: ["samba"]
-      when: configure_samba
     - role: 'roles/setup_docker'
       tags: ["docker"]
     - role: 'roles/setup_portainer'
       tags: ["portainer"]
-      when: use_portainer
+    - role: 'roles/setup_hosted_services'
+      tags: ["services"]
+
+- hosts: linode
+  become: true
+
+  pre_tasks:
+    - name: Include vault variables.
+      include_vars: "{{vault_file}}"
+      tags: ["always"]
+    - name: Update Packages
+      apt:
+        upgrade: dist
+        update_cache: true
+      tags: ["always"]
+
+  roles:
+    - role: 'roles/setup_users'
+      tags: ["users"]
+    - role: 'roles/setup_samba'
+      tags: ["samba"]
+    - role: 'roles/setup_docker'
+      tags: ["docker"]
     - role: 'roles/setup_hosted_services'
       tags: ["services"]

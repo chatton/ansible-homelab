@@ -2,17 +2,14 @@
 # all encrypted variables should go in the linked file.
 vault_file: vault_vars/linode-vault.yml
 # any linode specific variables go here
-configure_mergefs: false
 services:
   - name: gitea
   - name: mealie
   - name: linkding
   - name: overseerr
   - name: nextcloud
-#  - name: dashboards
   - name: nginx-proxy-manager
   - name: uptime-kuma
-#  - name: vpn-stack
   - name: docker-volume-backup
   - name: mariadb
   - name: photoprism
@@ -22,7 +19,7 @@ services:
 docker_networks:
   - mariadb_net
 
-# use raw docker compose instead of portainer
-use_docker_compose: true
-use_portainer: false
+# use docker compose
+container_deployment_mode: "compose"
+
 restore_from_s3: false

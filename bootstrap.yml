@@ -1,27 +1,5 @@
 ---
 - hosts: all
   become: true
-  tasks:
-    - name: Update Packages
-      apt:
-        upgrade: dist
-        update_cache: true
-
-    - name: Create ansible user
-      user:
-        name: ansible
-        groups: root
-
-    - name: Add ssh key for ansible
-      authorized_key:
-        user: "ansible"
-        state: present
-        key: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
-
-    - name: Add sudoers file for ansible
-      copy:
-        src: sudoer_ansible
-        dest: /etc/sudoers.d/ansible
-        owner: root
-        group: root
-        mode: 0440
+  roles:
+    - role: 'roles/bootstrap'

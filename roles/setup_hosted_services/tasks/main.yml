@@ -103,16 +103,18 @@
   with_items: "{{ docker_networks }}"
 
 - name: Portainer | Update Stack
-  when: use_portainer
-  portainer:
+  when: container_deployment_mode == "portainer"
+  chatton.portainer.portainer_stack:
     username: admin
     password: "{{portainer.password}}"
     docker_compose_file_path: "{{qnap.docker_compose_directory}}/{{ item.name }}/docker-compose.yml"
     stack_name: "{{ item.name }}"
+    endpoint_id: "{{ item.endpoint_id }}"
+    state: present
   with_items: "{{services}}"
 
 - name: Docker compose | Update Stack
-  when: use_docker_compose
+  when: container_deployment_mode == "compose"
   docker_compose:
     project_src: "{{qnap.docker_compose_directory}}/{{ item.name }}"
     state: present
