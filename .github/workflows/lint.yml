@@ -1,0 +1,30 @@
+---
+name: CI
+on:
+  workflow_dispatch: 
+  push:
+
+
+jobs:
+  lint:
+    strategy:
+      matrix:
+        directory:
+          - roles
+          - playbooks
+          - group_vars
+          - host_vars
+    name: Test Ansible Playbooks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the codebase
+        uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8.9
+      - name: Install test dependencies.
+      - name: Install requirements
+        run: make deps
+      - name: Test Directory
+        run: ansible-lint ${{ matrix.directory }}
+
