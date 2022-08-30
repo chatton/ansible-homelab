@@ -4,9 +4,9 @@ on:
   workflow_dispatch: 
   push:
 
-
 jobs:
   lint:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         directory:
@@ -14,8 +14,6 @@ jobs:
           - playbooks
           - group_vars
           - host_vars
-    name: Test Ansible Playbooks
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout the codebase
         uses: actions/checkout@v3
