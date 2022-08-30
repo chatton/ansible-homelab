@@ -11,6 +11,13 @@ env:
 
 jobs:
   lint:
+    strategy:
+      matrix:
+        directory:
+          - roles
+          - playbooks
+          - group_vars
+          - host_vars
     name: Test Ansible Playbooks
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +29,8 @@ jobs:
       - name: Install test dependencies.
       - name: Install requirements
         run: make deps
-
+      - name: Test Directory
+        run: ansible-lint ${{ matrix.directory }}
   tests:
     name: Test Ansible Playbooks
     runs-on: ubuntu-latest
