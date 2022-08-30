@@ -3,7 +3,7 @@
     name:
     - samba
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Ensure samba group exists
   ansible.builtin.group:
@@ -27,13 +27,13 @@
   user:
     name: '{{ item.name }}'
     groups: '{{ samba_group }}'
-    append: yes
+    append: true
   with_items: '{{users}}'
 
 - name: Ensure Share directories
   ansible.builtin.file:
     path: '{{item}}'
-    recurse: yes
+    recurse: true
     state: directory
     owner: '{{samba_user}}'
     group: '{{samba_group}}'

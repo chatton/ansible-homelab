@@ -8,7 +8,7 @@ bootstrap:
 qnap:
 	ansible-playbook playbooks/setup-homelab.yml --limit qnap
 
-homelab:
+homelab: bootstrap
 	ansible-playbook playbooks/setup-homelab.yml
 
 verify:

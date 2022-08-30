@@ -1,0 +1,9 @@
+skip_list:
+  - yaml[indentation]
+
+  # TODO I probably want these to be correct
+  - meta-no-info
+  - meta-incorrect
+  - schema
+  - fqcn-builtins
+  - schema

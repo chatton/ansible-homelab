@@ -1,10 +1,10 @@
 # handlers file for setup_hosted_services
 - name: restart-dashy
-  shell: docker restart dashy
+  command: docker restart dashy
   ignore_errors: true
 
 - name: restart-olivetin
-  shell: docker restart olivetin
+  command: docker restart olivetin
 
 - name: restart-docker-volume-backup
-  shell: docker restart docker-volume-backup
+  command: docker restart docker-volume-backup
