@@ -15,6 +15,7 @@ verify:
 	ansible-playbook playbooks/verify-homelab.yml
 
 deps:
+	pip install --upgrade pip
 	pip install -r requirements.txt
 	ansible-galaxy install -r requirements.yml
 
