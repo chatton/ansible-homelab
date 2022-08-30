@@ -9,7 +9,7 @@
 
 - name: Docker Compose | Create a directory if it does not exist
   file:
-    path: "{{qnap.docker_compose_directory}}/{{item.name}}"
+    path: "{{directories.docker_compose_directory}}/{{item.name}}"
     state: directory
     mode: '0755'
   with_items: "{{services}}"
@@ -17,11 +17,11 @@
 - name: Docker Compose | Template Docker Compose Files
   template:
     src: "{{item.name}}.j2"
-    dest: "{{qnap.docker_compose_directory}}/{{item.name}}/docker-compose.yml"
+    dest: "{{directories.docker_compose_directory}}/{{item.name}}/docker-compose.yml"
   with_items: "{{services}}"
 
 
-- name: Config Files | Create a directory if it does not exist
+- name: Directories | Ensure required directories
   file:
     path: "{{item}}"
     state: directory
@@ -30,6 +30,7 @@
     - "{{dashy.config_directory}}"
     - "{{olivetin.config_directory}}"
     - "{{dockervolumebackup.config_directory}}"
+    - "{{directories.backups_dir}}/.s3tmp"
 
 - name: Dashy | Config Files
   copy:
@@ -69,7 +70,7 @@
   environment:
     EXISTING_VOLUMES: "{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
     SERVICES: "{{ services }}"
-    DOCKER_COMPOSE_DIR: "{{qnap.docker_compose_directory}}"
+    DOCKER_COMPOSE_DIR: "{{directories.docker_compose_directory}}"
   args:
     executable: python3
   register: python_output
@@ -107,7 +108,7 @@
   chatton.portainer.portainer_stack:
     username: admin
     password: "{{portainer.password}}"
-    docker_compose_file_path: "{{qnap.docker_compose_directory}}/{{ item.name }}/docker-compose.yml"
+    docker_compose_file_path: "{{directories.docker_compose_directory}}/{{ item.name }}/docker-compose.yml"
     stack_name: "{{ item.name }}"
     endpoint_id: "{{ item.endpoint_id }}"
     state: present
@@ -116,6 +117,6 @@
 - name: Docker compose | Update Stack
   when: container_deployment_mode == "compose"
   docker_compose:
-    project_src: "{{qnap.docker_compose_directory}}/{{ item.name }}"
+    project_src: "{{directories.docker_compose_directory}}/{{ item.name }}"
     state: present
   with_items: "{{services}}"

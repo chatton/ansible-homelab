@@ -4,8 +4,6 @@ backups:
     monthly: "monthly"
     nightly: "nightly"
 
-docker_compose_directory: /etc/docker-compose
-
 # TODO: docker_volume_backup exists in vault. Clean this up.
 dockervolumebackup:
   image: ghcr.io/chatton/docker-volume-backup
@@ -39,3 +37,19 @@ shares:
   - /share/public_files
   - /share/private_files
   - /share/cian_files
+
+directories:
+  # path on qnap where downloads go
+  downloads_dir: /mnt/ssd0/downloads
+  # path on qnap where plex transcoding happens
+  transcoding_dir: /mnt/ssd0/transcoding
+  # path on qnap where movies are stored
+  movies_dir: /mnt/mergerfs/media/movies
+  # path on qnap where tv shows are stored
+  tv_dir: /mnt/mergerfs/media/tv
+  # path on qnap where docker compose files are stored
+  docker_compose_directory: /etc/docker-compose
+  # path on qnap where backups are stored
+  backups_dir: /mnt/mergerfs/backups
+  # path where photoprism photos are stored
+  photoprism_dir: /mnt/mergerfs/photoprism

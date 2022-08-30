@@ -7,11 +7,11 @@ periodic_backups:
       - name: "Nightly backup to local filesystem"
         type: "filesystem"
         filesystem_options:
-            host_path: {{ qnap.backups_dir }}
+            host_path: {{ directories.backups_dir }}
       - name: "Backup to iDrive E2"
         type: "s3"
         s3_options:
-            host_path: {{ qnap.backups_dir }}
+            host_path: {{ directories.backups_dir }}
             aws_access_key_id: {{ docker_volume_backup.aws_access_key_id }}
             aws_secret_access_key: {{ docker_volume_backup.aws_secret_access_key }}
             aws_default_region: {{ docker_volume_backup.aws_default_region }}
@@ -24,11 +24,11 @@ periodic_backups:
       - name: "Monthly backup to local filesystem"
         type: "filesystem"
         filesystem_options:
-            host_path: {{ qnap.backups_dir }}
+            host_path: {{ directories.backups_dir }}
       - name: "Backup to iDrive E2"
         type: "s3"
         s3_options:
-            host_path: {{ qnap.backups_dir }}
+            host_path: {{ directories.backups_dir }}
             aws_access_key_id: {{ docker_volume_backup.aws_access_key_id }}
             aws_secret_access_key: {{ docker_volume_backup.aws_secret_access_key }}
             aws_default_region: {{ docker_volume_backup.aws_default_region }}
