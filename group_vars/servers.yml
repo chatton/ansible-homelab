@@ -24,7 +24,6 @@ olivetin:
 
 docker_networks: []
 
-homelab_group: cianhatton
 homelab_user: cianhatton
 
 configure_samba: true
@@ -32,6 +31,9 @@ samba_group: smbgroup
 samba_user: smbuser
 users:
   - name: cianhatton
+    group: cianhatton
+    passwordless_sudo: true
+
 shares:
   - /share
   - /share/public_files

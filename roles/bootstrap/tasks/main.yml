@@ -14,6 +14,7 @@
   user:
     name: ansible
     groups: root
+    system: true
 
 - name: Add ssh key for ansible
   authorized_key:

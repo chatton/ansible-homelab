@@ -1,30 +1,41 @@
 ---
-- hosts: qnap
+- name: Update packages and ensure users on all hosts
+  tags: ["always"]
+  hosts: all
   become: true
-
   pre_tasks:
-    - name: Include vault variables.
-      include_vars: "{{vault_file}}"
-      tags: ["always"]
     - name: Update Packages
       apt:
         upgrade: dist
         update_cache: true
+  roles:
+    - role: setup_users
+
+- name: Install docker on docker hosts
+  hosts: dockerhosts
+  become: true
+  roles:
+    - role: setup_docker
+      tags: ["setup","docker"]
+
+- name: Setup and deploy services on the QNAP
+  hosts: qnap
+  become: true
+  pre_tasks:
+    - name: Include vault variables.
+      include_vars: "{{vault_file}}"
       tags: ["always"]
 
   roles:
-    - role: 'roles/setup_mergerfs'
+    - role: setup_mergerfs
       tags: ["mergerfs"]
-    - role: 'roles/setup_users'
-      tags: ["users"]
-    - role: 'roles/setup_samba'
+    - role: setup_samba
       tags: ["samba"]
-    - role: 'roles/setup_docker'
-      tags: ["docker"]
-    - role: 'roles/setup_portainer'
-      tags: ["portainer"]
-    - role: 'roles/setup_hosted_services'
+    - role: setup_portainer
+      tags: ["services", "portainer"]
+    - role: setup_hosted_services
       tags: ["services"]
+
 
 - hosts: linodes
   become: true
@@ -33,18 +44,11 @@
     - name: Include vault variables.
       include_vars: "{{vault_file}}"
       tags: ["always"]
-    - name: Update Packages
-      apt:
-        upgrade: dist
-        update_cache: true
-      tags: ["always"]
 
   roles:
-    - role: 'roles/setup_users'
-      tags: ["users"]
-    - role: 'roles/setup_samba'
+    - role: setup_samba
       tags: ["samba"]
-    - role: 'roles/setup_docker'
+    - role: setup_docker
       tags: ["docker"]
-    - role: 'roles/setup_hosted_services'
+    - role: setup_hosted_services
       tags: ["services"]
