@@ -16,5 +16,4 @@ verify:
 
 deps:
 	pip install -r requirements.txt
-	pip3 install "ansible-lint"
 	ansible-galaxy install -r requirements.yml
