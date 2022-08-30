@@ -11,6 +11,10 @@ qnap:
 homelab:
 	ansible-playbook playbooks/setup-homelab.yml
 
+verify:
+	ansible-playbook playbooks/verify-homelab.yml
+
 deps:
 	pip install -r requirements.txt
+	pip3 install "ansible-lint"
 	ansible-galaxy install -r requirements.yml
