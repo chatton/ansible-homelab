@@ -1,4 +1,3 @@
----
 # needs to be run with a different user with access to create ansible key and user.
 # e.g.
 # ansible-playbook bootstrap.yml -e ansible_ssh_user=cianhatton
@@ -8,12 +7,12 @@
   hosts: localhost
   connection: local
   tasks:
-    - name: Generate an OpenSSH rsa keypair for ansible
-      community.crypto.openssh_keypair:
-        path: ~/.ssh/ansible
-        passphrase: ""
+  - name: Generate an OpenSSH rsa keypair for ansible
+    community.crypto.openssh_keypair:
+      path: ~/.ssh/ansible
+      passphrase: ''
 
 - hosts: all
   become: true
   roles:
-    - role: bootstrap
+  - role: bootstrap

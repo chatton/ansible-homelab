@@ -9,11 +9,11 @@
 - name: Install packages using apt
   apt:
     name:
-      - ca-certificates
-      - curl
-      - gnupg2
-      - lsb-release
-      - pip
+    - ca-certificates
+    - curl
+    - gnupg2
+    - lsb-release
+    - pip
     state: present
     update_cache: yes
 
@@ -31,10 +31,10 @@
 - name: Install docker packages using apt
   apt:
     name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-compose-plugin
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose-plugin
     state: present
     update_cache: yes
 

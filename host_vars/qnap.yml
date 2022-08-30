@@ -1,4 +1,3 @@
----
 # all encrypted variables should go in the linked file.
 vault_file: vault_vars/qnap-vault.yml
 # any qnap specific variables go here
@@ -6,56 +5,56 @@ mounts:
 - path: /mnt/mergerfs
   state: mounted
   branches:
-    - "/mnt/data/device0"
-    - "/mnt/data/device1"
-    - "/mnt/data/device2"
+  - /mnt/data/device0
+  - /mnt/data/device1
+  - /mnt/data/device2
   options: allow_other,use_ino
 
 devices:
-  - uuid: "a54c1bde-1400-4975-bf24-08c603ca3a11" # /dev/sdc1
-    path: "/mnt/data/device0"
-  - uuid: "727dddaa-f7a1-439a-995f-5f4d35322e08" # /dev/sdd1
-    path: "/mnt/data/device1"
-  - uuid: "f3cff115-9adc-4761-b1e9-e81055f3e0af" # /dev/sda1
-    path: "/mnt/data/device2"
+- uuid: a54c1bde-1400-4975-bf24-08c603ca3a11     # /dev/sdc1
+  path: /mnt/data/device0
+- uuid: 727dddaa-f7a1-439a-995f-5f4d35322e08     # /dev/sdd1
+  path: /mnt/data/device1
+- uuid: f3cff115-9adc-4761-b1e9-e81055f3e0af     # /dev/sda1
+  path: /mnt/data/device2
     # SSD for downloads / transcoding
-  - uuid: "c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec" # /dev/sdf
-    path: "/mnt/ssd0/"
+- uuid: c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec     # /dev/sdf
+  path: /mnt/ssd0/
 
 services:
-  - name: gitea
-    endpoint_id: 2
-  - name: mealie
-    endpoint_id: 2
-  - name: linkding
-    endpoint_id: 2
-  - name: overseerr
-    endpoint_id: 2
-  - name: nextcloud
-    endpoint_id: 2
-  - name: dashboards
-    endpoint_id: 2
-  - name: nginx-proxy-manager
-    endpoint_id: 2
-  - name: plex
-    endpoint_id: 2
-  - name: uptime-kuma
-    endpoint_id: 2
-  - name: vpn-stack
-    endpoint_id: 2
-  - name: docker-volume-backup
-    endpoint_id: 2
-  - name: mariadb
-    endpoint_id: 2
-  - name: photoprism
-    endpoint_id: 2
-  - name: olivetin
-    endpoint_id: 2
+- name: gitea
+  endpoint_id: 2
+- name: mealie
+  endpoint_id: 2
+- name: linkding
+  endpoint_id: 2
+- name: overseerr
+  endpoint_id: 2
+- name: nextcloud
+  endpoint_id: 2
+- name: dashboards
+  endpoint_id: 2
+- name: nginx-proxy-manager
+  endpoint_id: 2
+- name: plex
+  endpoint_id: 2
+- name: uptime-kuma
+  endpoint_id: 2
+- name: vpn-stack
+  endpoint_id: 2
+- name: docker-volume-backup
+  endpoint_id: 2
+- name: mariadb
+  endpoint_id: 2
+- name: photoprism
+  endpoint_id: 2
+- name: olivetin
+  endpoint_id: 2
 
 # any additional docker networks that should be created
 docker_networks:
-  - mariadb_net
+- mariadb_net
 
 # use portainer
-container_deployment_mode: "portainer"
+container_deployment_mode: portainer
 restore_from_s3: true

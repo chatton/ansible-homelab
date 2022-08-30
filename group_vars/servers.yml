@@ -1,8 +1,7 @@
----
 backups:
   schedule_keys:
-    monthly: "monthly"
-    nightly: "nightly"
+    monthly: monthly
+    nightly: nightly
 
 # TODO: docker_volume_backup exists in vault. Clean this up.
 dockervolumebackup:
@@ -30,15 +29,15 @@ configure_samba: true
 samba_group: smbgroup
 samba_user: smbuser
 users:
-  - name: cianhatton
-    group: cianhatton
-    passwordless_sudo: true
+- name: cianhatton
+  group: cianhatton
+  passwordless_sudo: true
 
 shares:
-  - /share
-  - /share/public_files
-  - /share/private_files
-  - /share/cian_files
+- /share
+- /share/public_files
+- /share/private_files
+- /share/cian_files
 
 directories:
   # path on qnap where downloads go
@@ -57,5 +56,5 @@ directories:
   photoprism_dir: /mnt/mergerfs/photoprism
 
 desired_docker_images:
-  - ubuntu:latest
-  - busybox:latest
+- ubuntu:latest
+- busybox:latest

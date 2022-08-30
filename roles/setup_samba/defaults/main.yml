@@ -1,10 +1,9 @@
----
 samba_group: smbgroup
 samba_user: smbuser
 users:
-  - name: cianhatton
+- name: cianhatton
 shares:
-  - /share
-  - /share/public_files
-  - /share/private_files
-  - /share/cian_files
+- /share
+- /share/public_files
+- /share/private_files
+- /share/cian_files

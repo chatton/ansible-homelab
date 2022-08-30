@@ -17,3 +17,12 @@ verify:
 deps:
 	pip install -r requirements.txt
 	ansible-galaxy install -r requirements.yml
+
+format:
+	scripts/format_all_yaml.sh
+
+lint:
+	ansible-lint host_vars
+	ansible-lint group_vars
+	ansible-lint roles
+	ansible-lint playbooks

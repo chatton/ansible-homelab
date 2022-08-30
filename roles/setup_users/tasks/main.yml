@@ -2,32 +2,32 @@
 - name: Install Sudo
   apt:
     pkg:
-      - sudo
+    - sudo
     state: latest
     update_cache: true
 
 - name: Make sure we have a  groups
   group:
-    name: "{{item.group}}"
+    name: '{{item.group}}'
     state: present
-  with_items: "{{users}}"
+  with_items: '{{users}}'
 
 - name: Add Users
   ansible.builtin.user:
-    name: "{{item.name}}"
-    comment: "{{item.name}} user"
-    group: "{{item.group}}"
-  with_items: "{{users}}"
+    name: '{{item.name}}'
+    comment: '{{item.name}} user'
+    group: '{{item.group}}'
+  with_items: '{{users}}'
 
 - name: Add sudoers
   template:
     src: sudoers.j2
-    dest: "/etc/sudoers.d/{{item.name}}"
-  with_items: "{{users}}"
+    dest: /etc/sudoers.d/{{item.name}}
+  with_items: '{{users}}'
   when: item.passwordless_sudo == true
 
 - name: Set authorized key
   authorized_key:
-    user: "{{homelab_user}}"
+    user: '{{homelab_user}}'
     state: present
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
