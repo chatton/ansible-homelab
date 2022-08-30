@@ -1,7 +1,6 @@
----
-name: Lint
+name: Code Health
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
   push:
 
 jobs:
@@ -10,31 +9,31 @@ jobs:
     strategy:
       matrix:
         directory:
-          - roles
-          - playbooks
-          - group_vars
-          - host_vars
+        - roles
+        - playbooks
+        - group_vars
+        - host_vars
     steps:
-      - name: Checkout the codebase
-        uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: 3.8.9
-      - name: Install dependencies
-        run: make deps
-      - name: Test Directory
-        run: ansible-lint ${{ matrix.directory }}
+    - name: Checkout the codebase
+      uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.8.9
+    - name: Install dependencies
+      run: make deps
+    - name: Test Directory
+      run: ansible-lint ${{ matrix.directory }}
 
- format:
+  format:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the codebase
-        uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: 3.8.9
-      - name: Install dependencies
-        run: make deps
-      - name: Format code
-        run: make format
+    - name: Checkout the codebase
+      uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.8.9
+    - name: Install dependencies
+      run: make deps
+    - name: Format code
+      run: make format
 

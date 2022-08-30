@@ -13,3 +13,4 @@ format_dir roles
 format_dir playbooks
 format_dir host_vars
 format_dir group_vars
+format_dir .github/workflows

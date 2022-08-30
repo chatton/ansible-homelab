@@ -1,12 +1,11 @@
----
 name: Delete test linode instance
 on:
   schedule:
-    - cron: "0 0 * * *" # delete at midnight every day
+  - cron: 0 0 * * *     # delete at midnight every day
 
 env:
-  VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
-  SSH_PUB: "${{ secrets.SSH_PUB }}"
+  VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
+  SSH_PUB: ${{ secrets.SSH_PUB }}
   ANSIBLE_FORCE_COLOR: '1'
 
 jobs:
@@ -14,28 +13,28 @@ jobs:
     name: Delete Linode Instance
     runs-on: ubuntu-latest
     steps:
-      - name: Create SSH pub
-        run: |
-          echo "creating ~/.ssh/id_rsa.pub file"
-          mkdir -p ~/.ssh/
-          echo "$SSH_PUB" > ~/.ssh/id_rsa.pub
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-      - name: Check out the codebase.
-        uses: actions/checkout@v3
-      - name: Prepare Test Files
-        run: |
-          mv tests/.vault-pass.sh ./.vault-pass.sh
-          mv tests/ansible.cfg ./ansible.cfg
-          mv tests/hosts.ini ./hosts.ini
-      - uses: actions/setup-python@v4
-        with:
-          python-version: 3.8.9
-      - name: Install test dependencies.
-        run: pip install -r requirements.txt
-      - name: Delete Linode Instance
-        run: ansible-playbook setup-linode.yml --extra-vars "state=absent"
+    - name: Create SSH pub
+      run: |
+        echo "creating ~/.ssh/id_rsa.pub file"
+        mkdir -p ~/.ssh/
+        echo "$SSH_PUB" > ~/.ssh/id_rsa.pub
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+    - name: Check out the codebase.
+      uses: actions/checkout@v3
+    - name: Prepare Test Files
+      run: |
+        mv tests/.vault-pass.sh ./.vault-pass.sh
+        mv tests/ansible.cfg ./ansible.cfg
+        mv tests/hosts.ini ./hosts.ini
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.8.9
+    - name: Install test dependencies.
+      run: pip install -r requirements.txt
+    - name: Delete Linode Instance
+      run: ansible-playbook setup-linode.yml --extra-vars "state=absent"
 
