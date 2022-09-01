@@ -63,8 +63,7 @@
   register: find_volumes
   changed_when: false
 
-- debug: msg="{{find_volumes.results | map(attribute='stdout_lines') | list | flatten
-    }}"
+- debug: msg="{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
 
 - name: Docker | Find volumes that need to be restored
   script: scripts/find-volumes-to-restore.py
@@ -110,8 +109,7 @@
   chatton.portainer.portainer_stack:
     username: admin
     password: '{{portainer.password}}'
-    docker_compose_file_path: '{{directories.docker_compose_directory}}/{{ item.name
-      }}/docker-compose.yml'
+    docker_compose_file_path: '{{ directories.docker_compose_directory }}/{{ item.name }}/docker-compose.yml'
     stack_name: '{{ item.name }}'
     endpoint_id: '{{ item.endpoint_id }}'
     state: present

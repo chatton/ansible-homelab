@@ -1,0 +1,5 @@
+---
+# defaults file for docker_s3_volume_restore
+docker_volume_s3_restores:
+  - volume_name: "linkding_data"
+    s3_key: "linkding_data/linkding_data-2022-09-01T21:32:54Z.tar.gz"

@@ -19,18 +19,19 @@
 - name: Extract only the volume mounts (not bind mounts)
   set_fact: volume_mounts="{{ result.container.Mounts | selectattr("Type", "equalto", "volume")}}"
 
+- debug: msg="{{volume_mounts}}"
+
 - name: Create Backup of Container Volumes
   community.docker.docker_container:
     name: "backup-container-{{ item.Name }}-{{ 10 | random }}"
     image: ubuntu
-    command: "tar cvf /backups/{{ item.Name }}-{{ backup_time }}.tar.gz {{ item.Destination }}"
+    command: "tar -czvf /backups/{{ item.Name }}-{{ backup_time }}.tar.gz /data"
     auto_remove: true
     detach: false # block until this container exists.
     state: started
     volumes:
+      - "{{ item.Name }}:/data"
       - /mnt/mergerfs/backups:/backups
-    volumes_from:
-      - "{{ container_backup }}"
   with_items: "{{ volume_mounts }}"
 
 - name: Start the container
