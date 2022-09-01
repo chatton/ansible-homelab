@@ -4,7 +4,8 @@
 # https://docs.docker.com/storage/volumes/#backup-restore-or-migrate-data-volumes
 
 
-- set_fact: backup_time="{{ ansible_date_time.iso8601 }}"
+- name: Determine backup timestamp.
+  set_fact: backup_time="{{ ansible_date_time.iso8601 }}"
 
 - name: Stop a container
   community.docker.docker_container:
@@ -19,8 +20,6 @@
 - name: Extract only the volume mounts (not bind mounts)
   set_fact: volume_mounts="{{ result.container.Mounts | selectattr("Type", "equalto", "volume")}}"
 
-- debug: msg="{{volume_mounts}}"
-
 - name: Create Backup of Container Volumes
   community.docker.docker_container:
     name: "backup-container-{{ item.Name }}-{{ 10 | random }}"
@@ -31,7 +30,7 @@
     state: started
     volumes:
       - "{{ item.Name }}:/data"
-      - /mnt/mergerfs/backups:/backups
+      - "{{ docker_host_backups_directory }}":/backups
   with_items: "{{ volume_mounts }}"
 
 - name: Start the container
@@ -45,7 +44,7 @@
     s3_url: "https://{{aws_s3.s3_url}}"
     bucket: "{{ aws_s3.bucket }}"
     object: "{{ item.Name }}/{{ item.Name }}-{{ backup_time }}.tar.gz"
-    src: /mnt/mergerfs/backups/{{ item.Name }}-{{ backup_time }}.tar.gz
+    src: {{ docker_host_backups_directory }}/{{ item.Name }}-{{ backup_time }}.tar.gz
     aws_access_key: "{{ aws_s3.aws_access_key }}"
     aws_secret_key: "{{ aws_s3.aws_secret_key }}"
     region: "{{ aws_s3.region }}"
