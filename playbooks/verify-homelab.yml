@@ -7,8 +7,7 @@
     - always
   tasks:
   - name: Docker Compose Files Exist
-    command: >-
-      stat {{directories.docker_compose_directory}}/{{ item.name }}/docker-compose.yml
+    command: stat {{directories.docker_compose_directory}}/{{ item.name }}/docker-compose.yml
     with_items: '{{services}}'
     changed_when: false
     register: docker_compose_stat

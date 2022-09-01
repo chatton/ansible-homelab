@@ -1,3 +1,4 @@
+---
 - name: Update packages and ensure users on all hosts
   tags: [always]
   hosts: all
@@ -22,7 +23,7 @@
   become: true
   pre_tasks:
   - name: Include vault variables.
-    include_vars: '{{vault_file}}'
+    include_vars: '../{{vault_file}}'
     tags: [always]
 
   roles:
@@ -41,7 +42,7 @@
 
   pre_tasks:
   - name: Include vault variables.
-    include_vars: '{{vault_file}}'
+    include_vars: '../{{vault_file}}'
     tags: [always]
 
   roles:

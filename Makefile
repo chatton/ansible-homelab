@@ -27,3 +27,9 @@ lint:
 	ansible-lint group_vars
 	ansible-lint roles
 	ansible-lint playbooks
+
+backup:
+	ansible-playbook playbooks/backup-docker-volumes.yml
+
+restore:
+	ansible-playbook playbooks/restore-docker-volumes.yml

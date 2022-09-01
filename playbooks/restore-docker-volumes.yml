@@ -1,0 +1,11 @@
+---
+- hosts: qnap
+  become: true
+  pre_tasks:
+  - name: Include vault variables.
+    include_vars: '../{{vault_file}}'
+    tags: [always]
+  roles:
+  - role: docker_restore
+    vars:
+      container_restore: linkding
