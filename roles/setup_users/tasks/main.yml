@@ -32,3 +32,8 @@
     user: '{{ homelab_user }}'
     state: present
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: Copy Bashrc
+  copy:
+    src: bash_rc
+    dest: "/home/{{ homelab_user }}/.bash_rc"
