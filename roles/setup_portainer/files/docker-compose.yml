@@ -1,17 +1,16 @@
----
 version: '3.2'
 services:
   portainer:
     labels:
-      ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.key: "nightly"
+      ie.cianhatton.backup.enabled: 'true'
+      ie.cianhatton.backup.key: nightly
     image: portainer/portainer-ce
-    container_name: "portainer"
+    container_name: portainer
     ports:
-      - "9000:9000"
+    - 9000:9000
     volumes:
-      - portainer_data:/data
-      - /var/run/docker.sock:/var/run/docker.sock
+    - portainer_data:/data
+    - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   portainer_data:

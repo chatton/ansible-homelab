@@ -43,9 +43,9 @@ services:
       - "/dev/dri:/dev/dri"                         # Intel QSV
     working_dir: "/photoprism" # do not change or remove
     volumes:
-      - {{ qnap.photoprism_dir}}/originals:/photoprism/originals               # Original media files (DO NOT REMOVE)
-      - {{ qnap.photoprism_dir}}/import:/photoprism/import                # *Optional* base folder from which files can be imported to originals
-      - {{ qnap.photoprism_dir}}/storage:/photoprism/storage                 # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+      - {{ directories.photoprism_dir}}/originals:/photoprism/originals               # Original media files (DO NOT REMOVE)
+      - {{ directories.photoprism_dir}}/import:/photoprism/import                # *Optional* base folder from which files can be imported to originals
+      - {{ directories.photoprism_dir}}/storage:/photoprism/storage                 # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
 
 
 networks:

@@ -16,6 +16,6 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - {{qnap.backups_dir}}:/backups
+      - {{directories.backups_dir}}:/backups
       - /tmp:/tmp
       - {{dockervolumebackup.config_directory}}/config.yml:{{dockervolumebackup.config_directory}}/config.yml

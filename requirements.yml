@@ -1,0 +1,11 @@
+---
+roles:
+  - src: sprat.mergerfs
+
+collections:
+  - name: https://github.com/chatton/ansible-portainer.git
+    type: git
+    version: master
+  - name: https://github.com/chatton/ansible-docker-backup.git,dev
+    type: git
+    version: master

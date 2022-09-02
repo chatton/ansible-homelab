@@ -1,14 +1,21 @@
+# @meta author: Cian Hatton
+# @meta description: >
+# Role to install docker. It also installs the docker and docker compose python
+# modules.
+# @end
+
+
 # following official instructions here: https://docs.docker.com/engine/install/debian/
 - name: Install packages using apt
   apt:
     name:
-      - ca-certificates
-      - curl
-      - gnupg2
-      - lsb-release
-      - pip
+    - ca-certificates
+    - curl
+    - gnupg2
+    - lsb-release
+    - pip
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Add Docker GPG apt Key
   apt_key:
@@ -24,12 +31,12 @@
 - name: Install docker packages using apt
   apt:
     name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-compose-plugin
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose-plugin
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Install Docker Module for Python
   pip:

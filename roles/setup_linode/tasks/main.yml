@@ -1,31 +1,27 @@
----
 - name: Include vault variables.
   include_vars: defaults/main-vault.yml
 
 - name: Create a new Linode.
   linode_v4:
-    label: "{{ label }}"
-    access_token: "{{ token }}"
-    type: "{{ type }}"
-    region: "{{ region }}"
+    label: '{{ label }}'
+    access_token: '{{ token }}'
+    type: '{{ type }}'
+    region: '{{ region }}'
     image: linode/debian11
-    root_pass: "{{ password }}"
-    authorized_keys: "{{ ssh_keys }}"
+    root_pass: '{{ password }}'
+    authorized_keys: '{{ ssh_keys }}'
     group: servers
-    state: "{{ state }}"
+    state: '{{ state }}'
   register: my_linode
 
 - name: Wait for SSH to come up
   local_action:
-    module: wait_for
-      host={{ my_linode.instance.ipv4[0] }}
-      port=22
-      search_regex=OpenSSH
+    module: wait_for host={{ my_linode.instance.ipv4[0] }} port=22 search_regex=OpenSSH
       timeout=320
 
 - name: Instance Details
   debug:
-    msg: "{{my_linode}}"
+    msg: '{{my_linode}}'
 
 - name: Update hosts.ini
   blockinfile:

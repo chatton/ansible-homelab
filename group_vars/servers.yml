@@ -1,10 +1,7 @@
----
 backups:
   schedule_keys:
-    monthly: "monthly"
-    nightly: "nightly"
-
-docker_compose_directory: /etc/docker-compose
+    monthly: monthly
+    nightly: nightly
 
 # TODO: docker_volume_backup exists in vault. Clean this up.
 dockervolumebackup:
@@ -26,17 +23,38 @@ olivetin:
 
 docker_networks: []
 
-homelab_group: cianhatton
 homelab_user: cianhatton
 
 configure_samba: true
 samba_group: smbgroup
 samba_user: smbuser
 users:
-  - name: cianhatton
-shares:
-  - /share
-  - /share/public_files
-  - /share/private_files
-  - /share/cian_files
+- name: cianhatton
+  group: cianhatton
+  passwordless_sudo: true
 
+shares:
+- /share
+- /share/public_files
+- /share/private_files
+- /share/cian_files
+
+directories:
+  # path on qnap where downloads go
+  downloads_dir: /mnt/ssd0/downloads
+  # path on qnap where plex transcoding happens
+  transcoding_dir: /mnt/ssd0/transcoding
+  # path on qnap where movies are stored
+  movies_dir: /mnt/mergerfs/media/movies
+  # path on qnap where tv shows are stored
+  tv_dir: /mnt/mergerfs/media/tv
+  # path on qnap where docker compose files are stored
+  docker_compose_directory: /etc/docker-compose
+  # path on qnap where backups are stored
+  backups_dir: /mnt/mergerfs/backups
+  # path where photoprism photos are stored
+  photoprism_dir: /mnt/mergerfs/photoprism
+
+desired_docker_images:
+- ubuntu:latest
+- busybox:latest

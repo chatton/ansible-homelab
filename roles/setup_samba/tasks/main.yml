@@ -1,54 +1,53 @@
----
 - name: Install samba packages using apt
   apt:
     name:
-      - samba
+    - samba
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Ensure samba group exists
   ansible.builtin.group:
-    name:  "{{samba_group}}"
+    name: '{{samba_group}}'
     state: present
     system: true
   notify:
-    - reload-samba
+  - reload-samba
 
 - name: Ensure samba user
   ansible.builtin.user:
-    name: "{{samba_user}}"
+    name: '{{samba_user}}'
     comment: Samba user
-    group: "{{samba_group}}"
+    group: '{{samba_group}}'
     shell: /bin/false
     create_home: false
   notify:
-    - reload-samba
+  - reload-samba
 
 - name: Add the User(s) to Samba group
   user:
-    name: "{{ item.name }}"
-    groups: "{{ samba_group }}"
-    append: yes
-  with_items: "{{users}}"
+    name: '{{ item.name }}'
+    groups: '{{ samba_group }}'
+    append: true
+  with_items: '{{users}}'
 
 - name: Ensure Share directories
   ansible.builtin.file:
-    path: "{{item}}"
-    recurse: yes
+    path: '{{item}}'
+    recurse: true
     state: directory
-    owner: "{{samba_user}}"
-    group: "{{samba_group}}"
-    mode: 'u+rw,g+rw'
-  with_items: "{{shares}}"
+    owner: '{{samba_user}}'
+    group: '{{samba_group}}'
+    mode: u+rw,g+rw
+  with_items: '{{shares}}'
   notify:
-    - reload-samba
+  - reload-samba
 
 - name: Copy smb conf files
   copy:
-    src: "{{item}}"
-    dest: "/etc/samba/{{item}}"
+    src: '{{item}}'
+    dest: /etc/samba/{{item}}
   with_items:
-    - smb.conf
-    - shares.conf
+  - smb.conf
+  - shares.conf
   notify:
-    - reload-samba
+  - reload-samba

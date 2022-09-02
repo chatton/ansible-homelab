@@ -1,0 +1,32 @@
+---
+- hosts: qnap
+  become: true
+  pre_tasks:
+  - name: Include vault variables.
+    include_vars: '../{{vault_file}}'
+    tags: [always]
+
+  tasks:
+    - name: Find Containers With Backup Label
+      register: docker_info
+      docker_host_info:
+        containers: true
+        containers_filters:
+          label:
+           - ie.cianhatton.backup.enabled=true
+      register: filter_output
+    - debug: msg="{{filter_output}}"
+
+    - name: Get Container Names
+      set_fact: container_names="{{ filter_output.containers  | map(attribute="Names")  | flatten }}"
+
+    - debug: msg="{{container_names}}"
+
+    - name: Backup Containers with backup label
+      include_role:
+          name: chatton.docker_backup.docker_s3_backup
+      vars:
+          container_backup: "{{ container_item | regex_replace('^\\/', '') }}"
+      with_items: "{{ container_names }}"
+      loop_control:
+        loop_var: container_item
