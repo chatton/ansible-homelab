@@ -28,8 +28,8 @@ lint:
 	ansible-lint roles
 	ansible-lint playbooks
 
-backup:
+backup: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml
 
-restore:
+restore: deps
 	ansible-playbook playbooks/restore-docker-volumes.yml

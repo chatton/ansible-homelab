@@ -1,3 +1,0 @@
----
-# defaults file for chatton.docker_backup
-docker_host_backups_directory: /mnt/mergerfs/backups

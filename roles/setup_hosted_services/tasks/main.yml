@@ -57,8 +57,7 @@
     name: requests
 
 - name: Docker | Find docker volumes
-  shell: docker volume ls -f name={{item.name}} --format '{{ '{{' }}  .Name {{ '}}'
-    }}'
+  shell: docker volume ls -f name={{item.name}} --format '{{ '{{' }}  .Name {{ '}}'}}'
   with_items: '{{services}}'
   register: find_volumes
   changed_when: false
@@ -68,36 +67,28 @@
 - name: Docker | Find volumes that need to be restored
   script: scripts/find-volumes-to-restore.py
   environment:
-    EXISTING_VOLUMES: "{{ find_volumes.results | map(attribute='stdout_lines') | list\
-      \ | flatten }}"
+    EXISTING_VOLUMES: "{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
     SERVICES: '{{ services }}'
-    DOCKER_COMPOSE_DIR: '{{directories.docker_compose_directory}}'
+    DOCKER_COMPOSE_DIR: '{{ directories.docker_compose_directory }}'
   args:
     executable: python3
   register: python_output
   changed_when: false
 
-- debug: msg="{{python_output.stdout_lines | list }}"
+- debug: msg="{{ python_output.stdout_lines | list }}"
 
-- name: Docker Volume Backup | Restore any missing backups from S3
-  when: restore_from_s3
-  docker_container:
-    command: restore-volume --s3 --volume {{item}}
-    image: ghcr.io/chatton/docker-volume-backup:v0.3.0
-    name: s3-restore-{{item}}
-    cleanup: true # delete container after it's done.
-    state: started # container should execute.
-    detach: no # task fails if container exits.
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /tmp:/tmp   # temp s3 archive goes here
-    env:
-      AWS_ACCESS_KEY_ID: '{{aws_s3.aws_access_key}}'
-      AWS_SECRET_ACCESS_KEY: '{{aws_s3.aws_secret_key}}'
-      AWS_DEFAULT_REGION: '{{aws_s3.region}}'
-      AWS_BUCKET: '{{aws_s3.bucket}}'
-      AWS_ENDPOINT: '{{aws_s3.s3_url}}'
-  with_items: '{{ python_output.stdout_lines }}'
+- set_fact:
+    restore_volumes: "{{ restore_volumes | default([]) + [{ 'volume_name': item}] }}"
+  with_items: "{{ python_output.stdout_lines | list }}"
+
+- name: Restore any missing volumes from S3
+  include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  when: restore_volumes is defined
+  vars:
+    docker_s3_volume_restore_force: false
+    docker_s3_volume_restore_latest_s3_key: true
+    docker_volume_s3_restores: "{{ restore_volumes }}"
 
 - name: Docker | Create required docker networks
   docker_network:

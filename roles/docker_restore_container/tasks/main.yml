@@ -32,7 +32,7 @@
   register: s3_list_output
   with_items: "{{ volume_mounts }}"
 
-- debug: msg="{ {s3_list_output }}"
+- debug: msg="{{ s3_list_output }}"
 
 - name: Extract s3 keys for container
   set_fact: container_s3_keys="{{ container_s3_keys | default([]) + [item.s3_keys | last] }}"
@@ -66,7 +66,7 @@
     volume_details: "{{ volume_details |default([]) + [ {'mount': item.0, 's3_key': item.1} ] }}"
   with_together:
     - "{{ volume_mounts }}"
-    - "{{ container_s3_keys }}"
+    - "{{ container_s3_keys }}"`
 
 - debug: msg="{{ volume_details }}"
 
