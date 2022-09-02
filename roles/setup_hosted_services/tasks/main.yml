@@ -112,3 +112,13 @@
     project_src: '{{directories.docker_compose_directory}}/{{ item.name }}'
     state: present
   with_items: '{{services}}'
+
+- name: Ensure Cron Backups
+  ansible.builtin.cron:
+    name: backup docker volumes
+    weekday: "0"
+    minute: "0"
+    hour: "3"
+    user: ansible
+    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml"
+    cron_file: ansible_docker_volume_backup
