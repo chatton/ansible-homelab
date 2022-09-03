@@ -4,7 +4,7 @@ services:
   plex:
     labels:
       ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.key: "{{backups.schedule_keys.monthly}}"
+      ie.cianhatton.backup.schedule: "{{backups.schedule_keys.monthly}}"
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
     ports:

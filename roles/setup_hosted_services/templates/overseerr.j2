@@ -4,7 +4,7 @@ services:
   overseerr:
     labels:
       ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.key: "{{backups.schedule_keys.nightly}}"
+      ie.cianhatton.backup.schedule: "{{backups.schedule_keys.nightly}}"
     image: sctx/overseerr:latest
     container_name: overseerr
     ports:

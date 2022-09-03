@@ -28,7 +28,6 @@
   with_items:
   - '{{dashy.config_directory}}'
   - '{{olivetin.config_directory}}'
-  - '{{dockervolumebackup.config_directory}}'
   - '{{directories.backups_dir}}/.s3tmp'
 
 - name: Dashy | Config Files
@@ -44,13 +43,6 @@
     dest: '{{olivetin.config_directory}}/{{olivetin.config_file}}'
   notify:
   - restart-olivetin
-
-- name: Docker Volume Backup | Config Files
-  template:
-    src: docker-volume-backup/config.j2
-    dest: '{{dockervolumebackup.config_directory}}/config.yml'
-  notify:
-  - restart-docker-volume-backup
 
 - name: Install python dependencies (requests)
   pip:
@@ -113,12 +105,21 @@
     state: present
   with_items: '{{services}}'
 
-- name: Ensure Cron Backups
+- name: Ensure Nightly Cron Backups
   ansible.builtin.cron:
-    name: backup docker volumes
+    name: backup docker volumes (nightly)
     weekday: "0"
     minute: "0"
     hour: "3"
     user: ansible
-    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml"
-    cron_file: ansible_docker_volume_backup
+    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly"
+    cron_file: ansible_nightly_docker_volume_backup
+
+- name: Ensure Monthly Cron Backups
+  ansible.builtin.cron:
+    name: backup docker volumes (monthly)
+    month: "*"
+    day : "1"
+    user: ansible
+    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly"
+    cron_file: ansible_monthly_docker_volume_backup

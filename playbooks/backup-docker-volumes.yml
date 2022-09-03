@@ -1,6 +1,11 @@
 ---
 - hosts: qnap
   become: true
+  vars:
+    # corrsponds to which category of backups will be used.
+    # determined based on the docker labels.
+    schedule: nightly
+
   pre_tasks:
   - name: Include vault variables.
     include_vars: '../{{vault_file}}'
@@ -13,7 +18,8 @@
         containers: true
         containers_filters:
           label:
-           - ie.cianhatton.backup.enabled=true
+           - "ie.cianhatton.backup.enabled=true"
+           - "ie.cianhatton.backup.schedule={{ schedule }}"
       register: filter_output
     - debug: msg="{{filter_output}}"
 
