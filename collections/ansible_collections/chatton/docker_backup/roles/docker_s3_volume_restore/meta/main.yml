@@ -1,0 +1,11 @@
+galaxy_info:
+    author: Cian Hatton
+    description: Role which restores a dockver volume from s3.
+    license: MIT
+    min_ansible_version: "2.1"
+    galaxy_tags: []
+    platforms:
+        - name: Debian
+          versions:
+              - all
+dependencies: []

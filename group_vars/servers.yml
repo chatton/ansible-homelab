@@ -4,10 +4,10 @@ backups:
     nightly: nightly
 
 # TODO: docker_volume_backup exists in vault. Clean this up.
-dockervolumebackup:
-  image: ghcr.io/chatton/docker-volume-backup
-  tag: pr-20
-  config_directory: /etc/docker-volume-backup
+#dockervolumebackup:
+#  image: ghcr.io/chatton/docker-volume-backup
+#  tag: pr-20
+#  config_directory: /etc/docker-volume-backup
 
 # dashy related config
 dashy:

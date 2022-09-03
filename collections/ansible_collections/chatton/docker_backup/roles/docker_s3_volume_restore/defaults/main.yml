@@ -1,0 +1,25 @@
+---
+# defaults file for docker_s3_volume_restore
+
+# forces a revert to the volume.
+docker_backup_restore_force: false
+# specify docker_backup_restore_latest_s3_key true to automatically determine the latest
+# backup in the s3 backup. The format which is expected has the prefix of volume_name/volume_name_*
+# this is the format the the "docker_s3_backup" role updloads them with.
+docker_backup_restore_latest_s3_key: false
+docker_backup_s3_restores: []
+# docker_backup_s3_restores:
+#  - volume_name: "linkding_data"
+#    s3_key: "linkding_data/linkding_data-2022-09-01T21:32:54Z.tar.gz"
+
+# dynamically find the latest linkding_data backup.
+# docker_backup_restore_latest_s3_key: true
+# docker_backup_s3_restores:
+#  - volume_name: "linkding_data"
+
+docker_backup_aws_s3_region: "us-east-1"
+docker_backup_aws_s3_bucket: "backups"
+docker_backup_aws_s3_url: ""
+docker_backup_aws_s3_aws_access_key: ""
+docker_backup_aws_s3_aws_secret_key: ""
+docker_backup_aws_s3_permissions: []

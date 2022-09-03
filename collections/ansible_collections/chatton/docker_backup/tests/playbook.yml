@@ -1,0 +1,106 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+  - name: Install Docker Module for Python
+    pip:
+      name:
+        - docker
+        - docker-compose
+        - boto3
+
+  - name: Remove Portainer
+    docker_compose:
+      project_src: 'tests'
+      state: absent
+
+  - name: Remove portainer volume
+    docker_volume:
+      name: portainer_data
+      state: absent
+
+  - name: Create portainer volume
+    docker_volume:
+      name: portainer_data
+      state: present
+
+  - name: Deploy Portainer
+    docker_compose:
+      project_src: 'tests'
+      state: present
+
+
+  - name: Portainer | Wait for ready
+    uri:
+      url: http://localhost:9000
+      method: GET
+      status_code: 200
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 1
+
+  - debug: msg="{{result}}"
+
+  - name: Register Portainer Admin User
+    uri:
+      url: http://localhost:9000/api/users/admin/init
+      method: POST
+      body:
+        Username: admin
+        Password: "adminadminadmin"
+      status_code: 200
+      body_format: json
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 1
+
+  - name: Backup Portainer
+    include_role:
+      name: docker_s3_backup
+    vars:
+      container_backup: portainer
+
+  - name: Remove Portainer
+    docker_compose:
+      project_src: 'tests'
+      state: absent
+
+  - name: Remove portainer volume
+    docker_volume:
+      name: portainer_data
+      state: absent
+
+  - name: Restore Portainer Volume
+    include_role:
+      name: docker_s3_volume_restore
+    vars:
+      docker_backup_restore_latest_s3_key: true
+      docker_backup_s3_restores:
+        - volume_name: portainer_data
+
+  - name: Deploy Portainer
+    docker_compose:
+      project_src: 'tests'
+      state: present
+
+  - name: Auth as old user
+    uri:
+      url: http://localhost:9000/api/auth
+      method: POST
+      body:
+        Username: admin
+        Password: "adminadminadmin"
+      status_code: 200
+      body_format: json
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 1
+
+  - assert:
+      that:
+        - result.status == 200

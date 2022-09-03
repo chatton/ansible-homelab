@@ -42,8 +42,8 @@ services:
   endpoint_id: 2
 - name: vpn-stack
   endpoint_id: 2
-- name: docker-volume-backup
-  endpoint_id: 2
+#- name: docker-volume-backup
+#  endpoint_id: 2
 - name: mariadb
   endpoint_id: 2
 - name: photoprism

@@ -1,0 +1,30 @@
+{
+ "collection_info": {
+  "namespace": "chatton",
+  "name": "docker_backup",
+  "version": "1.0.0",
+  "authors": [
+   "Cian Hatton cianhatton@protonmail.com"
+  ],
+  "readme": "README.md",
+  "tags": [],
+  "description": "A collection of roles which allow backup and restore of docker volumes.",
+  "license": [
+   "MIT"
+  ],
+  "license_file": "LICENSE",
+  "dependencies": {},
+  "repository": "https://github.com/chatton/ansible-docker-backup",
+  "documentation": "https://github.com/chatton/ansible-docker-backup#readme",
+  "homepage": "https://github.com/chatton/ansible-docker-backup",
+  "issues": "https://github.com/chatton/ansible-docker-backup/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "4f37593e42d3f2b5b2225b4aade83be41bee2a507b88546d3bbd79e061017173",
+  "format": 1
+ },
+ "format": 1
+}

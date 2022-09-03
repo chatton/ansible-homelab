@@ -1,0 +1,292 @@
+{
+ "files": [
+  {
+   "name": ".",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "LICENSE",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "eb1e623301bf97851c37dc8127635aba0407c91b8583725472905407facc3fb1",
+   "format": 1
+  },
+  {
+   "name": "requirements.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "49b26f38de2b9738843174e6e259cba40e33e50581dd8e2fdf3f881f88e8ace5",
+   "format": 1
+  },
+  {
+   "name": "plugins",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/filter",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/filter/filters.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "dcfb6a2c0e2437210beffc1fb8857fa80dc7fda8dde987bc3f627bd14363776e",
+   "format": 1
+  },
+  {
+   "name": "Makefile",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8e1aa2e50b6c38e0b2fcb86f3f8fd574603ad6d6ad0e25f717670e63a9f1ab33",
+   "format": 1
+  },
+  {
+   "name": "tests",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "tests/ansible.cfg",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "efb91542404527c3081e347a8833c54a0c6f6f7b975e400dd5c350aef9c2c822",
+   "format": 1
+  },
+  {
+   "name": "tests/playbook.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "a52f9f26b558f05a29a0447f10a1ea7ca96df1b7bc44a31b2727c624c267e3fb",
+   "format": 1
+  },
+  {
+   "name": "tests/docker-compose.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "0a293c4b8f09df4855a04529029205634389596a4d25b249500eac9d1a4cc24c",
+   "format": 1
+  },
+  {
+   "name": "tests/host_vars",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "tests/host_vars/localhost.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "388a868ea1dd4cded00276063b18f221bb3ed43040378fdcd6443dc2240d3db5",
+   "format": 1
+  },
+  {
+   "name": "tests/vault_key.sh",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "48884297731a934b4f0ad2cdb104f53c12341370d2413fa61a62fa3c4024eab4",
+   "format": 1
+  },
+  {
+   "name": "roles",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/vars",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/vars/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6c98c057bc941803da7172ff80160a669e987360bad34af5ea53593985f1443a",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/tasks",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/tasks/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "0fcf1fbf3fafdaf129a33876344c1ea07d54ca562c253cc81c5eebc806ff51a9",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/meta",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/meta/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8e707c10e6614fae3baf7f6199e74ff23dedf7128dd170b8ad9924ed2cd607bc",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/defaults",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_backup/defaults/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "cd31b1ba5dd374feac22fce70bb91bd948a391c27691f8cc49190427dfd360aa",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/vars",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/vars/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8cbb7ae1ada7a17063d49063a2ded3b3f784a9acc5b0b42a35d417134713a3d2",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/tasks",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/tasks/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "912b5afae6e9183741dd29242e1810ceb32deabb3624f2a2ccc2b1ea8984a45f",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/meta",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/meta/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "8495f3dccdbd037f3ba05f8c1f00d1de836e751b5f76504fa57d6e5c8032ccb0",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/defaults",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/defaults/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "b0ecdc12d3f7814ebfbded52d4db758462c2c69b34635e670ee7ee2322d6c44f",
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/handlers",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "roles/docker_s3_volume_restore/handlers/main.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "bda514ba267156bf4b25e378da315e16c28e110fbc4a4033c91e71e8d417bb1b",
+   "format": 1
+  },
+  {
+   "name": "README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "678fe27fb5f532e6c89a7538da7931d64f7d6522a4c857a2de5495afabaeaab3",
+   "format": 1
+  },
+  {
+   "name": ".gitignore",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "54c27deac980434757ea7dc177f753710633b9464576e23804c2d5f5bc549288",
+   "format": 1
+  },
+  {
+   "name": ".github",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".github/workflows",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".github/workflows/lint.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "aa67d9ff8c695a9c47d18c540186647ef12160ed924608a4adabf4d0bfb5510a",
+   "format": 1
+  },
+  {
+   "name": ".github/workflows/e2e.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "c78a395feeca4a7f3751cedd0666ad01c7d4e206ffecaf6928deefd0f8d9b384",
+   "format": 1
+  }
+ ],
+ "format": 1
+}
