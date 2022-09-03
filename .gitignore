@@ -4,3 +4,4 @@ stack.env
 linodehosts.ini
 test-playbook.yml
 roles/sprat.mergerfs
+collections
