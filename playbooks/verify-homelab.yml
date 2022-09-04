@@ -30,7 +30,7 @@
     register: image_details
   - name: Assert desired images exist
     assert:
-      that: {{item in image_details.images | map(attribute='RepoTags') | flatten: !!null ''}: !!null ''}
+      that: "{{ item in image_details.images | map(attribute='RepoTags') | flatten }}"
     with_items: '{{desired_docker_images}}'
 
   - name: Fetch Sudoers Files

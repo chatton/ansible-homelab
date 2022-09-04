@@ -1,27 +1,27 @@
-- name: Portainer | Create directory if it does not exist
+---
+- name: Portainer | Create directory if it does not exist.
   ansible.builtin.file:
-    path: '{{directories.docker_compose_directory}}'
+    path: '{{ directories.docker_compose_directory }}'
     state: directory
     mode: '0755'
 
-- name: Portainer | Copy docker compose file
-  copy:
+- name: Portainer | Copy docker compose file.
+  ansible.builtin.copy:
     src: docker-compose.yml
-    dest: '{{directories.docker_compose_directory}}/docker-compose.yml'
+    dest: '{{ directories.docker_compose_directory }}/docker-compose.yml'
 
 - name: Portainer | Check if volume exists
-  shell: docker volume ls -f name=portainer_portainer_data --format '{{ '{{' }}  .Name
-    {{ '}}' }}'
+  ansible.builtin.shell: docker volume ls -f name=portainer_portainer_data --format '{{ '{{' }}  .Name {{ '}}' }}'
   register: portainer_volume
   changed_when: false
 
 - name: Portainer | Pull images
   docker_image:
-    name: '{{item}}'
+    name: '{{ item }}'
     source: pull
   with_items:
-  - ubuntu
-  - busybox
+    - ubuntu
+    - busybox
 
 - name: Docker Volume Backup | Restore Portainer volume from S3
   when: (portainer_volume.stdout_lines | length) == 0
@@ -31,34 +31,17 @@
     name: s3-restore-portainer
     cleanup: true # delete container after it's done.
     state: started # container should execute.
-    detach: no # task fails if container exits.
+    detach: false # task fails if container exits.
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /tmp:/tmp   # temp s3 archive goes here
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp   # temp s3 archive goes here
     env:
-      AWS_ACCESS_KEY_ID: '{{aws_s3.aws_access_key}}'
-      AWS_SECRET_ACCESS_KEY: '{{aws_s3.aws_secret_key}}'
-      AWS_DEFAULT_REGION: '{{aws_s3.region}}'
-      AWS_BUCKET: '{{aws_s3.bucket}}'
-      AWS_ENDPOINT: '{{aws_s3.s3_url}}'
-
+      AWS_ACCESS_KEY_ID: '{{ aws_s3.aws_access_key }}'
+      AWS_SECRET_ACCESS_KEY: '{{ aws_s3.aws_secret_key }}'
+      AWS_DEFAULT_REGION: '{{ aws_s3.region }}'
+      AWS_BUCKET: '{{ aws_s3.bucket }}'
+      AWS_ENDPOINT: '{{ aws_s3.s3_url }}'
 
 - name: Portainer | Docker compose up
   community.docker.docker_compose:
-    project_src: '{{directories.docker_compose_directory}}/portainer'
-
-# Don't really need this as long as there is an S3 backup.
-#- name: Portainer | Register Admin User
-#  when: (portainer_volume.stdout_lines | length) == 0
-#  uri:
-#    url: http://localhost:9000/api/users/admin/init
-#    method: POST
-#    body:
-#      Username: admin
-#      Password: "{{portainer.password}}"
-#    status_code: 200
-#    body_format: json
-#  register: result
-#  until: result.status == 200
-#  retries: 60
-#  delay: 1
+    project_src: '{{ directories.docker_compose_directory }}/portainer'

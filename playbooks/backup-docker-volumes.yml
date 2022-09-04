@@ -1,5 +1,6 @@
 ---
-- hosts: qnap
+- name: Backup Docker Volumes.
+  hosts: qnap
   become: true
   vars:
     # corrsponds to which category of backups will be used.
@@ -8,12 +9,11 @@
 
   pre_tasks:
   - name: Include vault variables.
-    include_vars: '../{{vault_file}}'
+    include_vars: '../{{ vault_file }}'
     tags: [always]
 
   tasks:
     - name: Find Containers With Backup Label
-      register: docker_info
       docker_host_info:
         containers: true
         containers_filters:
@@ -21,12 +21,11 @@
            - "ie.cianhatton.backup.enabled=true"
            - "ie.cianhatton.backup.schedule={{ schedule }}"
       register: filter_output
-    - debug: msg="{{filter_output}}"
 
     - name: Get Container Names
       set_fact: container_names="{{ filter_output.containers  | map(attribute="Names")  | flatten }}"
 
-    - debug: msg="{{container_names}}"
+    - debug: msg="{{ container_names }}"
 
     - name: Backup Containers with backup label
       include_role:

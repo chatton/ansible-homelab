@@ -1,39 +1,42 @@
 # https://stackoverflow.com/questions/37333305/ansible-create-a-user-with-sudo-privileges
-- name: Install Sudo
-  apt:
+- name: Install Sudo.
+  ansible.builtin.apt:
     pkg:
-    - sudo
+      - sudo
     state: latest
     update_cache: true
 
-- name: Make sure we have a  groups
-  group:
+- name: Make sure we have a groups.
+  ansible.builtin.group:
     name: '{{ item.group }}'
     state: present
   with_items: '{{ users }}'
 
-- name: Add Users
+- name: Add Users.
   ansible.builtin.user:
     name: '{{ item.name }}'
     comment: '{{ item.name }} user'
     group: '{{ item.group }}'
   with_items: '{{ users }}'
 
-- name: Add sudoers
-  template:
+- name: Add sudoers.
+  ansible.builtin.template:
     src: sudoers.j2
-    dest: /etc/sudoers.d/{{item.name}}
+    dest: /etc/sudoers.d/{{ item.name }}
     mode: 0440
   with_items: '{{ users }}'
-  when: item.passwordless_sudo == true
+  when: item.passwordless_sudo
 
-- name: Set authorized key
+- name: Set authorized key.
   authorized_key:
     user: '{{ homelab_user }}'
     state: present
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-- name: Copy Bashrc
-  copy:
+- name: Copy Bashrc.
+  ansible.builtin.copy:
     src: bash_rc
     dest: "/home/{{ homelab_user }}/.bash_rc"
+    group: "{{ homelab_user }}"
+    owner: "{{ homelab_user }}"
+    mode: 0644

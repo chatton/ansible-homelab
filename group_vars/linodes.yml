@@ -9,7 +9,6 @@ services:
 - name: nextcloud
 - name: nginx-proxy-manager
 - name: uptime-kuma
-#- name: docker-volume-backup
 - name: mariadb
 - name: photoprism
 - name: olivetin

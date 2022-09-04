@@ -106,20 +106,22 @@
   with_items: '{{services}}'
 
 - name: Ensure Nightly Cron Backups
+  tags: ["cron"]
   ansible.builtin.cron:
     name: backup docker volumes (nightly)
     weekday: "0"
     minute: "0"
     hour: "3"
     user: ansible
-    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly"
+    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> /home/cianhatton/logs/nightly.log 2>&1"
     cron_file: ansible_nightly_docker_volume_backup
 
 - name: Ensure Monthly Cron Backups
+  tags: ["cron"]
   ansible.builtin.cron:
     name: backup docker volumes (monthly)
     month: "*"
     day : "1"
     user: ansible
-    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly"
+    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly >> /home/cianhatton/logs/monthly.log 2>&1"
     cron_file: ansible_monthly_docker_volume_backup

@@ -37,4 +37,4 @@
   include_role:
     name: sprat.mergerfs
   vars:
-    mergerfs_mounts: '{{mounts}}'
+    mergerfs_mounts: '{{ mounts }}'
