@@ -7,7 +7,7 @@
   user:
     name: ansible
     groups: root
-    system: true
+    shell: /bin/bash
 
 - name: Add ssh key for ansible
   authorized_key:

@@ -33,3 +33,6 @@ backup: deps
 
 restore: deps
 	ansible-playbook playbooks/restore-docker-volumes.yml
+
+cron:
+	ansible-playbook playbooks/setup-homelab.yml --tags cron
