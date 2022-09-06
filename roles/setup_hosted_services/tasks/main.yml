@@ -7,23 +7,6 @@
     - ubuntu
     - busybox
 
-- name: Docker Compose | Create a directory if it does not exist
-  ansible.builtin.file:
-    path: '{{ directories.docker_compose_directory }}/{{ item.name }}'
-    state: directory
-    mode: '0755'
-  with_items: '{{ services }}'
-
-- name: Docker Compose | Template Docker Compose Files
-  ansible.builtin.template:
-    src: '{{ item.name }}.j2'
-    dest: '{{ directories.docker_compose_directory }}/{{ item.name }}/docker-compose.yml'
-    owner: root
-    group: root
-    mode: 0440
-  with_items: '{{ services }}'
-
-
 - name: Directories | Ensure required directories
   ansible.builtin.file:
     path: '{{ item }}'
@@ -54,65 +37,15 @@
   notify:
     - restart-olivetin
 
-- name: Install python dependencies (requests)
-  ansible.builtin.pip:
-    name: requests
-
-- name: Docker | Find docker volumes
-  ansible.builtin.shell: docker volume ls -f name={{ item.name }} --format '{{ '{{' }}  .Name {{ '}}' }}'
-  with_items: '{{ services }}'
-  register: find_volumes
-  changed_when: false
-
-- name: Docker | Find volumes that need to be restored
-  ansible.builtin.script: scripts/find-volumes-to-restore.py
-  environment:
-    EXISTING_VOLUMES: "{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
-    SERVICES: '{{ services }}'
-    DOCKER_COMPOSE_DIR: '{{ directories.docker_compose_directory }}'
-  args:
-    executable: python3
-  register: python_output
-  changed_when: false
-
-- name: Build list of volumes to restore.
-  ansible.builtin.set_fact:
-    restore_volumes: "{{ restore_volumes | default([]) + [{'volume_name':item}] }}"
-  with_items: "{{ python_output.stdout_lines | list }}"
-
-- name: Restore any missing volumes from S3
+- name: Deploy Portainer stacks.
   ansible.builtin.include_role:
-    name: chatton.docker_backup.docker_s3_volume_restore
-  when: restore_volumes is defined
-  #  ignore_errors: true
+    name: deploy_portainer_stack
   vars:
-    docker_backup_restore_force: false
-    docker_backup_restore_latest_s3_key: true
-    docker_backup_s3_restores: "{{ restore_volumes }}"
-
-- name: Docker | Create required docker networks
-  docker_network:
-    name: '{{ item }}'
-  with_items: '{{ docker_networks }}'
-
-- name: Portainer | Update Stack
-  when: container_deployment_mode == "portainer"
-  chatton.portainer.portainer_stack:
-    username: admin
-    password: '{{ portainer.password }}'
-    docker_compose_file_path: '{{ directories.docker_compose_directory }}/{{ item.name }}/docker-compose.yml'
-    stack_name: '{{ item.name }}'
-    endpoint_id: '{{ item.endpoint_id }}'
-    state: present
-  with_items: '{{ services }}'
-
-- name: Docker compose | Update Stack
-  when: container_deployment_mode == "compose"
-  docker_compose:
-    project_src: '{{ directories.docker_compose_directory }}/{{ item.name }}'
-    state: present
-  with_items: '{{ services }}'
-
+    portainer_stack_name: "{{ item.name }}"
+    portainer_stack_endpoint_id: "{{ item.endpoint_id }}"
+    portainer_stack_external_docker_networks: "{{ item.external_docker_networks | default([]) }}"
+    portainer_stack_template_vars: "{{ item.template_vars | default({}) }}"
+  with_items: "{{ services }}"
 
 - name: Install Ansible pull
   tags: ["cron"]

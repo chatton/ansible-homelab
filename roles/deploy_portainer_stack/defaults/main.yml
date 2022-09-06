@@ -1,0 +1,12 @@
+---
+# defaults file for chatton.deploy_portainer_stack
+
+portainer_stack_name: ""
+# required directories for this stack
+portainer_stack_directories: []
+
+# variables passed to the template function
+portainer_stack_template_vars: {}
+
+# list of docker networks which should be created
+portainer_stack_external_docker_networks: []

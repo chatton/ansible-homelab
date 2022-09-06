@@ -32,6 +32,8 @@ services:
     endpoint_id: 2
   - name: nextcloud
     endpoint_id: 2
+    external_docker_networks:
+      - mariadb_net
   - name: dashboards
     endpoint_id: 2
   - name: nginx-proxy-manager
@@ -44,8 +46,12 @@ services:
     endpoint_id: 2
   - name: mariadb
     endpoint_id: 2
+    external_docker_networks:
+      - mariadb_net
   - name: photoprism
     endpoint_id: 2
+    external_docker_networks:
+      - mariadb_net
   - name: olivetin
     endpoint_id: 2
 
