@@ -77,6 +77,7 @@
   include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
   when: restore_volumes is defined
+  ignore_errors: true
   vars:
     docker_backup_restore_force: false
     docker_backup_restore_latest_s3_key: true
@@ -117,8 +118,8 @@
   tags: ["cron"]
   ansible.builtin.cron:
     name: backup docker volumes (nightly)
-    weekday: "0"
-    minute: "0"
+    weekday: "*"
+    minute: "*"
     hour: "4"
     user: "{{ homelab_user }}"
     job: "/home/{{ homelab_user }}/.local/bin/ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> ~/logs/nightly.log 2>&1"
