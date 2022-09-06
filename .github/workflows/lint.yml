@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: make deps
     - name: Test Directory
-      run: ansible-lint ${{ matrix.directory }}
+      run: ansible-lint ${{ matrix.directory }} --exclude roles/sprat.mergerfs --exclude roles/docker_restore_container
 
   format:
     runs-on: ubuntu-latest
