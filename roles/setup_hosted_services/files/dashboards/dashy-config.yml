@@ -1,96 +1,96 @@
 pageInfo:
   title: Home Lab
 sections:
-- name: Dashboards
-  widgets:
-  - type: gl-disk-space
-    options:
-      hostname: http://qnap:8083
-  - type: crypto-watch-list
-    options:
-      currency: GBP
-      sortBy: marketCap
-      assets:
-      - bitcoin
-      - ethereum
-      - cosmos
-      - polkadot
-      - dogecoin
-  items:
-  - title: Dash Dot
-    icon: hl-dashdot
-    url: http://qnap:3010
-  - title: Uptime Kuma
-    icon: hl-uptime-kuma
-    url: http://qnap:3001
-  - title: Tautulli
-    icon: hl-tautulli
-    url: http://qnap:8182
-  - title: Glances
-    icon: hl-glances
-    url: http://qnap:8083
-- name: Media Stack
-  items:
-  - title: Plex
-    icon: hl-plex
-    url: http://qnap:32400
-    statusCheck: false
-  - title: Sonarr
-    icon: hl-sonarr
-    url: http://qnap:8989
-  - title: Radarr
-    icon: hl-radarr
-    url: http://qnap:7878
-  - title: Overseerr
-    icon: hl-overseerr
-    url: http://qnap:5055
-  - title: Jackett
-    icon: hl-jackett
-    url: http://qnap:9117
-    statusCheckUrl: http://qnap:9117/health
-  - title: Qbittorrent
-    icon: hl-qbittorrent
-    url: http://qnap:15000
-- name: Tools
-  items:
-  - title: Photoprism
-    description: Manager photos
-    icon: hl-photoprism
-    url: http://qnap:2342
-  - title: Olivetin
-    description: Run pre-defined shell commands
-    icon: hl-olivetin
-    url: http://qnap:1337
-  - title: Linkding
-    description: Manager photos
-    icon: hl-linkding
-    url: http://qnap:9090
-  - title: Nextcloud
-    icon: hl-nextcloud
-    url: http://qnap:8081
-  - title: Mealie
-    icon: hl-mealie
-    url: https://mealie.cianhatton.ie
-  - title: Gitea
-    icon: hl-gitea
-    url: https://git.cianhatton.ie
-- name: System Admin
-  items:
-  - title: Portainer
-    description: Manage docker apps using Portainer
-    icon: hl-portainer
-    url: http://qnap:9000
-  - title: Webmin
-    icon: hl-webmin
-    url: http://qnap:10000
-  - title: Adminer
-    description: Manage MariaDB
-    icon: hl-adminer
-    url: http://qnap:3307
-  - title: Nginx Proxy Manager
-    description: Manage reverse proxies
-    icon: hl-nginx
-    url: http://qnap:8181
+  - name: Dashboards
+    widgets:
+      - type: gl-disk-space
+        options:
+          hostname: http://qnap:8083
+      - type: crypto-watch-list
+        options:
+          currency: GBP
+          sortBy: marketCap
+          assets:
+            - bitcoin
+            - ethereum
+            - cosmos
+            - polkadot
+            - dogecoin
+    items:
+      - title: Dash Dot
+        icon: hl-dashdot
+        url: http://qnap:3010
+      - title: Uptime Kuma
+        icon: hl-uptime-kuma
+        url: http://qnap:3001
+      - title: Tautulli
+        icon: hl-tautulli
+        url: http://qnap:8182
+      - title: Glances
+        icon: hl-glances
+        url: http://qnap:8083
+  - name: Media Stack
+    items:
+      - title: Plex
+        icon: hl-plex
+        url: http://qnap:32400
+        statusCheck: false
+      - title: Sonarr
+        icon: hl-sonarr
+        url: http://qnap:8989
+      - title: Radarr
+        icon: hl-radarr
+        url: http://qnap:7878
+      - title: Overseerr
+        icon: hl-overseerr
+        url: http://qnap:5055
+      - title: Jackett
+        icon: hl-jackett
+        url: http://qnap:9117
+        statusCheckUrl: http://qnap:9117/health
+      - title: Qbittorrent
+        icon: hl-qbittorrent
+        url: http://qnap:15000
+  - name: Tools
+    items:
+      - title: Photoprism
+        description: Manager photos
+        icon: hl-photoprism
+        url: http://qnap:2342
+      - title: Olivetin
+        description: Run pre-defined shell commands
+        icon: hl-olivetin
+        url: http://qnap:1337
+      - title: Linkding
+        description: Manager photos
+        icon: hl-linkding
+        url: http://qnap:9090
+      - title: Nextcloud
+        icon: hl-nextcloud
+        url: http://qnap:8081
+      - title: Mealie
+        icon: hl-mealie
+        url: https://mealie.cianhatton.ie
+      - title: Gitea
+        icon: hl-gitea
+        url: https://git.cianhatton.ie
+  - name: System Admin
+    items:
+      - title: Portainer
+        description: Manage docker apps using Portainer
+        icon: hl-portainer
+        url: http://qnap:9000
+      - title: Webmin
+        icon: hl-webmin
+        url: http://qnap:10000
+      - title: Adminer
+        description: Manage MariaDB
+        icon: hl-adminer
+        url: http://qnap:3307
+      - title: Nginx Proxy Manager
+        description: Manage reverse proxies
+        icon: hl-nginx
+        url: http://qnap:8181
 appConfig:
   statusCheck: true
   showSplashScreen: false

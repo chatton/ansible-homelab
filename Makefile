@@ -25,7 +25,7 @@ format:
 lint:
 	ansible-lint host_vars
 	ansible-lint group_vars
-	ansible-lint roles
+	ansible-lint roles --exclude roles/sprat.mergerfs --exclude roles/docker_restore_container
 	ansible-lint playbooks
 
 backup: deps

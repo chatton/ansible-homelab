@@ -63,10 +63,10 @@
 - debug: msg="{{ get_out }}"
 
 - set_fact:
-    volume_details: "{{ volume_details |default([]) + [ {'mount': item.0, 's3_key': item.1} ] }}"
+    volume_details: "{{ volume_details | default([]) + [ {'mount': item.0, 's3_key': item.1} ] }}"
   with_together:
     - "{{ volume_mounts }}"
-    - "{{ container_s3_keys }}"`
+    - "{{ container_s3_keys }}"
 
 - debug: msg="{{ volume_details }}"
 
