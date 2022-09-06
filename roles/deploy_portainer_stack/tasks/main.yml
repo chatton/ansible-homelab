@@ -52,13 +52,6 @@
     docker_backup_restore_latest_s3_key: true
     docker_backup_s3_restores: "{{ restore_volumes }}"
 
-- name: "Stack {{ portainer_stack_name }} | Create external docker networks."
-  docker_network:
-    name: '{{ docker_network }}'
-  loop: '{{ portainer_stack_external_docker_networks }}'
-  loop_control:
-    loop_var: docker_network
-
 - name: "Stack {{ portainer_stack_name }} | Update Portainer."
   chatton.portainer.portainer_stack:
     username: admin
