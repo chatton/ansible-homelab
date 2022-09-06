@@ -3,12 +3,17 @@
   ansible.builtin.file:
     path: '{{ directories.docker_compose_directory }}'
     state: directory
-    mode: '0755'
+    owner: root
+    group: root
+    mode: 0440
 
 - name: Portainer | Copy docker compose file.
   ansible.builtin.copy:
     src: docker-compose.yml
     dest: '{{ directories.docker_compose_directory }}/docker-compose.yml'
+    owner: root
+    group: root
+    mode: 0440
 
 - name: Portainer | Check if volume exists
   ansible.builtin.shell: docker volume ls -f name=portainer_portainer_data --format '{{ '{{' }}  .Name {{ '}}' }}'

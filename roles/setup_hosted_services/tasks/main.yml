@@ -85,26 +85,26 @@
 
 - name: Docker | Create required docker networks
   docker_network:
-    name: '{{item}}'
+    name: '{{ item }}'
   with_items: '{{ docker_networks }}'
 
 - name: Portainer | Update Stack
   when: container_deployment_mode == "portainer"
   chatton.portainer.portainer_stack:
     username: admin
-    password: '{{portainer.password}}'
+    password: '{{ portainer.password }}'
     docker_compose_file_path: '{{ directories.docker_compose_directory }}/{{ item.name }}/docker-compose.yml'
     stack_name: '{{ item.name }}'
     endpoint_id: '{{ item.endpoint_id }}'
     state: present
-  with_items: '{{services}}'
+  with_items: '{{ services }}'
 
 - name: Docker compose | Update Stack
   when: container_deployment_mode == "compose"
   docker_compose:
-    project_src: '{{directories.docker_compose_directory}}/{{ item.name }}'
+    project_src: '{{ directories.docker_compose_directory }}/{{ item.name }}'
     state: present
-  with_items: '{{services}}'
+  with_items: '{{ services }}'
 
 
 - name: Install Ansible pull
@@ -122,7 +122,9 @@
     minute: "*"
     hour: "4"
     user: "{{ homelab_user }}"
-    job: "/home/{{ homelab_user }}/.local/bin/ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> ~/logs/nightly.log 2>&1"
+    job: >
+      /home/{{ homelab_user }}/.local/bin/ansible-pull
+      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> ~/logs/nightly.log 2>&1
     cron_file: ansible_nightly_docker_volume_backup
     state: present
 
@@ -131,8 +133,10 @@
   ansible.builtin.cron:
     name: backup docker volumes (monthly)
     month: "*"
-    day : "1"
+    day: "1"
     user: "{{ homelab_user }}"
-    job: "/home/{{ homelab_user }}/.local/bin/ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly >> ~/logs/monthly.log 2>&1"
+    job: >
+      /home/{{ homelab_user }}/.local/bin/ansible-pull
+      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly >> ~/logs/monthly.log 2>&1
     cron_file: ansible_monthly_docker_volume_backup
     state: present
