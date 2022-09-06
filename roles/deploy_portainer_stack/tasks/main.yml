@@ -1,11 +1,11 @@
 ---
-- name: Docker Compose | Create a directory if it does not exist
+- name: "Stack {{ portainer_stack_name }} | Create a directory if it does not exist"
   ansible.builtin.file:
     path: '{{ directories.docker_compose_directory }}/{{ portainer_stack_name }}'
     state: directory
     mode: '0755'
 
-- name: Docker Compose | Template Docker Compose Files
+- name: "Stack {{ portainer_stack_name }} | Template Docker Compose File"
   ansible.builtin.template:
     src: '{{ portainer_stack_name }}.j2'
     dest: '{{ directories.docker_compose_directory }}/{{ portainer_stack_name }}/docker-compose.yml'
@@ -15,19 +15,19 @@
   vars:
     template_vars: "{{ portainer_stack_template_vars }}"
 
-- name: Directories | Ensure required directories
+- name: "Stack {{ portainer_stack_name }} | Ensure required directories"
   ansible.builtin.file:
     path: '{{ item }}'
     state: directory
     mode: '0755'
   with_items: "{{ portainer_stack_directories }}"
 
-- name: Docker | Find docker volumes
+- name: "Stack {{ portainer_stack_name }} | Find docker volumes"
   ansible.builtin.shell: docker volume ls -f name={{ portainer_stack_name }} --format '{{ '{{' }}  .Name {{ '}}' }}'
   register: find_volumes
   changed_when: false
 
-- name: Docker | Find volumes that need to be restored
+- name: "Stack {{ portainer_stack_name }} | Find docker volumes that need to be restored"
   ansible.builtin.script: scripts/find-volumes-to-restore.py
   environment:
     EXISTING_VOLUMES: "{{ find_volumes.stdout_lines }}"
@@ -38,12 +38,12 @@
   register: python_output
   changed_when: false
 
-- name: Build list of volumes to restore.
+- name: "Stack {{ portainer_stack_name }} | Build list of volumes to restore."
   ansible.builtin.set_fact:
     restore_volumes: "{{ restore_volumes | default([]) + [{'volume_name':item}] }}"
   with_items: "{{ python_output.stdout_lines | list }}"
 
-- name: Restore any missing volumes from S3
+- name: "Stack {{ portainer_stack_name }} | Restore any missing volumes from S3"
   ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
   when: restore_volumes is defined
@@ -52,14 +52,14 @@
     docker_backup_restore_latest_s3_key: true
     docker_backup_s3_restores: "{{ restore_volumes }}"
 
-- name: Docker | Create required docker networks
+- name: "Stack {{ portainer_stack_name }} | Create external docker networks."
   docker_network:
     name: '{{ docker_network }}'
   loop: '{{ portainer_stack_external_docker_networks }}'
   loop_control:
     loop_var: docker_network
 
-- name: Portainer | Update Stack
+- name: "Stack {{ portainer_stack_name }} | Update Portainer."
   chatton.portainer.portainer_stack:
     username: admin
     password: '{{ portainer.password }}'

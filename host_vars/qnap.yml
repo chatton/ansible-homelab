@@ -54,11 +54,3 @@ services:
       - mariadb_net
   - name: olivetin
     endpoint_id: 2
-
-# any additional docker networks that should be created
-docker_networks:
-  - mariadb_net
-
-# use portainer
-container_deployment_mode: portainer
-restore_from_s3: true
