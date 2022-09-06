@@ -8,9 +8,9 @@
     schedule: nightly
 
   pre_tasks:
-  - name: Include vault variables.
-    include_vars: '../{{ vault_file }}'
-    tags: [always]
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
 
   tasks:
     - name: Find Containers With Backup Label
@@ -18,20 +18,18 @@
         containers: true
         containers_filters:
           label:
-           - "ie.cianhatton.backup.enabled=true"
-           - "ie.cianhatton.backup.schedule={{ schedule }}"
+            - "ie.cianhatton.backup.enabled=true"
+            - "ie.cianhatton.backup.schedule={{ schedule }}"
       register: filter_output
 
     - name: Get Container Names
-      set_fact: container_names="{{ filter_output.containers  | map(attribute="Names")  | flatten }}"
-
-    - debug: msg="{{ container_names }}"
+      ansible.builtin.set_fact: container_names="{{ filter_output.containers | map(attribute="Names") | flatten }}"
 
     - name: Backup Containers with backup label
-      include_role:
-          name: chatton.docker_backup.docker_s3_backup
+      ansible.builtin.include_role:
+        name: chatton.docker_backup.docker_s3_backup
       vars:
-          container_backup: "{{ container_item | regex_replace('^\\/', '') }}"
+        container_backup: "{{ container_item | regex_replace('^\\/', '') }}"
       with_items: "{{ container_names }}"
       loop_control:
         loop_var: container_item

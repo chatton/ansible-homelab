@@ -1,9 +1,10 @@
 ---
-- hosts: qnap
+- name: Restore a docker volume.
+  hosts: qnap
   become: true
   pre_tasks:
   - name: Include vault variables.
-    include_vars: '../{{vault_file}}'
+    ansible.builtin.include_vars: '../{{ vault_file }}'
     tags: [always]
   roles:
     - role: chatton.docker_backup.docker_s3_volume_restore

@@ -1,10 +1,11 @@
+---
 - name: Update Packages
-  apt:
+  ansible.builtin.apt:
     upgrade: dist
     update_cache: true
 
 - name: Create ansible user
-  user:
+  ansible.builtin.user:
     name: ansible
     groups: root
     shell: /bin/bash
@@ -16,7 +17,7 @@
     key: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
 
 - name: Add sudoers file for ansible
-  copy:
+  ansible.builtin.copy:
     src: sudoer_ansible
     dest: /etc/sudoers.d/ansible
     owner: root
