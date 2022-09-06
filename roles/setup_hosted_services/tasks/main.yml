@@ -1,63 +1,71 @@
+---
 - name: Docker | Pull images
   docker_image:
-    name: '{{item}}'
+    name: '{{ item }}'
     source: pull
   with_items:
-  - ubuntu
-  - busybox
+    - ubuntu
+    - busybox
 
 - name: Docker Compose | Create a directory if it does not exist
-  file:
-    path: '{{directories.docker_compose_directory}}/{{item.name}}'
+  ansible.builtin.file:
+    path: '{{ directories.docker_compose_directory }}/{{ item.name }}'
     state: directory
     mode: '0755'
-  with_items: '{{services}}'
+  with_items: '{{ services }}'
 
 - name: Docker Compose | Template Docker Compose Files
-  template:
-    src: '{{item.name}}.j2'
-    dest: '{{directories.docker_compose_directory}}/{{item.name}}/docker-compose.yml'
-  with_items: '{{services}}'
+  ansible.builtin.template:
+    src: '{{ item.name }}.j2'
+    dest: '{{ directories.docker_compose_directory }}/{{ item.name }}/docker-compose.yml'
+    owner: root
+    group: root
+    mode: 0440
+  with_items: '{{ services }}'
 
 
 - name: Directories | Ensure required directories
-  file:
-    path: '{{item}}'
+  ansible.builtin.file:
+    path: '{{ item }}'
     state: directory
     mode: '0755'
   with_items:
-  - '{{dashy.config_directory}}'
-  - '{{olivetin.config_directory}}'
-  - '{{directories.backups_dir}}/.s3tmp'
+    - '{{ dashy.config_directory }}'
+    - '{{ olivetin.config_directory }}'
+    - '{{ directories.backups_dir }}/.s3tmp'
 
 - name: Dashy | Config Files
-  copy:
-    src: '{{dashy.source_file}}'
-    dest: '{{dashy.config_directory}}/{{dashy.config_file}}'
+  ansible.builtin.copy:
+    src: '{{ dashy.source_file }}'
+    dest: '{{ dashy.config_directory }}/{{ dashy.config_file }}'
+    owner: root
+    group: root
+    mode: 0440
   notify:
-  - restart-dashy
+    - restart-dashy
 
 - name: Olivetin | Config Files
-  copy:
-    src: '{{olivetin.source_file}}'
-    dest: '{{olivetin.config_directory}}/{{olivetin.config_file}}'
+  ansible.builtin.copy:
+    src: '{{ olivetin.source_file }}'
+    dest: '{{ olivetin.config_directory }}/{{ olivetin.config_file }}'
+    owner: root
+    group: root
+    mode: 0440
   notify:
-  - restart-olivetin
+    - restart-olivetin
 
 - name: Install python dependencies (requests)
-  pip:
+  ansible.builtin.pip:
     name: requests
 
 - name: Docker | Find docker volumes
-  shell: docker volume ls -f name={{item.name}} --format '{{ '{{' }}  .Name {{ '}}'}}'
-  with_items: '{{services}}'
+  ansible.builtin.shell: docker volume ls -f name={{ item.name }} --format '{{ '{{' }}  .Name {{ '}}' }}'
+  with_items: '{{ services }}'
   register: find_volumes
   changed_when: false
 
-- debug: msg="{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
-
 - name: Docker | Find volumes that need to be restored
-  script: scripts/find-volumes-to-restore.py
+  ansible.builtin.script: scripts/find-volumes-to-restore.py
   environment:
     EXISTING_VOLUMES: "{{ find_volumes.results | map(attribute='stdout_lines') | list | flatten }}"
     SERVICES: '{{ services }}'
@@ -67,16 +75,16 @@
   register: python_output
   changed_when: false
 
-- debug: msg="{{ python_output.stdout_lines | list }}"
-
-- set_fact:
-    restore_volumes: "{{ restore_volumes | default([]) + [{ 'volume_name': item}] }}"
+- name: Build list of volumes to restore.
+  ansible.builtin.set_fact:
+    restore_volumes: "{{ restore_volumes | default([]) + [{'volume_name':item}] }}"
   with_items: "{{ python_output.stdout_lines | list }}"
 
 - name: Restore any missing volumes from S3
-  include_role:
+  ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
   when: restore_volumes is defined
+  #  ignore_errors: true
   vars:
     docker_backup_restore_force: false
     docker_backup_restore_latest_s3_key: true
@@ -84,42 +92,58 @@
 
 - name: Docker | Create required docker networks
   docker_network:
-    name: '{{item}}'
+    name: '{{ item }}'
   with_items: '{{ docker_networks }}'
 
 - name: Portainer | Update Stack
   when: container_deployment_mode == "portainer"
   chatton.portainer.portainer_stack:
     username: admin
-    password: '{{portainer.password}}'
+    password: '{{ portainer.password }}'
     docker_compose_file_path: '{{ directories.docker_compose_directory }}/{{ item.name }}/docker-compose.yml'
     stack_name: '{{ item.name }}'
     endpoint_id: '{{ item.endpoint_id }}'
     state: present
-  with_items: '{{services}}'
+  with_items: '{{ services }}'
 
 - name: Docker compose | Update Stack
   when: container_deployment_mode == "compose"
   docker_compose:
-    project_src: '{{directories.docker_compose_directory}}/{{ item.name }}'
+    project_src: '{{ directories.docker_compose_directory }}/{{ item.name }}'
     state: present
-  with_items: '{{services}}'
+  with_items: '{{ services }}'
 
+
+- name: Install Ansible pull
+  tags: ["cron"]
+  ansible.builtin.pip:
+    name:
+      - ansible
+
+# TODO: need to specify ansible pull directly, it doesn't find it when it's in PATH
 - name: Ensure Nightly Cron Backups
+  tags: ["cron"]
   ansible.builtin.cron:
     name: backup docker volumes (nightly)
-    weekday: "0"
-    minute: "0"
-    hour: "3"
-    user: ansible
-    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly"
+    weekday: "*"
+    minute: "*"
+    hour: "4"
+    user: "{{ homelab_user }}"
+    job: >
+      /home/{{ homelab_user }}/.local/bin/ansible-pull
+      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> ~/logs/nightly.log 2>&1
     cron_file: ansible_nightly_docker_volume_backup
+    state: present
 
 - name: Ensure Monthly Cron Backups
+  tags: ["cron"]
   ansible.builtin.cron:
     name: backup docker volumes (monthly)
     month: "*"
-    day : "1"
-    user: ansible
-    job: "ansible-pull -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly"
+    day: "1"
+    user: "{{ homelab_user }}"
+    job: >
+      /home/{{ homelab_user }}/.local/bin/ansible-pull
+      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly >> ~/logs/monthly.log 2>&1
     cron_file: ansible_monthly_docker_volume_backup
+    state: present

@@ -1,10 +1,9 @@
 # handlers file for setup_hosted_services
 - name: restart-dashy
-  command: docker restart dashy
-  ignore_errors: true
+  ansible.builtin.command: docker restart dashy
 
 - name: restart-olivetin
-  command: docker restart olivetin
+  ansible.builtin.command: docker restart olivetin
 
 - name: restart-docker-volume-backup
-  command: docker restart docker-volume-backup
+  ansible.builtin.command: docker restart docker-volume-backup

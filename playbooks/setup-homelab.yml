@@ -4,51 +4,51 @@
   hosts: all
   become: true
   pre_tasks:
-  - name: Update Packages
-    apt:
-      upgrade: dist
-      update_cache: true
+    - name: Update Packages
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: true
   roles:
-  - role: setup_users
+    - role: setup_users
 
 - name: Install docker on docker hosts
   hosts: dockerhosts
   become: true
   roles:
-  - role: setup_docker
-    tags: [setup, docker]
+    - role: setup_docker
+      tags: [setup, docker]
 
 - name: Setup and deploy services on the QNAP
   hosts: qnap
   become: true
   pre_tasks:
-  - name: Include vault variables.
-    include_vars: '../{{vault_file}}'
-    tags: [always]
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
 
   roles:
-  - role: setup_mergerfs
-    tags: [mergerfs]
-  - role: setup_samba
-    tags: [samba]
-  - role: setup_portainer
-    tags: [services, portainer]
-  - role: setup_hosted_services
-    tags: [services]
+    - role: setup_mergerfs
+      tags: [mergerfs]
+    - role: setup_samba
+      tags: [samba]
+    - role: setup_portainer
+      tags: [services, portainer]
+    - role: setup_hosted_services
+      tags: [services]
 
 
-- hosts: linodes
+- name: Setup home lab on linode instances.
+  hosts: linodes
   become: true
-
   pre_tasks:
-  - name: Include vault variables.
-    include_vars: '../{{vault_file}}'
-    tags: [always]
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
 
   roles:
-  - role: setup_samba
-    tags: [samba]
-  - role: setup_docker
-    tags: [docker]
-  - role: setup_hosted_services
-    tags: [services]
+    - role: setup_samba
+      tags: [samba]
+    - role: setup_docker
+      tags: [docker]
+    - role: setup_hosted_services
+      tags: [services]

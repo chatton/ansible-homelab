@@ -1,5 +1,6 @@
+---
 - name: Include vault variables.
-  include_vars: defaults/main-vault.yml
+  ansible.builtin.include_vars: defaults/main-vault.yml
 
 - name: Create a new Linode.
   linode_v4:
@@ -15,19 +16,22 @@
   register: my_linode
 
 - name: Wait for SSH to come up
-  local_action:
-    module: wait_for host={{ my_linode.instance.ipv4[0] }} port=22 search_regex=OpenSSH
-      timeout=320
+  delegate_to: localhost
+  ansible.builtin.wait_for:
+    host: "{{ my_linode.instance.ipv4[0] }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 320
 
 - name: Instance Details
-  debug:
-    msg: '{{my_linode}}'
+  ansible.builtin.debug:
+    msg: '{{ my_linode }}'
 
-- name: Update hosts.ini
-  blockinfile:
-    path: hosts.ini
-    block: |
-      [linode]
-      {% for host in hosts %}
-      {{host.user}}@{{host.ip}}
-      {% endfor %}
+# - name: Update hosts.ini
+#   blockinfile:
+#    path: hosts.ini
+#    block: |
+#      [linode]
+#      {% for host in linode_hosts %}
+#      {{ host.user }}@{{ host.ip }}
+#      {% endfor %}

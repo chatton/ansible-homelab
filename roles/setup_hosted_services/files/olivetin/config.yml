@@ -5,19 +5,19 @@ logLevel: INFO
 # Actions (buttons) to show up on the WebUI:
 actions:
   # Docs: https://docs.olivetin.app/action-container-control.html
-- title: Restart Plex
-  icon: plex
-  shell: docker restart plex
-  timeout: 30
-- title: Restart Dashy
-  icon: restart
-  shell: docker restart dashy
-  timeout: 30
-- title: Restart Dashy 2
-  icon: restart
-  shell: docker restart dashy
-  timeout: 30
-- title: Restart Olivetin
-  icon: restart
-  shell: docker restart olivetin
-  timeout: 30
+  - title: Restart Plex
+    icon: plex
+    shell: docker restart plex
+    timeout: 30
+  - title: Restart Dashy
+    icon: restart
+    shell: docker restart dashy
+    timeout: 30
+  - title: Restart Dashy 2
+    icon: restart
+    shell: docker restart dashy
+    timeout: 30
+  - title: Restart Olivetin
+    icon: restart
+    shell: docker restart olivetin
+    timeout: 30

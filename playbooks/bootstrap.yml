@@ -7,12 +7,13 @@
   hosts: localhost
   connection: local
   tasks:
-  - name: Generate an OpenSSH rsa keypair for ansible
-    community.crypto.openssh_keypair:
-      path: ~/.ssh/ansible
-      passphrase: ''
+    - name: Generate an OpenSSH rsa keypair for ansible
+      community.crypto.openssh_keypair:
+        path: ~/.ssh/ansible
+        passphrase: ''
 
-- hosts: all
+- name: Bootstrap Ansible hosts.
+  hosts: all
   become: true
   roles:
-  - role: bootstrap
+    - role: bootstrap

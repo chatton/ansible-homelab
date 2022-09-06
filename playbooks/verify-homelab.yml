@@ -1,48 +1,48 @@
 ---
-- hosts: all
+- name: Verify HomeLab has been correctly set up.
+  hosts: all
   become: true
   pre_tasks:
-  - name: Include vault variables.
-    include_vars: ../{{vault_file}}
-    tags:
-    - always
+    - name: Include vault variables.
+      ansible.builtin.include_vars: ../{{ vault_file }}
+      tags:
+        - always
   tasks:
-  - name: Docker Compose Files Exist
-    command: stat {{directories.docker_compose_directory}}/{{ item.name }}/docker-compose.yml
-    with_items: '{{services}}'
-    changed_when: false
-    register: docker_compose_stat
+    - name: Docker Compose Files Exist
+      ansible.builtin.command: stat {{ directories.docker_compose_directory }}/{{ item.name }}/docker-compose.yml
+      with_items: '{{ services }}'
+      changed_when: false
+      register: docker_compose_stat
 
-  - name: Assert all Docker Compose files were created
-    assert:
-      that: item.rc == 0
-    with_items: '{{docker_compose_stat.results}}'
+    - name: Assert all Docker Compose files were created
+      ansible.builtin.assert:
+        that: item.rc == 0
+      with_items: '{{ docker_compose_stat.results }}'
 
-  - name: Populate service facts
-    service_facts: {}
-  - name: Assert docker is installed and started
-    assert:
-      that:
-      - ansible_facts.services.docker.state == "running"
-      - ansible_facts.services['docker.service'].status == "enabled"
-  - name: Inspect all images
-    docker_image_info: {}
-    register: image_details
-  - name: Assert desired images exist
-    assert:
-      that: {{item in image_details.images | map(attribute='RepoTags') | flatten: !!null ''}: !!null ''}
-    with_items: '{{desired_docker_images}}'
+    - name: Populate service facts
+      ansible.builtin.service_facts: {}
 
-  - name: Fetch Sudoers Files
-    command: stat /etc/sudoers.d/{{item.name}}
-    changed_when: false
-    register: sudoers_stat
-    with_items: '{{users}}'
-    when: item.passwordless_sudo == true
+    - name: Assert docker is installed and started
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services.docker.state == "running"
+          - ansible_facts.services['docker.service'].status == "enabled"
+    - name: Inspect all images
+      docker_image_info: {}
+      register: image_details
+    - name: Assert desired images exist
+      ansible.builtin.assert:
+        that: "{{ item in image_details.images | map(attribute='RepoTags') | flatten }}"
+      with_items: '{{ desired_docker_images }}'
 
-  - name: Assert sudoers files are created
-    assert:
-      that: item.rc == 0
-    with_items: '{{sudoers_stat.results}}'
+    - name: Fetch Sudoers Files
+      ansible.builtin.command: stat /etc/sudoers.d/{{ item.name }}
+      changed_when: false
+      register: sudoers_stat
+      with_items: '{{ users }}'
+      when: item.passwordless_sudo
 
-
+    - name: Assert sudoers files are created
+      ansible.builtin.assert:
+        that: item.rc == 0
+      with_items: '{{ sudoers_stat.results }}'

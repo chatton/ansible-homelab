@@ -1,10 +1,12 @@
 galaxy_info:
   author: Cian Hatton
   namespace: chatton
-  description: Bootstrap ansible
-  company: your company (optional)
+  description: Setup Docker
   license: MIT
-  min_ansible_version: 2.1
+  min_ansible_version: "2.1"
   galaxy_tags: []
-
+  platforms:
+    - name: Debian
+      versions:
+        - all
 dependencies: []
