@@ -32,6 +32,8 @@ services:
     endpoint_id: 2
   - name: nextcloud
     endpoint_id: 2
+    external_docker_networks:
+      - mariadb_net
   - name: dashboards
     endpoint_id: 2
   - name: nginx-proxy-manager
@@ -44,15 +46,11 @@ services:
     endpoint_id: 2
   - name: mariadb
     endpoint_id: 2
+    external_docker_networks:
+      - mariadb_net
   - name: photoprism
     endpoint_id: 2
+    external_docker_networks:
+      - mariadb_net
   - name: olivetin
     endpoint_id: 2
-
-# any additional docker networks that should be created
-docker_networks:
-  - mariadb_net
-
-# use portainer
-container_deployment_mode: portainer
-restore_from_s3: true

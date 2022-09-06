@@ -7,11 +7,12 @@ from pathlib import Path
 
 def main():
     existing = eval(os.getenv("EXISTING_VOLUMES"))
-    services = eval(os.getenv("SERVICES"))
+    stack_name = os.getenv("STACK_NAME")
     docker_compose_dir = os.getenv("DOCKER_COMPOSE_DIR")
 
     full_volume_names = []
     missing_volumes = []
+    services = [{"name": stack_name}]
     for service in services:
         service_name = service["name"]
         docker_file = f"{docker_compose_dir}/{service_name}/docker-compose.yml"
