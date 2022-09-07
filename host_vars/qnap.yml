@@ -30,6 +30,8 @@ devices:
 external_docker_networks:
   - mariadb_net
 
+ansible_pull_path: /home/{{ homelab_user }}/.local/bin/ansible-pull
+
 portainer_endpoint: 2
 
 services:

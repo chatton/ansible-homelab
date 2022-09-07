@@ -5,3 +5,5 @@ portainer_endpoint: 23
 services:
   - name: linkding
     template_vars: {}
+
+ansible_pull_path: /usr/local/bin/ansible-pull
