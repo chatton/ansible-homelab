@@ -15,5 +15,6 @@
 - name: Bootstrap Ansible hosts.
   hosts: all
   become: true
+  become_method: su
   roles:
     - role: bootstrap

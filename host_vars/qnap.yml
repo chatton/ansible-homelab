@@ -1,6 +1,7 @@
 # all encrypted variables should go in the linked file.
 vault_file: vault_vars/qnap-vault.yml
 # any qnap specific variables go here
+configure_mergerfs: true
 mounts:
   - path: /mnt/mergerfs
     state: mounted
@@ -9,6 +10,10 @@ mounts:
       - /mnt/data/device1
       - /mnt/data/device2
     options: allow_other,use_ino
+
+
+configure_samba: true
+portainer_host: true
 
 devices:
   - uuid: a54c1bde-1400-4975-bf24-08c603ca3a11     # /dev/sdc1
@@ -25,48 +30,37 @@ devices:
 external_docker_networks:
   - mariadb_net
 
+ansible_pull_path: /home/{{ homelab_user }}/.local/bin/ansible-pull
+
+portainer_endpoint: 2
+
 services:
   - name: gitea
-    endpoint_id: &qnap_endpoint 2
     template_vars:
       image: gitea/gitea
       tag: 1.16.9
   - name: mealie
-    endpoint_id: *qnap_endpoint
-    template_vars: {}
-  - name: linkding
-    endpoint_id: *qnap_endpoint
     template_vars: {}
   - name: overseerr
-    endpoint_id: *qnap_endpoint
     template_vars: {}
   - name: nextcloud
-    endpoint_id: *qnap_endpoint
     template_vars:
       default_network: mariadb_net
   - name: dashboards
-    endpoint_id: *qnap_endpoint
     template_vars: {}
   - name: nginx-proxy-manager
-    endpoint_id: *qnap_endpoint
     template_vars: {}
   - name: plex
-    endpoint_id: *qnap_endpoint
     template_vars: {}
   - name: uptime-kuma
-    endpoint_id: *qnap_endpoint
     template_vars: {}
   - name: vpn-stack
-    endpoint_id: *qnap_endpoint
     template_vars: {}
   - name: mariadb
-    endpoint_id: *qnap_endpoint
     template_vars:
       default_network: mariadb_net
   - name: photoprism
-    endpoint_id: *qnap_endpoint
     template_vars:
       default_network: mariadb_net
   - name: olivetin
-    endpoint_id: *qnap_endpoint
     template_vars: {}

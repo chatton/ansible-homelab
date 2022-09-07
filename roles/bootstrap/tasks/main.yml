@@ -1,4 +1,12 @@
 ---
+- name: Add sources list
+  ansible.builtin.copy:
+    src: sources_list
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: 0440
+
 - name: Update Packages
   ansible.builtin.apt:
     upgrade: dist
@@ -16,10 +24,13 @@
     state: present
     key: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
 
-- name: Add sudoers file for ansible
-  ansible.builtin.copy:
-    src: sudoer_ansible
-    dest: /etc/sudoers.d/ansible
+- name: Add sudoers files
+  ansible.builtin.template:
+    src: sudoer_file
+    dest: "/etc/sudoers.d/{{ item }}"
     owner: root
     group: root
     mode: 0440
+  with_items:
+    - ansible
+    - cianhatton
