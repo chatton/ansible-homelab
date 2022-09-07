@@ -1,6 +1,6 @@
 ---
 - name: Backup Docker Volumes.
-  hosts: qnap
+  hosts: servers
   become: true
   vars:
     # corrsponds to which category of backups will be used.
