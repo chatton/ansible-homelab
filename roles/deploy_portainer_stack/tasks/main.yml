@@ -56,6 +56,7 @@
   chatton.portainer.portainer_stack:
     username: admin
     password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
     docker_compose_file_path: '{{ directories.docker_compose_directory }}/{{ portainer_stack_name }}/docker-compose.yml'
     stack_name: '{{ portainer_stack_name }}'
     endpoint_id: '{{ portainer_stack_endpoint_id }}'

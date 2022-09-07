@@ -1,1 +1,7 @@
 ---
+vault_file: vault_vars/qnap-vault.yml
+
+portainer_endpoint: 23
+services:
+  - name: linkding
+    template_vars: {}

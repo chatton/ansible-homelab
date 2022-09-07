@@ -1,4 +1,9 @@
 ---
+- name: Install Modules for Python
+  ansible.builtin.pip:
+    name:
+      - boto3
+
 - name: Docker | Pull images
   docker_image:
     name: '{{ item }}'
@@ -47,7 +52,7 @@
     name: deploy_portainer_stack
   vars:
     portainer_stack_name: "{{ item.name }}"
-    portainer_stack_endpoint_id: "{{ item.endpoint_id }}"
+    portainer_stack_endpoint_id: "{{ portainer_endpoint }}"
     portainer_stack_template_vars: "{{ item.template_vars | default({}) }}"
   with_items: "{{ services }}"
 

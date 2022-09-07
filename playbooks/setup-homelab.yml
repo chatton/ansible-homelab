@@ -11,15 +11,8 @@
   roles:
     - role: setup_users
 
-- name: Install docker on docker hosts
-  hosts: dockerhosts
-  become: true
-  roles:
-    - role: setup_docker
-      tags: [setup, docker]
-
-- name: Setup and deploy services on the QNAP
-  hosts: qnap
+- name: Setup and deploy services.
+  hosts: servers
   become: true
   pre_tasks:
     - name: Include vault variables.
@@ -29,13 +22,17 @@
   roles:
     - role: setup_mergerfs
       tags: [mergerfs]
+      when: configure_mergerfs
     - role: setup_samba
+      when: configure_samba
       tags: [samba]
+    - role: setup_docker
+      tags: [setup, docker]
     - role: setup_portainer
+      when: portainer_host
       tags: [services, portainer]
     - role: setup_hosted_services
       tags: [services]
-
 
 - name: Setup home lab on linode instances.
   hosts: linodes
