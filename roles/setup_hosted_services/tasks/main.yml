@@ -63,7 +63,7 @@
   ansible.builtin.cron:
     name: backup docker volumes (nightly)
     weekday: "*"
-    minute: "*"
+    minute: "0"
     hour: "4"
     user: "{{ homelab_user }}"
     job: >
@@ -77,7 +77,7 @@
   ansible.builtin.cron:
     name: backup docker volumes (monthly)
     month: "*"
-    day: "1"
+    day: "0"
     user: "{{ homelab_user }}"
     job: >
       /home/{{ homelab_user }}/.local/bin/ansible-pull
