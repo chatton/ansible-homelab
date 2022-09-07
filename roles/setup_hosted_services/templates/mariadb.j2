@@ -32,5 +32,5 @@ volumes:
 
 networks:
   default:
-    name: mariadb_net
+    name: {{ template_vars.default_network }}
     external: true

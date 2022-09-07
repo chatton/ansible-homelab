@@ -21,36 +21,52 @@ devices:
   - uuid: c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec     # /dev/sdf
     path: /mnt/ssd0/
 
+# docker networks to be created before portainer stacks are created.
+external_docker_networks:
+  - mariadb_net
+
 services:
   - name: gitea
-    endpoint_id: 2
+    endpoint_id: &qnap_endpoint 2
+    template_vars:
+      image: gitea/gitea
+      tag: 1.16.9
   - name: mealie
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: linkding
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: overseerr
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: nextcloud
-    endpoint_id: 2
-    external_docker_networks:
-      - mariadb_net
+    endpoint_id: *qnap_endpoint
+    template_vars:
+      default_network: mariadb_net
   - name: dashboards
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: nginx-proxy-manager
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: plex
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: uptime-kuma
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: vpn-stack
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}
   - name: mariadb
-    endpoint_id: 2
-    external_docker_networks:
-      - mariadb_net
+    endpoint_id: *qnap_endpoint
+    template_vars:
+      default_network: mariadb_net
   - name: photoprism
-    endpoint_id: 2
-    external_docker_networks:
-      - mariadb_net
+    endpoint_id: *qnap_endpoint
+    template_vars:
+      default_network: mariadb_net
   - name: olivetin
-    endpoint_id: 2
+    endpoint_id: *qnap_endpoint
+    template_vars: {}

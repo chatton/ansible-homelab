@@ -6,7 +6,7 @@ services:
     labels:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{backups.schedule_keys.monthly}}"
-    image: gitea/gitea:1.16.9
+    image: "{{ template_vars.image }}:{{ template_vars.tag }}"
     container_name: gitea
     environment:
       - USER_UID=1000

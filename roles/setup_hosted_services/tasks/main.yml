@@ -37,13 +37,17 @@
   notify:
     - restart-olivetin
 
+- name: Create external docker networks.
+  docker_network:
+    name: '{{ item }}'
+  with_items: '{{ external_docker_networks }}'
+
 - name: Deploy Portainer stacks.
   ansible.builtin.include_role:
     name: deploy_portainer_stack
   vars:
     portainer_stack_name: "{{ item.name }}"
     portainer_stack_endpoint_id: "{{ item.endpoint_id }}"
-    portainer_stack_external_docker_networks: "{{ item.external_docker_networks | default([]) }}"
     portainer_stack_template_vars: "{{ item.template_vars | default({}) }}"
   with_items: "{{ services }}"
 
@@ -59,7 +63,7 @@
   ansible.builtin.cron:
     name: backup docker volumes (nightly)
     weekday: "*"
-    minute: "*"
+    minute: "0"
     hour: "4"
     user: "{{ homelab_user }}"
     job: >
@@ -73,7 +77,7 @@
   ansible.builtin.cron:
     name: backup docker volumes (monthly)
     month: "*"
-    day: "1"
+    day: "0"
     user: "{{ homelab_user }}"
     job: >
       /home/{{ homelab_user }}/.local/bin/ansible-pull
