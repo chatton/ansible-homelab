@@ -8,6 +8,10 @@ bootstrap:
 qnap:
 	ansible-playbook playbooks/setup-homelab.yml --limit qnap
 
+snunmu:
+	ansible-playbook playbooks/setup-homelab.yml --limit snunmu
+
+
 homelab: bootstrap
 	ansible-playbook playbooks/setup-homelab.yml
 
