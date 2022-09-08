@@ -1,4 +1,5 @@
 ---
+
 version: "3.8"
 services:
   olivetin:
@@ -6,7 +7,7 @@ services:
     image: jamesread/olivetin
     user: root
     volumes:
-      - {{olivetin.config_directory}}/{{olivetin.config_file}}:/config/config.yaml
+      - /etc/config/OliveTin/config.yml:/config/config.yaml
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "1337:1337"

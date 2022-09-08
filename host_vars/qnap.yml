@@ -15,6 +15,8 @@ mounts:
 configure_samba: true
 portainer_host: true
 
+cron_hour: "5"
+
 devices:
   - uuid: a54c1bde-1400-4975-bf24-08c603ca3a11     # /dev/sdc1
     path: /mnt/data/device0
@@ -32,8 +34,28 @@ external_docker_networks:
 
 ansible_pull_path: /home/{{ homelab_user }}/.local/bin/ansible-pull
 
-portainer_endpoint: 2
+dashy:
+  source_file: dashboards/dashy-config.yml
+  config_file: dashy-config.yml
+  config_directory: /etc/config/dashy
 
+# olivetin related config
+olivetin:
+  source_file: olivetin/config.yml
+  config_file: config.yml
+  config_directory: /etc/config/OliveTin
+
+portainer_required_files:
+  - source_file: dashboards/dashy-config.yml
+    dest_file_name: dashy-config.yml
+    dest_directory: /etc/config/dashy
+    handler: restart-dashy
+  - source_file: olivetin/config.yml
+    dest_file_name: config.yml
+    dest_directory: /etc/config/OliveTin
+    handler: restart-olivetin
+
+portainer_endpoint: 2
 services:
   - name: gitea
     template_vars:
@@ -47,7 +69,10 @@ services:
     template_vars:
       default_network: mariadb_net
   - name: dashboards
-    template_vars: {}
+    template_vars:
+      dashy: true
+      dashdot: true
+      glances: true
   - name: nginx-proxy-manager
     template_vars: {}
   - name: plex
@@ -64,3 +89,4 @@ services:
       default_network: mariadb_net
   - name: olivetin
     template_vars: {}
+  - name: pihole

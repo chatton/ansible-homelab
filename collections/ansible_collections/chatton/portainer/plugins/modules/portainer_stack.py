@@ -140,7 +140,7 @@ def handle_state_present(client, module):
 
     target_stack_name = module.params["stack_name"]
     for stack in stacks:
-        if stack["Name"] == target_stack_name:
+        if stack["Name"] == target_stack_name and int(stack["EndpointId"]) == module.params["endpoint_id"]:
             already_exists = True
             result["stack_id"] = stack["Id"]
             break
