@@ -29,6 +29,7 @@
     owner: root
     group: root
     mode: 0440
+  ignore_errors: true
   notify:
     - restart-dashy
 
@@ -69,7 +70,7 @@
     name: backup docker volumes (nightly)
     weekday: "*"
     minute: "0"
-    hour: "4"
+    hour: "{{ cron_hour }}"
     user: "{{ homelab_user }}"
     job: >
      {{ ansible_pull_path }}

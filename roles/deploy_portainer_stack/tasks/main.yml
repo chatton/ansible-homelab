@@ -22,35 +22,35 @@
     mode: '0755'
   with_items: "{{ portainer_stack_directories }}"
 
-- name: "Stack {{ portainer_stack_name }} | Find docker volumes"
-  ansible.builtin.shell: docker volume ls -f name={{ portainer_stack_name }} --format '{{ '{{' }}  .Name {{ '}}' }}'
-  register: find_volumes
-  changed_when: false
+#- name: "Stack {{ portainer_stack_name }} | Find docker volumes"
+#  ansible.builtin.shell: docker volume ls -f name={{ portainer_stack_name }} --format '{{ '{{' }}  .Name {{ '}}' }}'
+#  register: find_volumes
+#  changed_when: false
 
-- name: "Stack {{ portainer_stack_name }} | Find docker volumes that need to be restored"
-  ansible.builtin.script: scripts/find-volumes-to-restore.py
-  environment:
-    EXISTING_VOLUMES: "{{ find_volumes.stdout_lines }}"
-    STACK_NAME: '{{ portainer_stack_name }}'
-    DOCKER_COMPOSE_DIR: '{{ directories.docker_compose_directory }}'
-  args:
-    executable: python3
-  register: python_output
-  changed_when: false
+#- name: "Stack {{ portainer_stack_name }} | Find docker volumes that need to be restored"
+#  ansible.builtin.script: scripts/find-volumes-to-restore.py
+#  environment:
+#    EXISTING_VOLUMES: "{{ find_volumes.stdout_lines }}"
+#    STACK_NAME: '{{ portainer_stack_name }}'
+#    DOCKER_COMPOSE_DIR: '{{ directories.docker_compose_directory }}'
+#  args:
+#    executable: python3
+#  register: python_output
+#  changed_when: false
 
-- name: "Stack {{ portainer_stack_name }} | Build list of volumes to restore."
-  ansible.builtin.set_fact:
-    restore_volumes: "{{ restore_volumes | default([]) + [{'volume_name':item}] }}"
-  with_items: "{{ python_output.stdout_lines | list }}"
+#- name: "Stack {{ portainer_stack_name }} | Build list of volumes to restore."
+#  ansible.builtin.set_fact:
+#    restore_volumes: "{{ restore_volumes | default([]) + [{'volume_name':item}] }}"
+#  with_items: "{{ python_output.stdout_lines | list }}"
 
-- name: "Stack {{ portainer_stack_name }} | Restore any missing volumes from S3"
-  ansible.builtin.include_role:
-    name: chatton.docker_backup.docker_s3_volume_restore
-  when: restore_volumes is defined
-  vars:
-    docker_backup_restore_force: false
-    docker_backup_restore_latest_s3_key: true
-    docker_backup_s3_restores: "{{ restore_volumes }}"
+#- name: "Stack {{ portainer_stack_name }} | Restore any missing volumes from S3"
+#  ansible.builtin.include_role:
+#    name: chatton.docker_backup.docker_s3_volume_restore
+#  when: restore_volumes is defined
+#  vars:
+#    docker_backup_restore_force: false
+#    docker_backup_restore_latest_s3_key: true
+#    docker_backup_s3_restores: "{{ restore_volumes }}"
 
 - name: "Stack {{ portainer_stack_name }} | Update Portainer."
   chatton.portainer.portainer_stack:

@@ -15,6 +15,8 @@ mounts:
 configure_samba: true
 portainer_host: true
 
+cron_hour: "5"
+
 devices:
   - uuid: a54c1bde-1400-4975-bf24-08c603ca3a11     # /dev/sdc1
     path: /mnt/data/device0
@@ -47,7 +49,10 @@ services:
     template_vars:
       default_network: mariadb_net
   - name: dashboards
-    template_vars: {}
+    template_vars:
+      dashy: true
+      dashdot: true
+      glances: true
   - name: nginx-proxy-manager
     template_vars: {}
   - name: plex
@@ -64,3 +69,4 @@ services:
       default_network: mariadb_net
   - name: olivetin
     template_vars: {}
+  - name: pihole

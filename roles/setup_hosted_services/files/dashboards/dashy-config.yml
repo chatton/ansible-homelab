@@ -29,6 +29,24 @@ sections:
       - title: Glances
         icon: hl-glances
         url: http://qnap:8083
+      - title: Pihole
+        icon: hl-pihole
+        url: http://qnap:85/admin
+  - name: Snunmu Dashboards
+    widgets:
+      - type: gl-disk-space
+        options:
+          hostname: http://snunmu:8083
+    items:
+      - title: Dash Dot
+        icon: hl-dashdot
+        url: http://snunmu:3010
+      - title: Glances
+        icon: hl-glances
+        url: http://snunmu:8083
+      - title: Pihole
+        icon: hl-pihole
+        url: http://snunmu:85/admin
   - name: Media Stack
     items:
       - title: Plex
@@ -64,7 +82,7 @@ sections:
       - title: Linkding
         description: Manager photos
         icon: hl-linkding
-        url: http://qnap:9090
+        url: http://snunmu:9090
       - title: Nextcloud
         icon: hl-nextcloud
         url: http://qnap:8081

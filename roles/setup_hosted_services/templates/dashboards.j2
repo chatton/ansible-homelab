@@ -1,6 +1,7 @@
 ---
 version: '3.5'
 services:
+{% if template_vars.dashdot %}
   dash-dot:
     container_name: dashdot
     image: mauricenino/dashdot:latest
@@ -10,7 +11,8 @@ services:
       - '3010:3001'
     volumes:
       - /:/mnt/host:ro
-
+{% endif %}
+{% if template_vars.dashy %}
   dashy:
     container_name: dashy
     image: lissy93/dashy
@@ -35,7 +37,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
+{% endif %}
+{% if template_vars.glances %}
   glances:
     image: nicolargo/glances:latest-alpine
     restart: always
@@ -46,3 +49,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - "GLANCES_OPT=-w"
+{% endif %}
