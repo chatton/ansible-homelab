@@ -34,17 +34,6 @@ external_docker_networks:
 
 ansible_pull_path: /home/{{ homelab_user }}/.local/bin/ansible-pull
 
-dashy:
-  source_file: dashboards/dashy-config.yml
-  config_file: dashy-config.yml
-  config_directory: /etc/config/dashy
-
-# olivetin related config
-olivetin:
-  source_file: olivetin/config.yml
-  config_file: config.yml
-  config_directory: /etc/config/OliveTin
-
 portainer_required_files:
   - source_file: dashboards/dashy-config.yml
     dest_file_name: dashy-config.yml

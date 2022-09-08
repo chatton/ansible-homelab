@@ -1,6 +1,5 @@
 ---
 - name: Update packages and ensure users on all hosts
-  tags: [always]
   hosts: all
   become: true
   pre_tasks:
