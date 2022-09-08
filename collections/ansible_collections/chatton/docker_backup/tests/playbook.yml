@@ -2,8 +2,9 @@
 - hosts: localhost
   connection: local
   become: true
-
   tasks:
+  - set_fact:
+      portainer_password: "portainer-password-{{ 10000 | random }}"
   - name: Install Docker Module for Python
     pip:
       name:
@@ -50,7 +51,7 @@
       method: POST
       body:
         Username: admin
-        Password: "adminadminadmin"
+        Password: "{{ portainer_password }}"
       status_code: 200
       body_format: json
     register: result
@@ -79,8 +80,8 @@
       name: docker_s3_volume_restore
     vars:
       docker_backup_restore_latest_s3_key: true
-      docker_backup_s3_restores:
-        - volume_name: portainer_data
+      docker_backup_s3_volume:
+        name: portainer_data
 
   - name: Deploy Portainer
     docker_compose:
@@ -93,7 +94,7 @@
       method: POST
       body:
         Username: admin
-        Password: "adminadminadmin"
+        Password: "{{ portainer_password }}"
       status_code: 200
       body_format: json
     register: result

@@ -67,7 +67,7 @@
    "name": "tests/playbook.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "a52f9f26b558f05a29a0447f10a1ea7ca96df1b7bc44a31b2727c624c267e3fb",
+   "chksum_sha256": "d0b385b6401db77864f63dd71011d2833ef5eb8eefe83888ac2d64c00b0b787a",
    "format": 1
   },
   {
@@ -200,7 +200,7 @@
    "name": "roles/docker_s3_volume_restore/tasks/main.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "912b5afae6e9183741dd29242e1810ceb32deabb3624f2a2ccc2b1ea8984a45f",
+   "chksum_sha256": "476842dfde43303d0a1899e9c53e9eb7e05626860531436f198baa900f11aef1",
    "format": 1
   },
   {
@@ -228,7 +228,7 @@
    "name": "roles/docker_s3_volume_restore/defaults/main.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "b0ecdc12d3f7814ebfbded52d4db758462c2c69b34635e670ee7ee2322d6c44f",
+   "chksum_sha256": "936e4f593c6df8559487e4fba725bf7dd7221e771f5cc02b56b5550cb61e4e44",
    "format": 1
   },
   {
@@ -256,7 +256,7 @@
    "name": ".gitignore",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "54c27deac980434757ea7dc177f753710633b9464576e23804c2d5f5bc549288",
+   "chksum_sha256": "cf66f46c39b7cf8f396c3f42c7a8c59b50ccf6ae7777b31f635187d9a3e03bbe",
    "format": 1
   },
   {

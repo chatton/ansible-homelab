@@ -40,7 +40,7 @@
 
 - name: "Stack {{ portainer_stack_name }} | Build list of volumes to restore."
   ansible.builtin.set_fact:
-    restore_volumes: "{{ restore_volumes | default([]) + [{'volume_name':item}] }}"
+    restore_volumes: "{{ restore_volumes | default([]) + [{'name':item}] }}"
   with_items: "{{ python_output.stdout_lines | list }}"
 
 - name: "Stack {{ portainer_stack_name }} | Restore any missing volumes from S3"
@@ -50,7 +50,11 @@
   vars:
     docker_backup_restore_force: false
     docker_backup_restore_latest_s3_key: true
-    docker_backup_s3_restores: "{{ restore_volumes }}"
+    docker_backup_fail_on_no_s3_backups: false
+    docker_backup_s3_volume: "{{ volume }}"
+  with_items: "{{ restore_volumes }}"
+  loop_control:
+    loop_var: volume
 
 - name: "Stack {{ portainer_stack_name }} | Update Portainer."
   chatton.portainer.portainer_stack:
