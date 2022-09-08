@@ -3,20 +3,7 @@ backups:
     monthly: monthly
     nightly: nightly
 
-# dashy related config
-dashy:
-  source_file: dashboards/dashy-config.yml
-  config_file: dashy-config.yml
-  config_directory: /etc/config/dashy
-
-# olivetin related config
-olivetin:
-  source_file: olivetin/config.yml
-  config_file: config.yml
-  config_directory: /etc/config/OliveTin
-
 homelab_user: cianhatton
-
 
 configure_mergerfs: false
 configure_samba: false
@@ -56,3 +43,4 @@ portainer_endpoint: -1
 portainer_host: false
 portainer_base_url: "http://qnap:9000"
 external_docker_networks: []
+portainer_required_files: []

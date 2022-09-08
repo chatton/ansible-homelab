@@ -12,36 +12,26 @@
     - ubuntu
     - busybox
 
-- name: Directories | Ensure required directories
+- name: Create required directories.
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: '{{ file_item.dest_directory }}'
     state: directory
     mode: '0755'
-  with_items:
-    - '{{ dashy.config_directory }}'
-    - '{{ olivetin.config_directory }}'
-    - '{{ directories.backups_dir }}/.s3tmp'
+  with_items: "{{ portainer_required_files }}"
+  loop_control:
+    loop_var: file_item
 
-- name: Dashy | Config Files
+- name: Create required files.
   ansible.builtin.copy:
-    src: '{{ dashy.source_file }}'
-    dest: '{{ dashy.config_directory }}/{{ dashy.config_file }}'
+    src: "{{ file_item.source_file }}"
+    dest: '{{ file_item.dest_directory }}/{{ file_item.dest_file_name }}'
     owner: root
     group: root
     mode: 0440
-  ignore_errors: true
-  notify:
-    - restart-dashy
-
-- name: Olivetin | Config Files
-  ansible.builtin.copy:
-    src: '{{ olivetin.source_file }}'
-    dest: '{{ olivetin.config_directory }}/{{ olivetin.config_file }}'
-    owner: root
-    group: root
-    mode: 0440
-  notify:
-    - restart-olivetin
+  with_items: "{{ portainer_required_files }}"
+  loop_control:
+    loop_var: file_item
+  notify: "{{ file_item.handler }}"
 
 - name: Create external docker networks.
   docker_network:
@@ -52,10 +42,12 @@
   ansible.builtin.include_role:
     name: deploy_portainer_stack
   vars:
-    portainer_stack_name: "{{ item.name }}"
+    portainer_stack_name: "{{ portainer_stack.name }}"
     portainer_stack_endpoint_id: "{{ portainer_endpoint }}"
-    portainer_stack_template_vars: "{{ item.template_vars | default({}) }}"
+    portainer_stack_template_vars: "{{ portainer_stack.template_vars | default({}) }}"
   with_items: "{{ services }}"
+  loop_control:
+    loop_var: portainer_stack
 
 - name: Install Ansible pull
   tags: ["cron"]
