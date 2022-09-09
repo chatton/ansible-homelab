@@ -10,12 +10,14 @@
   roles:
     - role: setup_users
 
+
 - name: Configure mergerfs pools.
   hosts: mergerfs
   become: true
   roles:
     - role: setup_mergerfs
       tags: [mergerfs]
+
 
 - name: Configure samba shares.
   hosts: samba
@@ -24,12 +26,14 @@
     - role: setup_samba
       tags: [samba]
 
+
 - name: Install Docker on Docker hosts.
   hosts: docker
   become: true
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
+
 
 - name: Install Portainer on Portainer host.
   hosts: portainer
