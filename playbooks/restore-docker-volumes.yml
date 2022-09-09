@@ -1,16 +1,20 @@
 ---
 - name: Restore a docker volume.
-  hosts: qnap
+  hosts: servers
   become: true
   pre_tasks:
   - name: Include vault variables.
     ansible.builtin.include_vars: '../{{ vault_file }}'
     tags: [always]
+  vars:
+    volume_name: ""
+    s3_key: ""
   roles:
     - role: chatton.docker_backup.docker_s3_volume_restore
       vars:
-        docker_s3_volume_restore_force: true
-        docker_s3_volume_restore_latest_s3_key: true
-        docker_volume_s3_restores:
-          - volume_name: "linkding_data"
-#            s3_key: "linkding_data/linkding_data-2022-09-01T21:32:54Z.tar.gz"
+        docker_backup_restore_force: true
+        docker_backup_restore_latest_s3_key: "{{ volume_name != '' | bool }}"
+        docker_backup_fail_on_no_s3_backups: true
+        docker_backup_s3_volume:
+          name: "{{ volume_name }}"
+          s3_key: "{{ s3_key }}"

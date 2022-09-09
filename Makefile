@@ -42,7 +42,7 @@ backup: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml
 
 restore: deps
-	ansible-playbook playbooks/restore-docker-volumes.yml
+	ansible-playbook playbooks/restore-docker-volumes.yml -e volume_name="$(volume_name)"  --limit "$(host)"
 
 cron:
 	ansible-playbook playbooks/setup-homelab.yml --tags cron
