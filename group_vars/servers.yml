@@ -3,15 +3,15 @@ backups:
     monthly: monthly
     nightly: nightly
 
-homelab_user: cianhatton
+homelab_user: &main_user cianhatton
 
 configure_mergerfs: false
 configure_samba: false
 samba_group: smbgroup
 samba_user: smbuser
 users:
-  - name: cianhatton
-    group: cianhatton
+  - name: *main_user
+    group: *main_user
     passwordless_sudo: true
 
 shares:
