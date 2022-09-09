@@ -40,7 +40,6 @@ desired_docker_images:
   - ubuntu:latest
 
 portainer_endpoint: -1
-portainer_host: false
 portainer_base_url: "http://qnap:9000"
 external_docker_networks: []
 portainer_required_files: []

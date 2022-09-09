@@ -1,0 +1,7 @@
+---
+pip_install_packages:
+  - name: docker
+
+docker_users:
+  - cianhatton
+  - ansible

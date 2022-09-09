@@ -1,6 +1,8 @@
 ---
 roles:
   - src: sprat.mergerfs
+  - src: geerlingguy.pip
+  - src: geerlingguy.docker
 
 collections:
   - name: https://github.com/chatton/ansible-portainer.git

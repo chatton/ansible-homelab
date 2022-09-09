@@ -13,7 +13,6 @@ mounts:
 
 
 configure_samba: true
-portainer_host: true
 
 cron_hour: "5"
 

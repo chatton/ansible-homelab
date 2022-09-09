@@ -10,6 +10,27 @@
   roles:
     - role: setup_users
 
+
+- name: Install Docker on Docker hosts.
+  hosts: docker
+  become: true
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
+
+- name: Install Portainer on Portainer host.
+  hosts: portainer
+  become: true
+  pre_tasks:
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
+  roles:
+    - role: setup_portainer
+      tags: [services, portainer]
+
+
 - name: Setup and deploy services.
   hosts: servers
   become: true
@@ -25,11 +46,6 @@
     - role: setup_samba
       when: configure_samba
       tags: [samba]
-    - role: setup_docker
-      tags: [setup, docker]
-    - role: setup_portainer
-      when: portainer_host
-      tags: [services, portainer]
     - role: setup_hosted_services
       tags: [services]
 

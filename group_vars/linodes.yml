@@ -17,7 +17,4 @@ services:
 docker_networks:
   - mariadb_net
 
-# use docker compose
-container_deployment_mode: compose
-
 restore_from_s3: false
