@@ -1,7 +1,6 @@
 # all encrypted variables should go in the linked file.
 vault_file: vault_vars/qnap-vault.yml
 # any qnap specific variables go here
-configure_mergerfs: true
 mounts:
   - path: /mnt/mergerfs
     state: mounted
@@ -11,8 +10,6 @@ mounts:
       - /mnt/data/device2
     options: allow_other,use_ino
 
-
-configure_samba: true
 
 cron_hour: "5"
 

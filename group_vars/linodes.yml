@@ -16,5 +16,3 @@ services:
 # any additional docker networks that should be created
 docker_networks:
   - mariadb_net
-
-restore_from_s3: false

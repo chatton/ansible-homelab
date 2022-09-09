@@ -5,8 +5,6 @@ backups:
 
 homelab_user: &main_user cianhatton
 
-configure_mergerfs: false
-configure_samba: false
 samba_group: smbgroup
 samba_user: smbuser
 users:
