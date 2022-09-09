@@ -51,9 +51,7 @@ services:
       image: gitea/gitea
       tag: 1.16.9
   - name: mealie
-    template_vars: {}
   - name: overseerr
-    template_vars: {}
   - name: nextcloud
     template_vars:
       default_network: mariadb_net
@@ -63,13 +61,9 @@ services:
       dashdot: true
       glances: true
   - name: nginx-proxy-manager
-    template_vars: {}
   - name: plex
-    template_vars: {}
   - name: uptime-kuma
-    template_vars: {}
   - name: vpn-stack
-    template_vars: {}
   - name: mariadb
     template_vars:
       default_network: mariadb_net
@@ -77,5 +71,4 @@ services:
     template_vars:
       default_network: mariadb_net
   - name: olivetin
-    template_vars: {}
   - name: pihole
