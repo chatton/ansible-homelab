@@ -4,7 +4,6 @@ vault_file: vault_vars/qnap-vault.yml
 portainer_endpoint: 23
 services:
   - name: linkding
-    template_vars: {}
   - name: pihole
   - name: dashboards
     template_vars:
@@ -15,3 +14,9 @@ services:
 ansible_pull_path: /usr/local/bin/ansible-pull
 
 cron_hour: "4"
+
+# docker options
+docker_daemon_options:
+  hosts:
+    - "tcp://0.0.0.0:2375"
+    - "unix:///var/run/docker.sock"

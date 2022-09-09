@@ -16,8 +16,3 @@ services:
 # any additional docker networks that should be created
 docker_networks:
   - mariadb_net
-
-# use docker compose
-container_deployment_mode: compose
-
-restore_from_s3: false

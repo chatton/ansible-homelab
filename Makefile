@@ -29,11 +29,14 @@ deps:
 format:
 	scripts/format_all_yaml.sh
 
+lint-all:
+	make lint dir=host_vars
+	make lint dir=group_vars
+	make lint dir=roles
+	make lint dir=playbooks
+
 lint:
-	ansible-lint host_vars
-	ansible-lint group_vars
-	ansible-lint roles --exclude roles/sprat.mergerfs --exclude roles/docker_restore_container
-	ansible-lint playbooks
+	ansible-lint $(dir) --exclude "roles/sprat.*" --exclude roles/docker_restore_container --exclude "roles/geerlingguy.*"
 
 backup: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml
