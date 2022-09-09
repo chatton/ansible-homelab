@@ -26,6 +26,7 @@ services:
   tautulli:
     labels:
       ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{backups.schedule_keys.nightly}}"
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
     environment:

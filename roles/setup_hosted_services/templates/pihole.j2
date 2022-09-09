@@ -2,6 +2,9 @@
 version: "3"
 services:
   pihole:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     container_name: pihole
     image: "pihole/pihole:2022.09.2"
     ports:
@@ -17,5 +20,5 @@ services:
     restart: unless-stopped
 
 volumes:
-  "{{ inventory_hostname_short }}_app":
-  "{{ inventory_hostname_short }}_dns":
+  {{ inventory_hostname_short }}_app:
+  {{ inventory_hostname_short }}_dns:

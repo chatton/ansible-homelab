@@ -10,7 +10,6 @@
     source: pull
   with_items:
     - ubuntu
-    - busybox
 
 - name: Create required directories.
   ansible.builtin.file:
