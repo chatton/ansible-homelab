@@ -28,8 +28,8 @@
   hosts: docker
   become: true
   roles:
-    -  geerlingguy.pip
-    -  geerlingguy.docker
+    - geerlingguy.pip
+    - geerlingguy.docker
 
 - name: Install Portainer on Portainer host.
   hosts: portainer

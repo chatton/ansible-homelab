@@ -32,8 +32,8 @@ format:
 lint:
 	ansible-lint host_vars
 	ansible-lint group_vars
-	ansible-lint roles --exclude roles/sprat.mergerfs --exclude roles/docker_restore_container
-	ansible-lint playbooks
+	ansible-lint roles --exclude "roles/sprat.*" --exclude roles/docker_restore_container --exclude "roles/geerlingguy.*"
+	ansible-lint playbooks --exclude "roles/sprat.*" --exclude roles/docker_restore_container --exclude "roles/geerlingguy.*"
 
 backup: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml
