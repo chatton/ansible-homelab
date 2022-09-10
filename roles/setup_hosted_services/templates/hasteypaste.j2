@@ -1,0 +1,19 @@
+---
+version: "3"
+services:
+  hastey-paste:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+    container_name: hastey-paste
+    image: ghcr.io/enchant97/hasty-paste:1
+    restart: unless-stopped
+    volumes:
+      - data:/app/data
+    ports:
+      - 8000:8000
+    environment:
+      - "DEFAULT_USE_LONG_ID=false"
+      - "ENABLE_PUBLIC_LIST=true"
+volumes:
+  data:

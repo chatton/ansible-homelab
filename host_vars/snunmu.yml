@@ -5,6 +5,7 @@ portainer_endpoint: 23
 services:
   - name: linkding
   - name: pihole
+  - name: hasteypaste
   - name: dashboards
     template_vars:
       dashy: false

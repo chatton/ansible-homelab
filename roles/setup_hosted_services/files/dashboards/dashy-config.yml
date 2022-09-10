@@ -1,21 +1,55 @@
 pageInfo:
   title: Home Lab
 sections:
-  - name: Dashboards
-    widgets:
-      - type: gl-disk-space
-        options:
-          hostname: http://qnap:8083
-      - type: crypto-watch-list
-        options:
-          currency: GBP
-          sortBy: marketCap
-          assets:
-            - bitcoin
-            - ethereum
-            - cosmos
-            - polkadot
-            - dogecoin
+  - name: Tools
+    items:
+      - title: Hastey Paste
+        description: Paste bin service.
+        icon: hl-hastey-paste
+        url: http://snunmu:8000
+      - title: Photoprism
+        description: Manager photos
+        icon: hl-photoprism
+        url: http://qnap:2342
+      - title: Olivetin
+        description: Run pre-defined shell commands
+        icon: hl-olivetin
+        url: http://qnap:1337
+      - title: Linkding
+        description: Manager photos
+        icon: hl-linkding
+        url: http://snunmu:9090
+      - title: Nextcloud
+        icon: hl-nextcloud
+        url: http://qnap:8081
+      - title: Mealie
+        icon: hl-mealie
+        url: https://mealie.cianhatton.ie
+      - title: Gitea
+        icon: hl-gitea
+        url: https://git.cianhatton.ie
+  - name: Docker Admin
+    items:
+      - title: Portainer
+        description: Manage docker apps using Portainer
+        icon: hl-portainer
+        url: http://qnap:9000
+
+  - name: System Admin
+    items:
+      - title: Webmin
+        icon: hl-webmin
+        url: http://qnap:10000
+      - title: Adminer
+        description: Manage MariaDB
+        icon: hl-adminer
+        url: http://qnap:3307
+      - title: Nginx Proxy Manager
+        description: Manage reverse proxies
+        icon: hl-nginx
+        url: http://qnap:8181
+
+  - name: QNAP Dashboards
     items:
       - title: Dash Dot
         icon: hl-dashdot
@@ -33,10 +67,6 @@ sections:
         icon: hl-pihole
         url: http://qnap:85/admin
   - name: Snunmu Dashboards
-    widgets:
-      - type: gl-disk-space
-        options:
-          hostname: http://snunmu:8083
     items:
       - title: Dash Dot
         icon: hl-dashdot
@@ -47,6 +77,7 @@ sections:
       - title: Pihole
         icon: hl-pihole
         url: http://snunmu:85/admin
+
   - name: Media Stack
     items:
       - title: Plex
@@ -69,48 +100,30 @@ sections:
       - title: Qbittorrent
         icon: hl-qbittorrent
         url: http://qnap:15000
-  - name: Tools
-    items:
-      - title: Photoprism
-        description: Manager photos
-        icon: hl-photoprism
-        url: http://qnap:2342
-      - title: Olivetin
-        description: Run pre-defined shell commands
-        icon: hl-olivetin
-        url: http://qnap:1337
-      - title: Linkding
-        description: Manager photos
-        icon: hl-linkding
-        url: http://snunmu:9090
-      - title: Nextcloud
-        icon: hl-nextcloud
-        url: http://qnap:8081
-      - title: Mealie
-        icon: hl-mealie
-        url: https://mealie.cianhatton.ie
-      - title: Gitea
-        icon: hl-gitea
-        url: https://git.cianhatton.ie
-  - name: System Admin
-    items:
-      - title: Portainer
-        description: Manage docker apps using Portainer
-        icon: hl-portainer
-        url: http://qnap:9000
-      - title: Webmin
-        icon: hl-webmin
-        url: http://qnap:10000
-      - title: Adminer
-        description: Manage MariaDB
-        icon: hl-adminer
-        url: http://qnap:3307
-      - title: Nginx Proxy Manager
-        description: Manage reverse proxies
-        icon: hl-nginx
-        url: http://qnap:8181
+  - name: QNAP
+    widgets:
+      - type: gl-disk-space
+        options:
+          hostname: http://qnap:8083
+      - type: crypto-watch-list
+        options:
+          currency: USD
+          sortBy: marketCap
+          assets:
+            - bitcoin
+            - ethereum
+            - cosmos
+            - evmos
+            - osmosis
+
+  - name: Snunmu
+    widgets:
+      - type: gl-disk-space
+        options:
+          hostname: http://snunmu:8083
+
 appConfig:
   statusCheck: true
   showSplashScreen: false
-  theme: dracula
+  theme: dashy-docs
   language: en
