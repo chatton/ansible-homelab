@@ -1,18 +1,17 @@
 ---
-- name: Install samba packages using apt.
-  ansible.builtin.apt:
-    name:
-      - samba
-    state: present
-    update_cache: true
+#- name: Install samba packages using apt.
+#  ansible.builtin.apt:
+#    name:
+#      - samba
+#    state: present
+#    update_cache: true
 
 - name: Ensure samba group exists.
   ansible.builtin.group:
     name: '{{ samba_group }}'
     state: present
     system: true
-  notify:
-    - reload-samba
+  notify: reload-samba
 
 - name: Ensure samba user.
   ansible.builtin.user:
@@ -21,8 +20,8 @@
     group: '{{ samba_group }}'
     shell: /bin/false
     create_home: false
-  notify:
-    - reload-samba
+    system: true
+  notify: reload-samba
 
 - name: Add the User(s) to Samba group.
   ansible.builtin.user:
@@ -30,18 +29,6 @@
     groups: '{{ samba_group }}'
     append: true
   with_items: '{{ users }}'
-
-- name: Ensure Share directories.
-  ansible.builtin.file:
-    path: '{{ item }}'
-    recurse: true
-    state: directory
-    owner: '{{ samba_user }}'
-    group: '{{ samba_group }}'
-    mode: u+rw,g+rw
-  with_items: '{{ shares }}'
-  notify:
-    - reload-samba
 
 - name: Copy smb conf files.
   ansible.builtin.copy:
@@ -53,5 +40,4 @@
   with_items:
     - smb.conf
     - shares.conf
-  notify:
-    - reload-samba
+  notify: reload-samba
