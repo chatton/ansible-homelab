@@ -1,11 +1,4 @@
 ---
-#- name: Install samba packages using apt.
-#  ansible.builtin.apt:
-#    name:
-#      - samba
-#    state: present
-#    update_cache: true
-
 - name: Ensure samba group exists.
   ansible.builtin.group:
     name: '{{ samba_group }}'

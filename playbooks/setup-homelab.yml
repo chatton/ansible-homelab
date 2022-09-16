@@ -35,25 +35,51 @@
 - name: Samba Clients
   hosts: sambaclients
   become: true
+  tags: [samba]
   pre_tasks:
     - name: Include vault variables.
       ansible.builtin.include_vars: '../{{ vault_file }}'
       tags: [always]
   tasks:
+  - name: Install CIFS and other required packages for mounting with apt
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - smbclient
+      - cifs-utils
+
   - name: Check mountpoint exists.
     ansible.builtin.file:
       path: "/mnt/mergerfs"
       state: directory
       mode: '0755'
-      owner: root
-      group: root
-  - name: Mount share.
-    tags: [samba]
+      owner: cianhatton
+      group: cianhatton
+
+  - name: Check mountpoint exists.
+    ansible.builtin.file:
+      path: "/mnt/ssd0"
+      state: directory
+      mode: '0755'
+      owner: cianhatton
+      group: cianhatton
+
+  - name: Mount shares.
     mount:
-     state: "mounted"
-     fstype: "cifs"
-     path: /mnt/mergerfs
-     src: '//192.168.178.42/mergerfs'
+       state: "mounted"
+       fstype: "cifs"
+       path: /mnt/mergerfs
+       src: '//192.168.178.42/mergerfs'
+       opts: 'username=cianhatton,password={{ cianhatton_password }}'
+
+  - name: Mount shares.
+    mount:
+       state: "mounted"
+       fstype: "cifs"
+       path: /mnt/ssd0
+       src: '//192.168.178.42/ssd0'
+       opts: 'username=cianhatton,password={{ cianhatton_password }}'
 
 - name: Install Docker on Docker hosts.
   hosts: docker
