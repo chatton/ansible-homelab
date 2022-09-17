@@ -6,7 +6,6 @@ services:
   - name: linkding
   - name: pihole
   - name: hasteypaste
-  - name: vpn-stack
   - name: dashboards
     template_vars:
       dashy: false

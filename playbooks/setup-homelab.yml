@@ -53,17 +53,17 @@
     ansible.builtin.file:
       path: "/mnt/mergerfs"
       state: directory
-      mode: '0755'
-      owner: cianhatton
-      group: cianhatton
+      mode: '0777'
+      owner: root
+      group: root
 
   - name: Check mountpoint exists.
     ansible.builtin.file:
-      path: "/mnt/ssd0"
+      path: "/mnt/ssd0/downloads"
       state: directory
-      mode: '0755'
-      owner: cianhatton
-      group: cianhatton
+      mode: '0777'
+      owner: root
+      group: root
 
   - name: Mount shares.
     mount:
@@ -71,15 +71,15 @@
        fstype: "cifs"
        path: /mnt/mergerfs
        src: '//192.168.178.42/mergerfs'
-       opts: 'username=cianhatton,password={{ cianhatton_password }}'
+       opts: 'username=cianhatton,password={{ cianhatton_password }},dir_mode=0777,file_mode=0777,umask=0000'
 
   - name: Mount shares.
     mount:
        state: "mounted"
        fstype: "cifs"
-       path: /mnt/ssd0
-       src: '//192.168.178.42/ssd0'
-       opts: 'username=cianhatton,password={{ cianhatton_password }}'
+       path: /mnt/ssd0/downloads
+       src: '//192.168.178.42/downloads'
+       opts: 'username=cianhatton,password={{ cianhatton_password }},dir_mode=0777,file_mode=0777,umask=0000'
 
 - name: Install Docker on Docker hosts.
   hosts: docker
