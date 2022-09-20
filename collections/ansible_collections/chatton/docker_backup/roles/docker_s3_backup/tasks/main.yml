@@ -29,7 +29,7 @@
     name: "backup-container-{{ item.Name }}-{{ 10 | random }}"
     image: ubuntu
     command: "tar -czvf /backups/{{ item.Name }}-{{ backup_time }}.tar.gz /data"
-    auto_remove: true
+    cleanup: true
     detach: false # block until this container exists.
     state: started
     volumes:
