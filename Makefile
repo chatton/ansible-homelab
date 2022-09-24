@@ -41,6 +41,12 @@ lint:
 backup: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml
 
+backup-snunmu: deps
+	ansible-playbook playbooks/backup-docker-volumes.yml --limit snunmu
+
+backup-qnap: deps
+	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap
+
 restore: deps
 	ansible-playbook playbooks/restore-docker-volumes.yml -e volume_name="$(volume_name)"  --limit "$(host)"
 

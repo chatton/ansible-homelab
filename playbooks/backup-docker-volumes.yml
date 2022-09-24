@@ -6,6 +6,7 @@
     # corrsponds to which category of backups will be used.
     # determined based on the docker labels.
     schedule: nightly
+    docker_backup_retain_count: 7
 
   pre_tasks:
     - name: Include vault variables.
@@ -30,6 +31,7 @@
         name: chatton.docker_backup.docker_s3_backup
       vars:
         container_backup: "{{ container_item | regex_replace('^\\/', '') }}"
+        docker_backup_retain_count: 7
       with_items: "{{ container_names }}"
       loop_control:
         loop_var: container_item
