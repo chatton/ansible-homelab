@@ -12,6 +12,7 @@ mounts:
 
 
 cron_hour: "5"
+docker_backup_host_backup_directory: "/mnt/mergerfs/backups"
 
 devices:
   - uuid: a54c1bde-1400-4975-bf24-08c603ca3a11     # /dev/sdc1
