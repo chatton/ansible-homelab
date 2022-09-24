@@ -73,7 +73,7 @@
     name: "restore-container-{{ docker_backup_s3_volume.name }}-{{ 100 | random }}"
     image: ubuntu
     command: "rm -rf ./*"
-    auto_remove: true
+    cleanup: true
     detach: false # block until this container exists.
     state: started
     # start inside the directory we want to wipe
@@ -90,7 +90,7 @@
     image: ubuntu
     # extract the tar into the volume.
     command: "tar xvf /tmp/{{ container_s3_key }} -C /data --strip-components 1"
-    auto_remove: true
+    cleanup: true
     detach: false # block until this container exists.
     state: started
     volumes:

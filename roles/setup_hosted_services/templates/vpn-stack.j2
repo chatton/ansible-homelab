@@ -30,7 +30,7 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
-
+{% if template_vars.qbittorrent %}
   qbittorrent:
     labels:
       ie.cianhatton.backup.enabled: "true"
@@ -50,7 +50,8 @@ services:
       - qbittorrent_config:/config
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
-
+{% endif %}
+{% if template_vars.radarr %}
   radarr:
     labels:
       ie.cianhatton.backup.enabled: "true"
@@ -69,7 +70,8 @@ services:
       - {{ directories.movies_dir }}:/movies
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
-
+{% endif %}
+{% if template_vars.sonarr %}
   sonarr:
     depends_on:
       - surfshark
@@ -88,7 +90,8 @@ services:
       - {{ directories.tv_dir }}:/tv
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
-
+{% endif %}
+{% if template_vars.jackett %}
   jackett:
     labels:
       ie.cianhatton.backup.enabled: "true"
@@ -107,9 +110,24 @@ services:
       - jackett_config:/config
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
-
+{% endif %}
 volumes:
-  qbittorrent_config:
-  radarr_config:
-  sonarr_config:
+{% if template_vars.jackett %}
   jackett_config:
+{% endif %}
+{% if template_vars.qbittorrent %}
+  qbittorrent_config:
+# https://askubuntu.com/questions/1203832/how-to-mount-smb-share-on-ubuntu-18-04-with-read-write-from-the-terminal
+#  downloads:
+#    driver: local
+#    driver_opts:
+#      type: "cifs"
+#      device: "//192.168.178.42/downloads"
+#      o: "username=cianhatton,password={{ cianhatton_password }},dir_mode=0777,file_mode=0777"
+{% endif %}
+{% if template_vars.radarr %}
+  radarr_config:
+{% endif %}
+{% if template_vars.sonarr %}
+  sonarr_config:
+{% endif %}

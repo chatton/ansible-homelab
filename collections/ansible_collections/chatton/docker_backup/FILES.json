@@ -137,7 +137,7 @@
    "name": "roles/docker_s3_backup/tasks/main.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "0fcf1fbf3fafdaf129a33876344c1ea07d54ca562c253cc81c5eebc806ff51a9",
+   "chksum_sha256": "68b33673f05e9291aa60766650d4ccbc4b80e5d44ba1b7d33da954f43d53ca64",
    "format": 1
   },
   {
@@ -200,7 +200,7 @@
    "name": "roles/docker_s3_volume_restore/tasks/main.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "476842dfde43303d0a1899e9c53e9eb7e05626860531436f198baa900f11aef1",
+   "chksum_sha256": "29cff4c5cdb9763c78e02886de3695e4e311c57153a28f3623b9c99fd0038846",
    "format": 1
   },
   {

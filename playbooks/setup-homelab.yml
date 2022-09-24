@@ -18,6 +18,12 @@
     - role: setup_mergerfs
       tags: [mergerfs]
 
+- name: Configure samba shares.
+  hosts: all
+  become: true
+  roles:
+    - role: geerlingguy.samba
+      tags: [samba]
 
 - name: Configure samba shares.
   hosts: samba
@@ -26,6 +32,54 @@
     - role: setup_samba
       tags: [samba]
 
+- name: Samba Clients
+  hosts: sambaclients
+  become: true
+  tags: [samba]
+  pre_tasks:
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
+  tasks:
+    - name: Install CIFS and other required packages for mounting with apt
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - smbclient
+        - cifs-utils
+
+    - name: Check mountpoint exists.
+      ansible.builtin.file:
+        path: "/mnt/mergerfs"
+        state: directory
+        mode: '0777'
+        owner: root
+        group: root
+
+    - name: Check mountpoint exists.
+      ansible.builtin.file:
+        path: "/mnt/ssd0/downloads"
+        state: directory
+        mode: '0777'
+        owner: root
+        group: root
+
+    - name: Mount shares.
+      mount:
+        state: "mounted"
+        fstype: "cifs"
+        path: /mnt/mergerfs
+        src: '//192.168.178.42/mergerfs'
+        opts: 'username=cianhatton,password={{ cianhatton_password }},dir_mode=0777,file_mode=0777,umask=0000'
+
+    - name: Mount shares.
+      mount:
+        state: "mounted"
+        fstype: "cifs"
+        path: /mnt/ssd0/downloads
+        src: '//192.168.178.42/downloads'
+        opts: 'username=cianhatton,password={{ cianhatton_password }},dir_mode=0777,file_mode=0777,umask=0000'
 
 - name: Install Docker on Docker hosts.
   hosts: docker

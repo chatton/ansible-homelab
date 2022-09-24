@@ -36,10 +36,16 @@ lint-all:
 	make lint dir=playbooks
 
 lint:
-	ansible-lint $(dir) --exclude "roles/sprat.*" --exclude roles/docker_restore_container --exclude "roles/geerlingguy.*"
+	ansible-lint $(dir) --exclude "roles/sprat.*" --exclude roles/docker_restore_container --exclude "roles/geerlingguy.*" --exclude collections --exclude .github
 
 backup: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml
+
+backup-snunmu: deps
+	ansible-playbook playbooks/backup-docker-volumes.yml --limit snunmu
+
+backup-qnap: deps
+	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap
 
 restore: deps
 	ansible-playbook playbooks/restore-docker-volumes.yml -e volume_name="$(volume_name)"  --limit "$(host)"

@@ -12,12 +12,6 @@ users:
     group: *main_user
     passwordless_sudo: true
 
-shares:
-  - /share
-  - /share/public_files
-  - /share/private_files
-  - /share/cian_files
-
 directories:
   # path on qnap where downloads go
   downloads_dir: /mnt/ssd0/downloads

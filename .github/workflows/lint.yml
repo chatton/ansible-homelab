@@ -39,4 +39,3 @@ jobs:
       run: make deps
     - name: Format code
       run: make format
-
