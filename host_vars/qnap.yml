@@ -21,7 +21,7 @@ devices:
     path: /mnt/data/device1
   - uuid: f3cff115-9adc-4761-b1e9-e81055f3e0af     # /dev/sda1
     path: /mnt/data/device2
-      # SSD for downloads / transcoding
+    # SSD for downloads / transcoding
   - uuid: c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec     # /dev/sdf
     path: /mnt/ssd0/
 
@@ -43,6 +43,13 @@ portainer_required_files:
 
 portainer_endpoint: 2
 services:
+  - name: vpn-stack
+    template_vars:
+      qbittorrent: true
+      radarr: true
+      sonarr: true
+      jackett: true
+      tubearchivist: true
   - name: gitea
     template_vars:
       image: gitea/gitea
@@ -60,12 +67,6 @@ services:
   - name: nginx-proxy-manager
   - name: plex
   - name: uptime-kuma
-  - name: vpn-stack
-    template_vars:
-      qbittorrent: true
-      radarr: true
-      sonarr: true
-      jackett: true
   - name: mariadb
     template_vars:
       default_network: mariadb_net

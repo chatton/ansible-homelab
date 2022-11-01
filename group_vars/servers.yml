@@ -27,6 +27,8 @@ directories:
   backups_dir: /mnt/mergerfs/backups
   # path where photoprism photos are stored
   photoprism_dir: /mnt/mergerfs/photoprism
+  # path to youtube videos
+  youtube_dir: /mnt/mergerfs/media/youtube
 
 desired_docker_images:
   - ubuntu:latest
