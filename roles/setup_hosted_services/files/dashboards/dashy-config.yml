@@ -100,6 +100,9 @@ sections:
       - title: Qbittorrent
         icon: hl-qbittorrent
         url: http://qnap:15000
+      - title: Tube Archivist
+        icon: hl-tubearchivist
+        url: http://qnap:8000
   - name: QNAP
     widgets:
       - type: gl-disk-space

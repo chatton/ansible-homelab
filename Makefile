@@ -9,7 +9,7 @@ qnap:
 	ansible-playbook playbooks/setup-homelab.yml --limit qnap
 
 services:
-	ansible-playbook playbooks/setup-homelab.yml --tags services
+	ansible-playbook playbooks/setup-homelab.yml --tags services --limit qnap
 
 snunmu:
 	ansible-playbook playbooks/setup-homelab.yml --limit snunmu
