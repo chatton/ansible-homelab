@@ -115,6 +115,9 @@ services:
 {% endif %}
 {% if template_vars.tubearchivist %}
   tubearchivist:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     container_name: tubearchivist
     network_mode: service:surfshark
     restart: unless-stopped
@@ -137,6 +140,10 @@ services:
       - archivist-redis
       - surfshark
   archivist-redis:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+
     image: redislabs/rejson                 # for arm64 use bbilly1/rejson
     container_name: archivist-redis
     restart: unless-stopped
@@ -147,6 +154,10 @@ services:
     depends_on:
       - archivist-es
   archivist-es:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+
     image: bbilly1/tubearchivist-es         # only for amd64, or use official es 8.4.3
     container_name: archivist-es
     restart: unless-stopped
