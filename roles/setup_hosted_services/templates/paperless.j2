@@ -1,0 +1,21 @@
+---
+version: '3.5'
+services:
+  paperless-ng:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+    image: lscr.io/linuxserver/paperless-ng:latest
+    container_name: paperless-ng
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - paperless_config:/config
+      - {{ directories.documents_dir }}:/data
+    ports:
+      - 8001:8000
+    restart: unless-stopped
+
+volumes:
+  paperless_config:

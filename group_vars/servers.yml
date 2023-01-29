@@ -29,6 +29,8 @@ directories:
   photoprism_dir: /mnt/mergerfs/photoprism
   # path to youtube videos
   youtube_dir: /mnt/mergerfs/media/youtube
+  # path to where paperless docs will be stored
+  documents_dir: /mnt/mergerfs/documents
 
 desired_docker_images:
   - ubuntu:latest

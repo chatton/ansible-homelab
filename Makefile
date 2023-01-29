@@ -11,6 +11,9 @@ qnap:
 services:
 	ansible-playbook playbooks/setup-homelab.yml --tags services
 
+qnap-services:
+	ansible-playbook playbooks/setup-homelab.yml --tags services --limit qnap
+
 snunmu:
 	ansible-playbook playbooks/setup-homelab.yml --limit snunmu
 
@@ -48,7 +51,7 @@ backup-qnap: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap
 
 restore: deps
-	ansible-playbook playbooks/restore-docker-volumes.yml -e volume_name="$(volume_name)"  --limit "$(host)"
+	ansible-playbook playbooks/] -e volume_name="$(volume_name)"  --limit "$(host)"
 
 cron:
 	ansible-playbook playbooks/setup-homelab.yml --tags cron

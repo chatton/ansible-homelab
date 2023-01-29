@@ -75,3 +75,4 @@ services:
       default_network: mariadb_net
   - name: olivetin
   - name: pihole
+  - name: paperless

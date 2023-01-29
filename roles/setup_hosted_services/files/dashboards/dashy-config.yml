@@ -28,6 +28,9 @@ sections:
       - title: Gitea
         icon: hl-gitea
         url: https://git.cianhatton.ie
+      - title: Paperless
+        icon: hl-paperless
+        url: http://qnap:8001
   - name: Docker Admin
     items:
       - title: Portainer
