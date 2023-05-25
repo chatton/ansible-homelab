@@ -113,81 +113,12 @@ services:
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
 {% endif %}
-{% if template_vars.tubearchivist %}
-  tubearchivist:
-    labels:
-      ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
-    container_name: tubearchivist
-    network_mode: service:surfshark
-    restart: unless-stopped
-    image: bbilly1/tubearchivist
-    volumes:
-      - {{ directories.youtube_dir }}:/youtube
-      - cache:/cache
-    environment:
-      - ES_URL=http://archivist-es:9200     # needs protocol e.g. http and port
-      - REDIS_HOST=archivist-redis          # don't add protocol
-      - HOST_UID=1000
-      - HOST_GID=1000
-      - TA_HOST=qnap        # set your host name
-      - TA_USERNAME=tubearchivist           # your initial TA credentials
-      - "TA_PASSWORD={{ ta_password }}"              # your initial TA credentials
-      - "ELASTIC_PASSWORD={{ elastic_password }}"         # set password for Elasticsearch
-      - TZ=Europe/London              # set your time zone
-    depends_on:
-      - archivist-es
-      - archivist-redis
-      - surfshark
-  archivist-redis:
-    labels:
-      ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
-
-    image: redislabs/rejson                 # for arm64 use bbilly1/rejson
-    container_name: archivist-redis
-    restart: unless-stopped
-    expose:
-      - "6379"
-    volumes:
-      - redis:/data
-    depends_on:
-      - archivist-es
-  archivist-es:
-    labels:
-      ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
-
-    image: bbilly1/tubearchivist-es         # only for amd64, or use official es 8.4.3
-    container_name: archivist-es
-    restart: unless-stopped
-    environment:
-      - "xpack.security.enabled=true"
-      - "ELASTIC_PASSWORD={{ elastic_password }}"       # matching Elasticsearch password
-      - "discovery.type=single-node"
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - es:/usr/share/elasticsearch/data    # check for permission error when using bind mount, see readme
-    expose:
-      - "9200"
-{% endif %}
 volumes:
 {% if template_vars.jackett %}
   jackett_config:
 {% endif %}
 {% if template_vars.qbittorrent %}
   qbittorrent_config:
-# https://askubuntu.com/questions/1203832/how-to-mount-smb-share-on-ubuntu-18-04-with-read-write-from-the-terminal
-#  downloads:
-#    driver: local
-#    driver_opts:
-#      type: "cifs"
-#      device: "//192.168.178.42/downloads"
-#      o: "username=cianhatton,password={{ cianhatton_password }},dir_mode=0777,file_mode=0777"
 {% endif %}
 {% if template_vars.radarr %}
   radarr_config:
@@ -195,9 +126,3 @@ volumes:
 {% if template_vars.sonarr %}
   sonarr_config:
 {% endif %}
-{% if template_vars.tubearchivist %}
-  cache:
-  redis:
-  es:
-{% endif %}
-
