@@ -10,6 +10,12 @@ mounts:
       - /mnt/data/device2
     options: allow_other,use_ino
 
+# these directories will be backed up to s3.
+backup_directories:
+  - path: /mnt/mergerfs/photoprism/originals
+    s3_name: photos
+  - path: /mnt/mergerfs/documents/media/documents/originals
+    s3_name: paperless-docs
 
 cron_hour: "5"
 docker_backup_host_backup_directory: "/mnt/mergerfs/backups"

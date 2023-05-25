@@ -1,0 +1,16 @@
+---
+- name: Backup Directories.
+  hosts: servers
+  become: true
+
+  pre_tasks:
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
+
+  tasks:
+    - ansible.builtin.include_role:
+        name: backup_directory
+      with_items: "{{ backup_directories }}"
+      loop_control:
+        loop_var: backup

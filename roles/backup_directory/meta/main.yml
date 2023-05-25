@@ -1,0 +1,13 @@
+---
+galaxy_info:
+  author: Cian Hatton
+  namespace: chatton
+  description: Backup directories
+  license: MIT
+  min_ansible_version: "2.1"
+  galaxy_tags: []
+  platforms:
+    - name: Debian
+      versions:
+        - all
+dependencies: []
