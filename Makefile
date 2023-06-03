@@ -26,7 +26,10 @@ homelab:
 verify:
 	ansible-playbook playbooks/verify-homelab.yml
 
-deps:
+venv:
+	source ./venv/bin/activate
+
+deps: venv
 	pip install --upgrade pip
 	pip install -r requirements.txt
 	ansible-galaxy install -r requirements.yml
@@ -51,6 +54,9 @@ backup-snunmu: deps
 
 backup-qnap: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap
+
+backup-qnap-monthly: deps
+	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap -e schedule=monthly
 
 backup-qnap-dirs: deps
 	ansible-playbook playbooks/backup-directories.yml --limit qnap
