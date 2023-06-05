@@ -9,15 +9,10 @@ actions:
     icon: plex
     shell: docker restart plex
     timeout: 30
-  - title: Restart Dashy
-    icon: restart
-    shell: docker restart dashy
+  - title: Restart Overseerr
+    icon: overseerr
+    shell: docker restart plex
     timeout: 30
-  - title: Restart Dashy 2
-    icon: restart
-    shell: docker restart dashy
-    timeout: 30
-  - title: Restart Olivetin
-    icon: restart
-    shell: docker restart olivetin
-    timeout: 30
+  - title: Restart VPN Stack
+    shell: docker restart surfshark sonarr radarr jackett qbittorrent
+    timeout: 90

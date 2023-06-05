@@ -21,7 +21,7 @@ sections:
         url: http://snunmu:9090
       - title: Nextcloud
         icon: hl-nextcloud
-        url: http://qnap:8081
+        url: https://cloud.cianhatton.ie
       - title: Mealie
         icon: hl-mealie
         url: https://mealie.cianhatton.ie
@@ -95,7 +95,7 @@ sections:
         url: http://qnap:7878
       - title: Overseerr
         icon: hl-overseerr
-        url: http://qnap:5055
+        url: https://overseerr.cianhatton.ie
       - title: Jackett
         icon: hl-jackett
         url: http://qnap:9117
@@ -103,9 +103,6 @@ sections:
       - title: Qbittorrent
         icon: hl-qbittorrent
         url: http://qnap:15000
-      - title: Tube Archivist
-        icon: hl-tubearchivist
-        url: http://qnap:8000
   - name: QNAP
     widgets:
       - type: gl-disk-space

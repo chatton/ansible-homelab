@@ -55,7 +55,6 @@ services:
       radarr: true
       sonarr: true
       jackett: true
-      tubearchivist: true
   - name: gitea
     template_vars:
       image: gitea/gitea
