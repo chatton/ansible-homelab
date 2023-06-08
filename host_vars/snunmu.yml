@@ -1,6 +1,12 @@
 ---
 vault_file: vault_vars/qnap-vault.yml
 
+portainer_required_templates:
+  - source_file: diun-config.j2
+    dest_file_name: diun-config.yml
+    dest_directory: /etc/config/diun
+    handler: restart-diun
+
 portainer_endpoint: 23
 services:
   - name: linkding
@@ -11,6 +17,7 @@ services:
       dashy: false
       dashdot: true
       glances: true
+  - name: diun
 
 ansible_pull_path: /usr/local/bin/ansible-pull
 

@@ -47,6 +47,13 @@ portainer_required_files:
     dest_directory: /etc/config/OliveTin
     handler: restart-olivetin
 
+portainer_required_templates:
+  - source_file: diun-config.j2
+    dest_file_name: diun-config.yml
+    dest_directory: /etc/config/diun
+    handler: restart-diun
+
+
 portainer_endpoint: 2
 services:
   - name: vpn-stack
@@ -82,3 +89,4 @@ services:
   - name: pihole
   - name: paperless
   - name: gotify
+  - name: diun
