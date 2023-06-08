@@ -1,0 +1,16 @@
+---
+version: "3.1"
+services:
+  gotify:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+    image: gotify/server
+    container_name: gotify
+    volumes:
+      - data:/app/data
+    ports:
+      - 7875:80
+    restart: always
+volumes:
+  data:
