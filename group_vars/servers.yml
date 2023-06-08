@@ -23,8 +23,6 @@ directories:
   tv_dir: /mnt/mergerfs/media/tv
   # path on qnap where docker compose files are stored
   docker_compose_directory: /etc/docker-compose
-  # path on qnap where backups are stored
-  backups_dir: /mnt/mergerfs/backups
   # path where photoprism photos are stored
   photoprism_dir: /mnt/mergerfs/photoprism
   # path to youtube videos
