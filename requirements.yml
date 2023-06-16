@@ -9,6 +9,7 @@ collections:
   - name: https://github.com/chatton/ansible-portainer.git
     type: git
     version: master
-  - name: https://github.com/chatton/ansible-docker-backup.git
-    type: git
-    version: master
+    # TODO: support encryption
+#  - name: https://github.com/chatton/ansible-docker-backup.git
+#    type: git
+#    version: master

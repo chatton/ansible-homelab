@@ -11,10 +11,6 @@
 - name: Determine if backup is needed.
   ansible.builtin.set_fact: should_perform_backup="{{ docker_backup_restore_force or volume_out.changed }}"
 
-- name: Debug var=should_perform_backup
-  ansible.builtin.debug:
-    var: should_perform_backup
-
 # try and find latest volume based on the name.
 - name: Find latest s3 version.
   when:

@@ -52,6 +52,7 @@
     aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
     aws_secret_key: "{{ docker_backup_aws_s3_aws_secret_key }}"
     region: "{{ docker_backup_aws_s3_region }}"
+    encrypt: off
     mode: put
     permission: "{{ docker_backup_aws_s3_permissions }}"
   with_items: "{{ volume_mounts }}"
