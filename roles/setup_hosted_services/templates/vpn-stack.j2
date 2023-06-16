@@ -25,14 +25,12 @@ services:
       - 8989:8989
       # jackett
       - 9117:9117
-      # tube
-      - 8000:8000
 
     restart: unless-stopped
     dns:
       - 1.1.1.1
       - 8.8.8.8
-{% if template_vars.qbittorrent %}
+{% if template_vars.qbittorrent.enabled %}
   qbittorrent:
     labels:
       ie.cianhatton.backup.enabled: "true"
@@ -40,7 +38,7 @@ services:
 
     depends_on:
       - surfshark
-    image: lscr.io/linuxserver/qbittorrent:latest
+    image: "{{ template_vars.qbittorrent.image }}:{{ template_vars.qbittorrent.tag }}"
     container_name: qbittorrent
     network_mode: service:surfshark
     environment:
@@ -53,14 +51,14 @@ services:
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
 {% endif %}
-{% if template_vars.radarr %}
+{% if template_vars.radarr.enabled %}
   radarr:
     labels:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     depends_on:
       - surfshark
-    image: lscr.io/linuxserver/radarr:latest
+    image: "{{ template_vars.radarr.image }}:{{ template_vars.radarr.tag }}"
     container_name: radarr
     network_mode: service:surfshark
     environment:
@@ -73,11 +71,11 @@ services:
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
 {% endif %}
-{% if template_vars.sonarr %}
+{% if template_vars.sonarr.enabled %}
   sonarr:
     depends_on:
       - surfshark
-    image: lscr.io/linuxserver/sonarr:latest
+    image: "{{ template_vars.sonarr.image }}:{{ template_vars.sonarr.tag }}"
     labels:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
@@ -93,14 +91,14 @@ services:
       - {{ directories.downloads_dir }}:/downloads
     restart: unless-stopped
 {% endif %}
-{% if template_vars.jackett %}
+{% if template_vars.jackett.enabled %}
   jackett:
     labels:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     depends_on:
       - surfshark
-    image: lscr.io/linuxserver/jackett:latest
+    image: "{{ template_vars.jackett.image }}:{{ template_vars.jackett.tag }}"
     container_name: jackett
     network_mode: service:surfshark
     environment:
@@ -114,15 +112,15 @@ services:
     restart: unless-stopped
 {% endif %}
 volumes:
-{% if template_vars.jackett %}
+{% if template_vars.jackett.enabled %}
   jackett_config:
 {% endif %}
-{% if template_vars.qbittorrent %}
+{% if template_vars.qbittorrent.enabled %}
   qbittorrent_config:
 {% endif %}
-{% if template_vars.radarr %}
+{% if template_vars.radarr.enabled %}
   radarr_config:
 {% endif %}
-{% if template_vars.sonarr %}
+{% if template_vars.sonarr.enabled %}
   sonarr_config:
 {% endif %}
