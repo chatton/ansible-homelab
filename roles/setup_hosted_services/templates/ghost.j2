@@ -1,0 +1,20 @@
+---
+version: '3.1'
+services:
+  ghost:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+    image: ghost:4-alpine
+    restart: unless-stopped
+    container_name: ghost
+    ports:
+      - 8080:2368
+    environment:
+      database__client: sqlite3
+      url: https://blog.cianhatton.ie
+    volumes:
+      - data:/var/lib/ghost/content
+
+volumes:
+  data:

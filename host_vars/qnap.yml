@@ -104,7 +104,8 @@ services:
   - name: paperless
   - name: gotify
   - name: diun
-  - name: minio
-    template_vars:
-      image: minio/minio
-      tag: latest
+  - name: ghost
+#  - name: minio
+#    template_vars:
+#      image: minio/minio
+#      tag: latest
