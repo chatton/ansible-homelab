@@ -1,18 +1,19 @@
 # https://stackoverflow.com/questions/37333305/ansible-create-a-user-with-sudo-privileges
-- name: Install Sudo.
+- name: Install Packages.
   ansible.builtin.apt:
     pkg:
       - sudo
+      - ufw
     state: latest
     update_cache: true
 
-- name: Make sure we have a groups.
+- name: Ensure group.
   ansible.builtin.group:
     name: '{{ item.group }}'
     state: present
   with_items: '{{ users }}'
 
-- name: Add Users.
+- name: Ensure Users.
   ansible.builtin.user:
     name: '{{ item.name }}'
     comment: '{{ item.name }} user'
@@ -40,3 +41,17 @@
     group: "{{ homelab_user }}"
     owner: "{{ homelab_user }}"
     mode: 0644
+
+- name: Disable password authentication for root.
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin prohibit-password'
+
+- name: Disable password authentication for users.
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'

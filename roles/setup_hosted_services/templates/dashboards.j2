@@ -41,7 +41,7 @@ services:
 {% if template_vars.glances %}
   glances:
     image: nicolargo/glances:latest-alpine
-    restart: always
+    restart: unless-stopped
     pid: host
     ports:
       - "8083:61208"

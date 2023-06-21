@@ -11,6 +11,6 @@ services:
       - data:/app/data
     ports:
       - 7875:80
-    restart: always
+    restart: unless-stopped
 volumes:
   data:
