@@ -2,8 +2,8 @@
 # defaults file for chatton.docker_s3_backup
 
 # the number of backups of the same volume which should be kept.
-# Any excess will be deleted.
-docker_backup_retain_count: 3
+# Any excess will be deleted. If undefined, no backups will be deleted.
+# docker_backup_retain_count: 3
 # the backup directory where backups are stored on the host machine.
 # these will be uploaded to S3.
 docker_backup_aws_s3_region: "us-east-1"
@@ -13,3 +13,5 @@ docker_backup_aws_s3_url: ""
 docker_backup_aws_s3_aws_access_key: ""
 docker_backup_aws_s3_aws_secret_key: ""
 docker_backup_aws_s3_permissions: []
+docker_backup_aws_s3_encrypt: true
+docker_backup_keep_local: false

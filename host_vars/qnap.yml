@@ -92,6 +92,9 @@ services:
       glances: true
   - name: nginx-proxy-manager
   - name: plex
+    template_vars:
+      plex_image: lscr.io/linuxserver/plex
+      plex_tag: 1.32.4
   - name: uptime-kuma
   - name: mariadb
     template_vars:

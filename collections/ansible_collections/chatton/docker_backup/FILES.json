@@ -88,7 +88,7 @@
    "name": "tests/host_vars/localhost.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "388a868ea1dd4cded00276063b18f221bb3ed43040378fdcd6443dc2240d3db5",
+   "chksum_sha256": "beb7a0118badde41004674e83d1116c88c5e89b9c761d4dc8e8659c7d32fe4b1",
    "format": 1
   },
   {
@@ -137,7 +137,7 @@
    "name": "roles/docker_s3_backup/tasks/main.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "68b33673f05e9291aa60766650d4ccbc4b80e5d44ba1b7d33da954f43d53ca64",
+   "chksum_sha256": "1557afdcebc2be827d507fc7eb0d3f8dd97dd1cd21705b7122a604d45821eefc",
    "format": 1
   },
   {
@@ -165,7 +165,7 @@
    "name": "roles/docker_s3_backup/defaults/main.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "cd31b1ba5dd374feac22fce70bb91bd948a391c27691f8cc49190427dfd360aa",
+   "chksum_sha256": "736d895f68004b8dfb7e7949cd6f5f965d6e186952fd329c97a63e7ef85c6d1a",
    "format": 1
   },
   {
@@ -249,7 +249,7 @@
    "name": "README.md",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "678fe27fb5f532e6c89a7538da7931d64f7d6522a4c857a2de5495afabaeaab3",
+   "chksum_sha256": "9fe665d33b762d64e2c88c6c38d7bc37c321e8787655b5cfea9f7cf709b1bf76",
    "format": 1
   },
   {
@@ -277,14 +277,14 @@
    "name": ".github/workflows/lint.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "aa67d9ff8c695a9c47d18c540186647ef12160ed924608a4adabf4d0bfb5510a",
+   "chksum_sha256": "770c3a4744e959217cd1e3009919375669572537f37ca023ba1c9c6eca7d3852",
    "format": 1
   },
   {
    "name": ".github/workflows/e2e.yml",
    "ftype": "file",
    "chksum_type": "sha256",
-   "chksum_sha256": "c78a395feeca4a7f3751cedd0666ad01c7d4e206ffecaf6928deefd0f8d9b384",
+   "chksum_sha256": "cabad9a267c2f1e47ab974bd71adb04fbe6c986232ae69522c22050de7931483",
    "format": 1
   }
  ],

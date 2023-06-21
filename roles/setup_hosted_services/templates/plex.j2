@@ -4,8 +4,8 @@ services:
   plex:
     labels:
       ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{backups.schedule_keys.monthly}}"
-    image: lscr.io/linuxserver/plex:latest
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+    image: "{{ template_vars.plex_image }}:{{ template_vars.plex_tag }}"
     container_name: plex
     ports:
       - 32400:32400
@@ -26,7 +26,7 @@ services:
   tautulli:
     labels:
       ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{backups.schedule_keys.nightly}}"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
     environment:

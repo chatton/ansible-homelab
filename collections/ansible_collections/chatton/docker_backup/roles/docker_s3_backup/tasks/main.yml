@@ -52,13 +52,22 @@
     aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
     aws_secret_key: "{{ docker_backup_aws_s3_aws_secret_key }}"
     region: "{{ docker_backup_aws_s3_region }}"
-    encrypt: off
     mode: put
+    encrypt: "{{ docker_backup_aws_s3_encrypt }}"
     permission: "{{ docker_backup_aws_s3_permissions }}"
+  with_items: "{{ volume_mounts }}"
+
+# delete local backups if we are not keeping them.
+- name: Delete local backups.
+  file:
+    path: "{{ docker_backup_host_backup_directory }}/{{ item.Name }}-{{ backup_time }}.tar.gz"
+    state: absent
+  when: not docker_backup_keep_local
   with_items: "{{ volume_mounts }}"
 
 # try and find latest volume based on the name.
 - name: Fetch Volumes From S3.
+  when: docker_backup_retain_count is defined
   amazon.aws.aws_s3:
     bucket: "{{ docker_backup_aws_s3_bucket }}"
     mode: list
@@ -71,10 +80,12 @@
   with_items: "{{ volume_mounts }}"
 
 - name: Find keys to delete.
+  when: docker_backup_retain_count is defined
   ansible.builtin.set_fact:
     s3_keys_to_delete: "{{ s3_list_outputs.results | map(attribute='s3_keys') | keep_last(docker_backup_retain_count) | flatten }}"
 
-- name: Delete old backups.
+- name: Delete old s3 backups.
+  when: docker_backup_retain_count is defined
   amazon.aws.aws_s3:
     bucket: "{{ docker_backup_aws_s3_bucket }}"
     aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
