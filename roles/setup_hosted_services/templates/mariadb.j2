@@ -4,9 +4,9 @@ services:
   mariadb:
     labels:
       ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{backups.schedule_keys.nightly}}"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     container_name: mariadb
-    image: mariadb
+    image: "{{ template_vars.image }}:{{ template_vars.tag }}"
     hostname: mariadb
     restart: unless-stopped
     ports:
