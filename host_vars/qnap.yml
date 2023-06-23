@@ -13,7 +13,11 @@ mounts:
 # these directories will be backed up to s3.
 backup_directories:
   - path: /mnt/mergerfs/photoprism/originals
-    s3_name: photos
+    s3_name: photoprism_photos
+  - path: /mnt/mergerfs/photoprism/import
+    s3_name: photoprism_import
+  - path: /mnt/mergerfs/photoprism/storage
+    s3_name: photoprism_storage
   - path: /mnt/mergerfs/documents/media/documents/originals
     s3_name: paperless-docs
 
@@ -102,6 +106,8 @@ services:
   - name: photoprism
     template_vars:
       default_network: mariadb_net
+      image: photoprism/photoprism
+      tag: 230615
   - name: olivetin
   - name: pihole
   - name: paperless

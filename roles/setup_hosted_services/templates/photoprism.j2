@@ -2,7 +2,7 @@
 version: '3.5'
 services:
   photoprism:
-    image: photoprism/photoprism:latest
+    image: "{{ template_vars.image }}:{{ template_vars.tag }}"
     container_name: photoprism
     restart: unless-stopped
     security_opt:

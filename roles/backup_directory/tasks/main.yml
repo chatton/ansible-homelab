@@ -18,3 +18,8 @@
     region: "{{ docker_backup_aws_s3_region }}"
     mode: put
     permission: "{{ docker_backup_aws_s3_permissions }}"
+
+- name: Remove local backup.
+  file:
+    path: /tmp/backup.tar.gz
+    state: absent
