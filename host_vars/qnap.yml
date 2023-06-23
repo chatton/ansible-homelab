@@ -62,6 +62,7 @@ portainer_endpoint: 2
 services:
   - name: vpn-stack
     template_vars:
+      vpn: protonwire # protonwire or surfshark
       qbittorrent:
         enabled: true
         image: lscr.io/linuxserver/qbittorrent

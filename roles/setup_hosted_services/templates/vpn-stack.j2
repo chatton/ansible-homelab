@@ -1,24 +1,21 @@
 ---
 version: "3"
 services:
+{% if template_vars.vpn  == "protonwire" %}
   protonwire:
     container_name: protonwire
-    # Use semver tags or sha256 hashes of manifests.
-    # using latest tag can lead to issues when used with
-    # automatic image updaters like watchtower.
-    image: ghcr.io/tprasadtp/protonwire:latest
+    image: ghcr.io/tprasadtp/protonwire:7.2.0
     init: true
     restart: unless-stopped
     environment:
       # Quote this value as server name can contain '#'.
-      PROTONVPN_SERVER: "nl-free-127.protonvpn.net"
+      PROTONVPN_SERVER: "{{ vpn.protonvpn_server }}"
       # Set this to 1 to show debug logs for issue forms.
       DEBUG: "1"
       # Set this to 0 to disable kill-switch.
       KILL_SWITCH: "0"
 
-      WIREGUARD_PRIVATE_KEY: "{{ wireguard_private_key }}"
-    # NET_ADMIN capability is mandatory!
+      WIREGUARD_PRIVATE_KEY: "{{ vpn.wireguard_private_key }}"
     cap_add:
       - NET_ADMIN
     # sysctl net.ipv4.conf.all.rp_filter is mandatory!
@@ -42,19 +39,9 @@ services:
       - 8989:8989
       # jackett
       - 9117:9117
-      - 81:81
     devices:
       - /dev/net/tun
-
-  caddy_proxy:
-    image: caddy:latest
-    network_mode: service:protonwire
-    command: |
-      caddy reverse-proxy \
-          --change-host-header \
-          --from :81 \
-          --to https://ip.me:443
-
+{% elif template_vars.vpn == "surfshark" %}
   surfshark:
     image: ilteoood/docker-surfshark
     container_name: surfshark
@@ -68,20 +55,32 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun
+    ports:
+      # qbittorrent
+      - 15000:15000
+      - 6881:6881
+      - 6881:6881/udp
+      # radarr
+      - 7878:7878
+      # sonarr
+      - 8989:8989
+      # jackett
+      - 9117:9117
     restart: unless-stopped
     dns:
       - 1.1.1.1
       - 8.8.8.8
+{% endif %}
 {% if template_vars.qbittorrent.enabled %}
   qbittorrent:
     labels:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     depends_on:
-      - protonwire
+      - {{ template_vars.vpn }}
     image: "{{ template_vars.qbittorrent.image }}:{{ template_vars.qbittorrent.tag }}"
     container_name: qbittorrent
-    network_mode: service:protonwire
+    network_mode: "service:{{ template_vars.vpn }}"
     environment:
       - PUID=1000
       - PGID=1000
@@ -98,10 +97,10 @@ services:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     depends_on:
-      - protonwire
+      - {{ template_vars.vpn }}
     image: "{{ template_vars.radarr.image }}:{{ template_vars.radarr.tag }}"
     container_name: radarr
-    network_mode: service:protonwire
+    network_mode: "service:{{ template_vars.vpn }}"
     environment:
       - PUID=1000
       - PGID=1000
@@ -115,13 +114,13 @@ services:
 {% if template_vars.sonarr.enabled %}
   sonarr:
     depends_on:
-      - protonwire
+      - {{ template_vars.vpn }}
     image: "{{ template_vars.sonarr.image }}:{{ template_vars.sonarr.tag }}"
     labels:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     container_name: sonarr
-    network_mode: service:protonwire
+    network_mode: "service:{{ template_vars.vpn }}"
     environment:
       - PUID=1000
       - PGID=1000
@@ -138,10 +137,10 @@ services:
       ie.cianhatton.backup.enabled: "true"
       ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
     depends_on:
-      - protonwire
+      - {{ template_vars.vpn }}
     image: "{{ template_vars.jackett.image }}:{{ template_vars.jackett.tag }}"
     container_name: jackett
-    network_mode: service:protonwire
+    network_mode: "service:{{ template_vars.vpn }}"
     environment:
       - PUID=1000
       - PGID=1000
