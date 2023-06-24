@@ -6,6 +6,7 @@
   community.general.archive:
     path: "{{ backup.path }}"
     dest: /tmp/backup.tar.gz
+    mode: "0755"
 
 - name: Upload backups to S3
   amazon.aws.aws_s3:
@@ -20,6 +21,6 @@
     permission: "{{ docker_backup_aws_s3_permissions }}"
 
 - name: Remove local backup.
-  file:
+  ansible.builtin.file:
     path: /tmp/backup.tar.gz
     state: absent

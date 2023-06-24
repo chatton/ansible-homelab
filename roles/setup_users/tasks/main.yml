@@ -43,14 +43,14 @@
     mode: 0644
 
 - name: Disable password authentication for root.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?PermitRootLogin'
     line: 'PermitRootLogin prohibit-password'
 
 - name: Disable password authentication for users.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?PasswordAuthentication'

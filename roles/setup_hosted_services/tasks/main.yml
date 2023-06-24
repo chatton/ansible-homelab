@@ -70,14 +70,14 @@
     loop_var: portainer_stack
 
 - name: Install Ansible pull
-  tags: [ "cron" ]
+  tags: ["cron"]
   ansible.builtin.pip:
     name:
       - ansible
 
 # TODO: need to specify ansible pull directly, it doesn't find it when it's in PATH
 - name: Ensure Nightly Cron Backups
-  tags: [ "cron" ]
+  tags: ["cron"]
   ansible.builtin.cron:
     name: backup docker volumes (nightly)
     weekday: "*"
@@ -88,17 +88,4 @@
       {{ ansible_pull_path }}
       -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> ~/logs/nightly.log 2>&1
     cron_file: ansible_nightly_docker_volume_backup
-    state: present
-
-- name: Ensure Monthly Cron Backups
-  tags: [ "cron" ]
-  ansible.builtin.cron:
-    name: backup docker volumes (monthly)
-    month: "*"
-    day: "0"
-    user: "{{ homelab_user }}"
-    job: >
-      {{ ansible_pull_path }}
-      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly >> ~/logs/monthly.log 2>&1
-    cron_file: ansible_monthly_docker_volume_backup
     state: present

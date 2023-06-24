@@ -9,7 +9,8 @@
       tags: [always]
 
   tasks:
-    - ansible.builtin.include_role:
+    - name: Backup Directories.
+      ansible.builtin.include_role:
         name: backup_directory
       with_items: "{{ backup_directories }}"
       loop_control:
