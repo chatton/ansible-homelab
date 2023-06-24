@@ -1,20 +1,4 @@
 ---
-- name: Portainer | Create directory if it does not exist.
-  ansible.builtin.file:
-    path: '{{ directories.docker_compose_directory }}'
-    state: directory
-    owner: root
-    group: root
-    mode: 0440
-
-- name: Portainer | Copy docker compose file.
-  ansible.builtin.copy:
-    src: docker-compose.yml
-    dest: '{{ directories.docker_compose_directory }}/portainer/docker-compose.yml'
-    owner: root
-    group: root
-    mode: 0440
-
 - name: Portainer | Pull images
   docker_image:
     name: ubuntu
@@ -32,4 +16,21 @@
 
 - name: Portainer | Docker compose up
   community.docker.docker_compose:
-    project_src: '{{ directories.docker_compose_directory }}/portainer'
+    project_name: portainer
+    definition:
+      version: '3.2'
+      services:
+        portainer:
+          labels:
+            ie.cianhatton.backup.enabled: 'true'
+            ie.cianhatton.backup.schedule: nightly
+          image: "portainer/portainer-ce:{{ portainer_version }}"
+          container_name: portainer
+          restart: unless-stopped
+          ports:
+            - 9000:9000
+          volumes:
+            - portainer_data:/data
+            - /var/run/docker.sock:/var/run/docker.sock
+      volumes:
+        portainer_data:
