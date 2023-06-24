@@ -15,7 +15,9 @@ services:
       # Set this to 0 to disable kill-switch.
       KILL_SWITCH: "0"
 
+      # follow instructions here https://github.com/tprasadtp/protonvpn-docker
       WIREGUARD_PRIVATE_KEY: "{{ vpn.wireguard_private_key }}"
+      LAN_NETWORK: "{{ vpn.lan_network }}"
     cap_add:
       - NET_ADMIN
     # sysctl net.ipv4.conf.all.rp_filter is mandatory!
@@ -39,8 +41,9 @@ services:
       - 8989:8989
       # jackett
       - 9117:9117
-    devices:
-      - /dev/net/tun
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
 {% elif template_vars.vpn == "surfshark" %}
   surfshark:
     image: ilteoood/docker-surfshark
