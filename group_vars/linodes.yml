@@ -2,17 +2,17 @@
 vault_file: vault_vars/linode-vault.yml
 # any linode specific variables go here
 services:
-  - name: gitea
-  - name: mealie
-  - name: linkding
-  - name: overseerr
-  - name: nextcloud
-  - name: nginx-proxy-manager
-  - name: uptime-kuma
-  - name: mariadb
-  - name: photoprism
-  - name: olivetin
+- name: gitea
+- name: mealie
+- name: linkding
+- name: overseerr
+- name: nextcloud
+- name: nginx-proxy-manager
+- name: uptime-kuma
+- name: mariadb
+- name: photoprism
+- name: olivetin
 
 # any additional docker networks that should be created
 docker_networks:
-  - mariadb_net
+- mariadb_net

@@ -1,121 +1,124 @@
----
 # tasks file for chatton.docker_backup
 # https://docs.ansible.com/ansible/latest/collections/community/docker/docker_container_module.html#ansible-collections-community-docker-docker-container-module
 # https://docs.docker.com/storage/volumes/#backup-restore-or-migrate-data-volumes
 
 - name: Get container details
   docker_container_info:
-    name: "{{ container_restore }}"
+    name: '{{ container_restore }}'
   register: result
 
 - name: Fail if container is not present
   fail:
-    msg: Cannot restore volumes for a container when it does not exist. Ensure the container exists and try again.
+    msg: Cannot restore volumes for a container when it does not exist. Ensure the
+      container exists and try again.
   when: result.exists == false
 
 - debug: msg="{{ result }}"
 
 - name: Extract only the volume mounts (not bind mounts)
-  set_fact: volume_mounts="{{ result.container.Mounts | selectattr("Type", "equalto", "volume")}}"
+  set_fact: volume_mounts="{{ result.container.Mounts | selectattr("Type", "equalto",
+    "volume")}}"
 
 - debug: msg="{{ volume_mounts }}"
 
 - name: Find relevant volume(s) in S3
   amazon.aws.aws_s3:
-    bucket: "{{ aws_s3.bucket }}"
+    bucket: '{{ aws_s3.bucket }}'
     mode: list
-    region: "{{ aws_s3.region }}"
-    s3_url: "https://{{ aws_s3.s3_url }}"
-    prefix: "{{ item.Name }}/{{ item.Name }}"
-    aws_access_key: "{{ aws_s3.aws_access_key }}"
-    aws_secret_key: "{{ aws_s3.aws_secret_key }}"
+    region: '{{ aws_s3.region }}'
+    s3_url: https://{{ aws_s3.s3_url }}
+    prefix: '{{ item.Name }}/{{ item.Name }}'
+    aws_access_key: '{{ aws_s3.aws_access_key }}'
+    aws_secret_key: '{{ aws_s3.aws_secret_key }}'
   register: s3_list_output
-  with_items: "{{ volume_mounts }}"
+  with_items: '{{ volume_mounts }}'
 
 - debug: msg="{{ s3_list_output }}"
 
 - name: Extract s3 keys for container
-  set_fact: container_s3_keys="{{ container_s3_keys | default([]) + [item.s3_keys | last] }}"
-  with_items: "{{ s3_list_output.results }}"
+  set_fact: container_s3_keys="{{ container_s3_keys | default([]) + [item.s3_keys
+    | last] }}"
+  with_items: '{{ s3_list_output.results }}'
 
 - debug: msg="{{ container_s3_keys }}"
 
 - name: Create a directory for temporary backups if they do not exist
   ansible.builtin.file:
-    path: "/tmp/{{ item.Name }}"
+    path: /tmp/{{ item.Name }}
     state: directory
     mode: '0755'
-  with_items: "{{ volume_mounts }}"
+  with_items: '{{ volume_mounts }}'
 
 - name: Download archives from S3
   amazon.aws.aws_s3:
-    bucket: "{{ aws_s3.bucket }}"
-    object: "{{ item }}"
-    aws_access_key: "{{ aws_s3.aws_access_key }}"
-    aws_secret_key: "{{ aws_s3.aws_secret_key }}"
-    region: "{{ aws_s3.region }}"
-    s3_url: "https://{{ aws_s3.s3_url }}"
+    bucket: '{{ aws_s3.bucket }}'
+    object: '{{ item }}'
+    aws_access_key: '{{ aws_s3.aws_access_key }}'
+    aws_secret_key: '{{ aws_s3.aws_secret_key }}'
+    region: '{{ aws_s3.region }}'
+    s3_url: https://{{ aws_s3.s3_url }}
     mode: get
-    dest: "/tmp/{{ item }}"
-  with_items: "{{ container_s3_keys }}"
+    dest: /tmp/{{ item }}
+  with_items: '{{ container_s3_keys }}'
   register: get_out
 
 - debug: msg="{{ get_out }}"
 
 - set_fact:
-    volume_details: "{{ volume_details | default([]) + [ {'mount': item.0, 's3_key': item.1} ] }}"
+    volume_details: "{{ volume_details | default([]) + [ {'mount': item.0, 's3_key':\
+      \ item.1} ] }}"
   with_together:
-    - "{{ volume_mounts }}"
-    - "{{ container_s3_keys }}"
+  - '{{ volume_mounts }}'
+  - '{{ container_s3_keys }}'
 
 - debug: msg="{{ volume_details }}"
 
 - name: Stop a container
   community.docker.docker_container:
-    name: "{{ container_restore }}"
+    name: '{{ container_restore }}'
     state: stopped
 
 - name: Ensure Volume
   docker_volume:
-    name: "{{ item.mount.Name }}"
+    name: '{{ item.mount.Name }}'
     state: present
-  with_items: "{{ volume_details }}"
+  with_items: '{{ volume_details }}'
 
 - name: Remove contents of volumes
   community.docker.docker_container:
-    name: "restore-container-{{ item.mount.Name }}-{{ 10 | random }}"
+    name: restore-container-{{ item.mount.Name }}-{{ 10 | random }}
     image: ubuntu
-    command: "rm -rf ./* "
+    command: 'rm -rf ./* '
     auto_remove: true
     detach: false # block until this container exists.
     state: started
     # start inside the directory we want to wipe
-    working_dir: "{{ item.mount.Destination }}"
+    working_dir: '{{ item.mount.Destination }}'
     volumes:
-      - /tmp:/tmp
+    - /tmp:/tmp
     volumes_from:
-      - "{{ container_restore }}"
-  with_items: "{{ volume_details }}"
+    - '{{ container_restore }}'
+  with_items: '{{ volume_details }}'
 
 
 - name: Restore contents of volumes
   community.docker.docker_container:
-    name: "restore-container-{{ item.mount.Name }}-{{ 10 | random }}"
+    name: restore-container-{{ item.mount.Name }}-{{ 10 | random }}
     image: ubuntu
     # extract the tar into the volume.
-    command: "tar xvf /tmp/{{ item.s3_key }}"
+    command: tar xvf /tmp/{{ item.s3_key }}
     auto_remove: true
     detach: false # block until this container exists.
     state: started
     # the compressed volume contains the directories, so we start from the root
-    working_dir: "/"
+    working_dir: /
     volumes:
-      - /tmp:/tmp
+    - /tmp:/tmp
     volumes_from:
-      - "{{ container_restore }}"
-  with_items: "{{ volume_details }}"
+    - '{{ container_restore }}'
+  with_items: '{{ volume_details }}'
 
 - name: Start a container
   community.docker.docker_container:
-    name: "{{ container_restore }}"
+    name: '{{ container_restore }}'
     state: started

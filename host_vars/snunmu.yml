@@ -1,33 +1,32 @@
----
 vault_file: vault_vars/qnap-vault.yml
 
 portainer_required_templates:
-  - source_file: diun-config.j2
-    dest_file_name: diun-config.yml
-    dest_directory: /etc/config/diun
-    handler: restart-diun
+- source_file: diun-config.j2
+  dest_file_name: diun-config.yml
+  dest_directory: /etc/config/diun
+  handler: restart-diun
 
 portainer_endpoint: 23
 services:
-  - name: linkding
-  - name: pihole
-  - name: hasteypaste
-  - name: dashboards
-    template_vars:
-      dashy: false
-      dashdot: true
-      glances: true
-  - name: diun
+- name: linkding
+- name: pihole
+- name: hasteypaste
+- name: dashboards
+  template_vars:
+    dashy: false
+    dashdot: true
+    glances: true
+- name: diun
 
 ansible_pull_path: /usr/local/bin/ansible-pull
 
 backup_directories: []
-cron_hour: "4"
+cron_hour: '4'
 
 # docker options
 docker_daemon_options:
   hosts:
-    - "tcp://0.0.0.0:2375"
-    - "unix:///var/run/docker.sock"
+  - tcp://0.0.0.0:2375
+  - unix:///var/run/docker.sock
 
-docker_backup_host_backup_directory: "/tmp"
+docker_backup_host_backup_directory: /tmp

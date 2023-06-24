@@ -1,57 +1,56 @@
----
 - name: Install Modules for Python
   ansible.builtin.pip:
     name:
-      - boto3
+    - boto3
 
 - name: Docker | Pull images
   docker_image:
     name: '{{ item }}'
     source: pull
   with_items:
-    - ubuntu
+  - ubuntu
 
 - name: Create required directories (files).
   ansible.builtin.file:
     path: '{{ file_item.dest_directory }}'
     state: directory
     mode: '0755'
-  with_items: "{{ portainer_required_files }}"
+  with_items: '{{ portainer_required_files }}'
   loop_control:
     loop_var: file_item
 
 - name: Create required files.
   ansible.builtin.copy:
-    src: "{{ file_item.source_file }}"
+    src: '{{ file_item.source_file }}'
     dest: '{{ file_item.dest_directory }}/{{ file_item.dest_file_name }}'
     owner: root
     group: root
     mode: 0440
-  with_items: "{{ portainer_required_files }}"
+  with_items: '{{ portainer_required_files }}'
   loop_control:
     loop_var: file_item
-  notify: "{{ file_item.handler }}"
+  notify: '{{ file_item.handler }}'
 
 - name: Create required directories (templates).
   ansible.builtin.file:
     path: '{{ file_template.dest_directory }}'
     state: directory
     mode: '0755'
-  with_items: "{{ portainer_required_templates }}"
+  with_items: '{{ portainer_required_templates }}'
   loop_control:
     loop_var: file_template
 
 - name: Create required templates.
   ansible.builtin.template:
-    src: "{{ file_template.source_file }}"
-    dest: "{{ file_template.dest_directory }}/{{ file_template.dest_file_name }}"
+    src: '{{ file_template.source_file }}'
+    dest: '{{ file_template.dest_directory }}/{{ file_template.dest_file_name }}'
     owner: root
     group: root
     mode: 0440
-  with_items: "{{ portainer_required_templates }}"
+  with_items: '{{ portainer_required_templates }}'
   loop_control:
     loop_var: file_template
-  notify: "{{ file_template.handler }}"
+  notify: '{{ file_template.handler }}'
 
 - name: Create external docker networks.
   docker_network:
@@ -62,30 +61,32 @@
   ansible.builtin.include_role:
     name: deploy_portainer_stack
   vars:
-    portainer_stack_name: "{{ portainer_stack.name }}"
-    portainer_stack_endpoint_id: "{{ portainer_endpoint }}"
-    portainer_stack_template_vars: "{{ portainer_stack.template_vars | default({}) }}"
-  with_items: "{{ services }}"
+    portainer_stack_name: '{{ portainer_stack.name }}'
+    portainer_stack_endpoint_id: '{{ portainer_endpoint }}'
+    portainer_stack_template_vars: '{{ portainer_stack.template_vars | default({})
+      }}'
+  with_items: '{{ services }}'
   loop_control:
     loop_var: portainer_stack
 
 - name: Install Ansible pull
-  tags: ["cron"]
+  tags: [cron]
   ansible.builtin.pip:
     name:
-      - ansible
+    - ansible
 
 # TODO: need to specify ansible pull directly, it doesn't find it when it's in PATH
 - name: Ensure Nightly Cron Backups
-  tags: ["cron"]
+  tags: [cron]
   ansible.builtin.cron:
     name: backup docker volumes (nightly)
-    weekday: "*"
-    minute: "0"
-    hour: "{{ cron_hour }}"
-    user: "{{ homelab_user }}"
+    weekday: '*'
+    minute: '0'
+    hour: '{{ cron_hour }}'
+    user: '{{ homelab_user }}'
     job: >
       {{ ansible_pull_path }}
-      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> ~/logs/nightly.log 2>&1
+      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml
+      -e schedule=nightly >> ~/logs/nightly.log 2>&1
     cron_file: ansible_nightly_docker_volume_backup
     state: present

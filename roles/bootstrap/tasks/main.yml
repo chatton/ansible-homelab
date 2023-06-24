@@ -1,4 +1,3 @@
----
 - name: Add sources list
   ansible.builtin.copy:
     src: sources_list
@@ -27,10 +26,10 @@
 - name: Add sudoers files
   ansible.builtin.template:
     src: sudoer_file
-    dest: "/etc/sudoers.d/{{ item }}"
+    dest: /etc/sudoers.d/{{ item }}
     owner: root
     group: root
     mode: 0440
   with_items:
-    - ansible
-    - cianhatton
+  - ansible
+  - cianhatton

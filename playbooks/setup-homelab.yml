@@ -1,58 +1,57 @@
----
 - name: Update packages and ensure users on all hosts.
   hosts: all
   become: true
   pre_tasks:
-    - name: Update Packages
-      ansible.builtin.apt:
-        upgrade: dist
-        update_cache: true
+  - name: Update Packages
+    ansible.builtin.apt:
+      upgrade: dist
+      update_cache: true
   roles:
-    - role: setup_users
+  - role: setup_users
 
 - name: Configure mergerfs pools.
   hosts: mergerfs
   become: true
   roles:
-    - role: setup_mergerfs
-      tags: [mergerfs]
+  - role: setup_mergerfs
+    tags: [mergerfs]
 
 - name: Configure samba shares.
   hosts: all
   become: true
   roles:
-    - role: geerlingguy.samba
-      tags: [samba]
+  - role: geerlingguy.samba
+    tags: [samba]
 
 - name: Install Docker on Docker hosts.
   hosts: docker
   become: true
   roles:
-    - geerlingguy.pip
-    - geerlingguy.docker
+  - geerlingguy.pip
+  - geerlingguy.docker
 
 
 - name: Install Portainer on Portainer hosts.
   hosts: portainer
   become: true
   pre_tasks:
-    - name: Include vault variables.
-      ansible.builtin.include_vars: '../{{ vault_file }}'
-      tags: [always]
+  - name: Include vault variables.
+    ansible.builtin.include_vars: ../{{ vault_file }}
+    tags: [always]
   roles:
-    - role: setup_portainer
-      tags: [services, portainer]
-      vars:
-        portainer_version: "2.18.3"
+  - role: setup_portainer
+    tags: [services, portainer]
+    vars:
+      portainer_version: 2.18.3
 
 
 - name: Setup and deploy services.
   hosts: servers
   become: true
   pre_tasks:
-    - name: Include vault variables.
-      ansible.builtin.include_vars: '../{{ vault_file }}'
-      tags: [always]
+  - name: Include vault variables.
+    ansible.builtin.include_vars: ../{{ vault_file }}
+    tags: [always]
   roles:
-    - role: setup_hosted_services
-      tags: [services]
+  - role: setup_hosted_services
+    tags: [services]

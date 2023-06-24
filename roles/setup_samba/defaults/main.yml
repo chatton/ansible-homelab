@@ -1,5 +1,4 @@
----
 samba_group: smbgroup
 samba_user: smbuser
 users:
-  - name: cianhatton
+- name: cianhatton

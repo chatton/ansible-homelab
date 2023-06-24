@@ -2,8 +2,8 @@
 - name: Install Packages.
   ansible.builtin.apt:
     pkg:
-      - sudo
-      - ufw
+    - sudo
+    - ufw
     state: latest
     update_cache: true
 
@@ -37,21 +37,21 @@
 - name: Copy Bashrc.
   ansible.builtin.copy:
     src: bash_rc
-    dest: "/home/{{ homelab_user }}/.bash_rc"
-    group: "{{ homelab_user }}"
-    owner: "{{ homelab_user }}"
+    dest: /home/{{ homelab_user }}/.bash_rc
+    group: '{{ homelab_user }}'
+    owner: '{{ homelab_user }}'
     mode: 0644
 
 - name: Disable password authentication for root.
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     state: present
-    regexp: '^#?PermitRootLogin'
-    line: 'PermitRootLogin prohibit-password'
+    regexp: ^#?PermitRootLogin
+    line: PermitRootLogin prohibit-password
 
 - name: Disable password authentication for users.
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     state: present
-    regexp: '^#?PasswordAuthentication'
-    line: 'PasswordAuthentication no'
+    regexp: ^#?PasswordAuthentication
+    line: PasswordAuthentication no

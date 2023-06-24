@@ -1,4 +1,3 @@
----
 dependencies: []
 
 galaxy_info:
@@ -6,26 +5,26 @@ galaxy_info:
   author: geerlingguy
   description: Pip (Python package manager) for Linux.
   issue_tracker_url: https://github.com/geerlingguy/ansible-role-pip/issues
-  company: "Midwestern Mac, LLC"
-  license: "MIT"
+  company: Midwestern Mac, LLC
+  license: MIT
   min_ansible_version: 2.4
   platforms:
-    - name: EL
-      versions:
-        - all
-    - name: Fedora
-      versions:
-        - all
-    - name: Debian
-      versions:
-        - all
-    - name: Ubuntu
-      versions:
-        - all
+  - name: EL
+    versions:
+    - all
+  - name: Fedora
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
   galaxy_tags:
-    - system
-    - server
-    - packaging
-    - python
-    - pip
-    - tools
+  - system
+  - server
+  - packaging
+  - python
+  - pip
+  - tools

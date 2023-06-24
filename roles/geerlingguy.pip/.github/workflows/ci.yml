@@ -1,16 +1,15 @@
----
 name: CI
-'on':
+on:
   pull_request:
   push:
     branches:
-      - master
+    - master
   schedule:
-    - cron: "0 4 * * 5"
+  - cron: 0 4 * * 5
 
 defaults:
   run:
-    working-directory: 'geerlingguy.pip'
+    working-directory: geerlingguy.pip
 
 jobs:
 
@@ -18,22 +17,22 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'geerlingguy.pip'
+    - name: Check out the codebase.
+      uses: actions/checkout@v2
+      with:
+        path: geerlingguy.pip
 
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Set up Python 3.
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
 
-      - name: Install test dependencies.
-        run: pip3 install yamllint
+    - name: Install test dependencies.
+      run: pip3 install yamllint
 
-      - name: Lint code.
-        run: |
-          yamllint .
+    - name: Lint code.
+      run: |
+        yamllint .
 
   molecule:
     name: Molecule
@@ -41,29 +40,29 @@ jobs:
     strategy:
       matrix:
         distro:
-          - rockylinux8
-          - fedora34
-          - ubuntu2004
-          - ubuntu1804
-          - debian10
+        - rockylinux8
+        - fedora34
+        - ubuntu2004
+        - ubuntu1804
+        - debian10
 
     steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'geerlingguy.pip'
+    - name: Check out the codebase.
+      uses: actions/checkout@v2
+      with:
+        path: geerlingguy.pip
 
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Set up Python 3.
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
 
-      - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker
+    - name: Install test dependencies.
+      run: pip3 install ansible molecule[docker] docker
 
-      - name: Run Molecule tests.
-        run: molecule test
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ${{ matrix.distro }}
+    - name: Run Molecule tests.
+      run: molecule test
+      env:
+        PY_COLORS: '1'
+        ANSIBLE_FORCE_COLOR: '1'
+        MOLECULE_DISTRO: ${{ matrix.distro }}
