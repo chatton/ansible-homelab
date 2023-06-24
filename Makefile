@@ -11,6 +11,9 @@ qnap:
 services:
 	ansible-playbook playbooks/setup-homelab.yml --tags services
 
+portainer:
+	ansible-playbook playbooks/setup-homelab.yml --tags portainer
+
 qnap-services:
 	ansible-playbook playbooks/setup-homelab.yml --tags services --limit qnap
 
