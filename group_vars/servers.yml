@@ -8,9 +8,9 @@ homelab_user: &main_user cianhatton
 samba_group: smbgroup
 samba_user: smbuser
 users:
-  - name: *main_user
-    group: *main_user
-    passwordless_sudo: true
+- name: *main_user
+  group: *main_user
+  passwordless_sudo: true
 
 directories:
   # path on qnap where downloads go
@@ -31,9 +31,9 @@ directories:
   documents_dir: /mnt/mergerfs/documents
 
 desired_docker_images:
-  - ubuntu:latest
+- ubuntu:latest
 
 portainer_endpoint: -1
-portainer_base_url: "http://qnap:9000"
+portainer_base_url: http://qnap:9000
 external_docker_networks: []
 portainer_required_files: []

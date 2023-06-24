@@ -2,121 +2,121 @@
 vault_file: vault_vars/qnap-vault.yml
 # any qnap specific variables go here
 mounts:
-  - path: /mnt/mergerfs
-    state: mounted
-    branches:
-      - /mnt/data/device0
-      - /mnt/data/device1
-      - /mnt/data/device2
-    options: allow_other,use_ino
+- path: /mnt/mergerfs
+  state: mounted
+  branches:
+  - /mnt/data/device0
+  - /mnt/data/device1
+  - /mnt/data/device2
+  options: allow_other,use_ino
 
 # these directories will be backed up to s3.
 backup_directories:
-  - path: /mnt/mergerfs/photoprism/originals
-    s3_name: photoprism_photos
-  - path: /mnt/mergerfs/photoprism/import
-    s3_name: photoprism_import
-  - path: /mnt/mergerfs/photoprism/storage
-    s3_name: photoprism_storage
-  - path: /mnt/mergerfs/documents/media/documents/originals
-    s3_name: paperless-docs
+- path: /mnt/mergerfs/photoprism/originals
+  s3_name: photoprism_photos
+- path: /mnt/mergerfs/photoprism/import
+  s3_name: photoprism_import
+- path: /mnt/mergerfs/photoprism/storage
+  s3_name: photoprism_storage
+- path: /mnt/mergerfs/documents/media/documents/originals
+  s3_name: paperless-docs
 
-cron_hour: "5"
-docker_backup_host_backup_directory: "/tmp"
+cron_hour: '5'
+docker_backup_host_backup_directory: /tmp
 
 devices:
-  - uuid: a54c1bde-1400-4975-bf24-08c603ca3a11     # /dev/sdc1
-    path: /mnt/data/device0
-  - uuid: 727dddaa-f7a1-439a-995f-5f4d35322e08     # /dev/sdd1
-    path: /mnt/data/device1
-  - uuid: f3cff115-9adc-4761-b1e9-e81055f3e0af     # /dev/sda1
-    path: /mnt/data/device2
+- uuid: a54c1bde-1400-4975-bf24-08c603ca3a11       # /dev/sdc1
+  path: /mnt/data/device0
+- uuid: 727dddaa-f7a1-439a-995f-5f4d35322e08       # /dev/sdd1
+  path: /mnt/data/device1
+- uuid: f3cff115-9adc-4761-b1e9-e81055f3e0af       # /dev/sda1
+  path: /mnt/data/device2
     # SSD for downloads / transcoding
-  - uuid: c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec     # /dev/sdf
-    path: /mnt/ssd0/
+- uuid: c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec       # /dev/sdf
+  path: /mnt/ssd0/
 
 # docker networks to be created before portainer stacks are created.
 external_docker_networks:
-  - mariadb_net
+- mariadb_net
 
 ansible_pull_path: /home/{{ homelab_user }}/.local/bin/ansible-pull
 
 portainer_required_files:
-  - source_file: dashboards/dashy-config.yml
-    dest_file_name: dashy-config.yml
-    dest_directory: /etc/config/dashy
-    handler: restart-dashy
-  - source_file: olivetin/config.yml
-    dest_file_name: config.yml
-    dest_directory: /etc/config/OliveTin
-    handler: restart-olivetin
+- source_file: dashboards/dashy-config.yml
+  dest_file_name: dashy-config.yml
+  dest_directory: /etc/config/dashy
+  handler: restart-dashy
+- source_file: olivetin/config.yml
+  dest_file_name: config.yml
+  dest_directory: /etc/config/OliveTin
+  handler: restart-olivetin
 
 portainer_required_templates:
-  - source_file: diun-config.j2
-    dest_file_name: diun-config.yml
-    dest_directory: /etc/config/diun
-    handler: restart-diun
+- source_file: diun-config.j2
+  dest_file_name: diun-config.yml
+  dest_directory: /etc/config/diun
+  handler: restart-diun
 
 
 portainer_endpoint: 2
 services:
-  - name: vpn-stack
-    template_vars:
-      vpn: protonwire # protonwire or surfshark
-      qbittorrent:
-        enabled: true
-        image: lscr.io/linuxserver/qbittorrent
-        tag: 4.5.3
-      radarr:
-        enabled: true
-        image: lscr.io/linuxserver/radarr
-        tag: 4.5.2
-      sonarr:
-        enabled: true
-        image: lscr.io/linuxserver/sonarr
-        tag: 3.0.10
-      jackett:
-        enabled: true
-        image: lscr.io/linuxserver/jackett
-        tag: 0.21.235
-  - name: gitea
-    template_vars:
-      image: gitea/gitea
-      tag: 1.19.0
-  - name: mealie
-  - name: overseerr
-  - name: nextcloud
-    template_vars:
-      default_network: mariadb_net
-      image: nextcloud
-      tag: 27.0
-  - name: dashboards
-    template_vars:
-      dashy: true
-      dashdot: true
-      glances: true
-  - name: nginx-proxy-manager
-  - name: plex
-    template_vars:
-      plex_image: lscr.io/linuxserver/plex
-      plex_tag: 1.32.4
-  - name: uptime-kuma
-  - name: mariadb
-    template_vars:
-      image: mariadb
-      tag: 10.8.3
-      default_network: mariadb_net
-  - name: photoprism
-    template_vars:
-      default_network: mariadb_net
-      image: photoprism/photoprism
-      tag: 230615
-  - name: olivetin
-  - name: pihole
-  - name: paperless
-  - name: gotify
-  - name: diun
-  - name: ghost
+- name: vpn-stack
+  template_vars:
+    vpn: protonwire   # protonwire or surfshark
+    qbittorrent:
+      enabled: true
+      image: lscr.io/linuxserver/qbittorrent
+      tag: 4.5.3
+    radarr:
+      enabled: true
+      image: lscr.io/linuxserver/radarr
+      tag: 4.5.2
+    sonarr:
+      enabled: true
+      image: lscr.io/linuxserver/sonarr
+      tag: 3.0.10
+    jackett:
+      enabled: true
+      image: lscr.io/linuxserver/jackett
+      tag: 0.21.235
+- name: gitea
+  template_vars:
+    image: gitea/gitea
+    tag: 1.19.0
+- name: mealie
+- name: overseerr
+- name: nextcloud
+  template_vars:
+    default_network: mariadb_net
+    image: nextcloud
+    tag: 27.0
+- name: dashboards
+  template_vars:
+    dashy: true
+    dashdot: true
+    glances: true
+- name: nginx-proxy-manager
+- name: plex
+  template_vars:
+    plex_image: lscr.io/linuxserver/plex
+    plex_tag: 1.32.4
+- name: uptime-kuma
+- name: mariadb
+  template_vars:
+    image: mariadb
+    tag: 10.8.3
+    default_network: mariadb_net
+- name: photoprism
+  template_vars:
+    default_network: mariadb_net
+    image: photoprism/photoprism
+    tag: 230615
+- name: olivetin
+- name: pihole
+- name: paperless
+- name: gotify
+- name: diun
+- name: ghost
 #  - name: minio
 #    template_vars:
 #      image: minio/minio

@@ -1,4 +1,3 @@
----
 # Install mode: defines where to download and install the package from:
 # - "github_releases": install from Mergerfs' GitHub releases
 # - "package_manager": install from the Linux distribution package manager.

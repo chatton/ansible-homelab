@@ -1,8 +1,7 @@
----
 - name: Setup linode instance.
   hosts: localhost
   become: true
   roles:
-    - role: roles/setup_linode
-      vars:
-        state: present
+  - role: roles/setup_linode
+    vars:
+      state: present

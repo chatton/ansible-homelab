@@ -4,11 +4,11 @@ galaxy_info:
   description: Setup Samba Shares for my Home Lab.
   license: MIT
 
-  min_ansible_version: "2.1"
+  min_ansible_version: '2.1'
   platforms:
-    - name: Debian
-      versions:
-        - all
+  - name: Debian
+    versions:
+    - all
 
   galaxy_tags: []
 

@@ -30,7 +30,10 @@ verify:
 	ansible-playbook playbooks/verify-homelab.yml
 
 venv:
-	source ./venv/bin/activate
+	# activate venv if it exists
+	if [ -d "./venv" ]; then \
+		source venv/bin/activate; \
+	fi
 
 deps: venv
 	pip install --upgrade pip

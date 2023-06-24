@@ -1,4 +1,3 @@
----
 # Note: we don't use the GitHub API to retrieve the latest version because
 # it has rate limits which are hard to avoid in CI (we need a token, authenticate
 # with the API, etc.). Instead, we browse the latest release url which redirects
@@ -9,7 +8,7 @@
   block:
   - name: Get latest release information from GitHub
     uri:
-      url: "{{ mergerfs_github_releases_url }}/latest"
+      url: '{{ mergerfs_github_releases_url }}/latest'
     register: mergerfs_github_release_page
   - name: Set latest mergerfs version fact
     set_fact:
@@ -18,8 +17,8 @@
 
 - name: Determine package download url
   set_fact:
-    mergerfs_package_url: "{{ mergerfs_github_releases_url }}/download/{{ mergerfs_version }}/\
-      {{ mergerfs_pkg_prefix }}{{ mergerfs_version }}{{ mergerfs_pkg_suffix }}"
+    mergerfs_package_url: '{{ mergerfs_github_releases_url }}/download/{{ mergerfs_version
+      }}/{{ mergerfs_pkg_prefix }}{{ mergerfs_version }}{{ mergerfs_pkg_suffix }}'
 
 - name: Install xz-utils package for .deb package installation
   become: true
@@ -32,7 +31,7 @@
 - name: Install mergerfs package with apt
   become: true
   apt:
-    deb: "{{ mergerfs_package_url }}"
+    deb: '{{ mergerfs_package_url }}'
     state: present
     update_cache: true
   when: ansible_pkg_mgr == 'apt'
@@ -40,7 +39,7 @@
 - name: Install mergerfs package with yum
   become: true
   yum:
-    name: "{{ mergerfs_package_url }}"
+    name: '{{ mergerfs_package_url }}'
     state: present
     disable_gpg_check: true  # the package is not signed
   when: ansible_pkg_mgr == 'yum'
@@ -48,7 +47,7 @@
 - name: Install mergerfs package with dnf
   become: true
   dnf:
-    name: "{{ mergerfs_package_url }}"
+    name: '{{ mergerfs_package_url }}'
     state: present
     disable_gpg_check: true  # the package is not signed
   when: ansible_pkg_mgr == 'dnf'

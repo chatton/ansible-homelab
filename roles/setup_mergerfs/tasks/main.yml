@@ -1,4 +1,3 @@
----
 - name: Mount Volumes
   ansible.builtin.mount:
     path: '{{ item.path }}'
@@ -11,7 +10,7 @@
 
 - name: Display volumes.
   ansible.builtin.debug:
-    var: "{{ volume_out }}"
+    var: '{{ volume_out }}'
     verbosity: 3
 
 # tasks file for setup_mergerfs

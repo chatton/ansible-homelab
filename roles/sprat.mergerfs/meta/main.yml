@@ -1,4 +1,3 @@
----
 galaxy_info:
   author: Sylvain Prat
   role_name: mergerfs
@@ -8,23 +7,23 @@ galaxy_info:
   company: none
   min_ansible_version: 2.3
   platforms:
-    - name: Ubuntu
-      versions:
-        - all
-    - name: Debian
-      versions:
-        - all
-    - name: Fedora
-      versions:
-        - all
-    - name: EL
-      versions:
-        - all
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  - name: Fedora
+    versions:
+    - all
+  - name: EL
+    versions:
+    - all
   galaxy_tags:
-    - mergerfs
-    - union
-    - filesystem
-    - disk
-    - mount
+  - mergerfs
+  - union
+  - filesystem
+  - disk
+  - mount
 
 dependencies: []

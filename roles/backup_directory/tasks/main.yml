@@ -1,24 +1,23 @@
----
 - name: Determine backup timestamp.
   ansible.builtin.set_fact: backup_time="{{ ansible_date_time.iso8601 }}"
 
 - name: Compress Directory
   community.general.archive:
-    path: "{{ backup.path }}"
+    path: '{{ backup.path }}'
     dest: /tmp/backup.tar.gz
-    mode: "0755"
+    mode: '0755'
 
 - name: Upload backups to S3
   amazon.aws.aws_s3:
-    s3_url: "{{ docker_backup_aws_s3_url }}"
-    bucket: "{{ docker_backup_aws_s3_bucket }}"
-    object: "{{ backup.s3_name }}-{{ backup_time }}.tar.gz"
+    s3_url: '{{ docker_backup_aws_s3_url }}'
+    bucket: '{{ docker_backup_aws_s3_bucket }}'
+    object: '{{ backup.s3_name }}-{{ backup_time }}.tar.gz'
     src: /tmp/backup.tar.gz
-    aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
-    aws_secret_key: "{{ docker_backup_aws_s3_aws_secret_key }}"
-    region: "{{ docker_backup_aws_s3_region }}"
+    aws_access_key: '{{ docker_backup_aws_s3_aws_access_key }}'
+    aws_secret_key: '{{ docker_backup_aws_s3_aws_secret_key }}'
+    region: '{{ docker_backup_aws_s3_region }}'
     mode: put
-    permission: "{{ docker_backup_aws_s3_permissions }}"
+    permission: '{{ docker_backup_aws_s3_permissions }}'
 
 - name: Remove local backup.
   ansible.builtin.file:
