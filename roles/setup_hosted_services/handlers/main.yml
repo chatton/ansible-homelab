@@ -7,6 +7,3 @@
 
 - name: restart-diun
   ansible.builtin.command: docker restart diun
-
-- name: restart-docker-volume-backup
-  ansible.builtin.command: docker restart docker-volume-backup
