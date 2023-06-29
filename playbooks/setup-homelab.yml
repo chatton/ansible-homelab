@@ -55,14 +55,13 @@
     - role: setup_compose_services
       tags: [compose]
 
-
-#- name: Setup and deploy services.
-#  hosts: servers
-#  become: true
-#  pre_tasks:
-#    - name: Include vault variables.
-#      ansible.builtin.include_vars: '../{{ vault_file }}'
-#      tags: [always]
-#  roles:
-#    - role: setup_hosted_services
-#      tags: [services]
+- name: Setup and deploy portainer services.
+  hosts: servers
+  become: true
+  pre_tasks:
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
+  roles:
+    - role: setup_hosted_services
+      tags: [services]
