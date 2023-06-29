@@ -4,4 +4,6 @@ pip_install_packages:
 
 docker_users:
   - cianhatton
-  - ansible
+
+docker_service_state: started
+docker_service_enabled: true

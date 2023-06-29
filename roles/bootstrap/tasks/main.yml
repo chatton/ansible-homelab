@@ -12,17 +12,28 @@
     upgrade: dist
     update_cache: true
 
-- name: Create ansible user
-  ansible.builtin.user:
-    name: ansible
-    groups: root
-    shell: /bin/bash
+- name: Install Sudo
+  ansible.builtin.apt:
+    pkg:
+      - sudo
 
-- name: Add ssh key for ansible
-  authorized_key:
-    user: ansible
-    state: present
-    key: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
+#- name: Create ansible user
+#  ansible.builtin.user:
+#    name: ansible
+#    groups: root
+#    shell: /bin/bash
+#
+#- name: Add ssh key for ansible
+#  authorized_key:
+#    user: ansible
+#    state: present
+#    key: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
+
+- name: Ensure the sudoers.d directory exists
+  ansible.builtin.file:
+    path: /etc/sudoers.d
+    state: directory
+    mode: '0440'
 
 - name: Add sudoers files
   ansible.builtin.template:
@@ -32,5 +43,5 @@
     group: root
     mode: 0440
   with_items:
-    - ansible
+#    - ansible
     - cianhatton

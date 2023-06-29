@@ -28,9 +28,8 @@
   hosts: docker
   become: true
   roles:
-    - geerlingguy.pip
-    - geerlingguy.docker
-
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
 
 - name: Install Portainer on Portainer hosts.
   hosts: portainer
@@ -45,14 +44,25 @@
       vars:
         portainer_version: "2.18.3"
 
-
-- name: Setup and deploy services.
-  hosts: servers
+- name: Setup and deploy compose services.
+  hosts: dell
   become: true
   pre_tasks:
     - name: Include vault variables.
       ansible.builtin.include_vars: '../{{ vault_file }}'
       tags: [always]
   roles:
-    - role: setup_hosted_services
-      tags: [services]
+    - role: setup_compose_services
+      tags: [compose]
+
+
+#- name: Setup and deploy services.
+#  hosts: servers
+#  become: true
+#  pre_tasks:
+#    - name: Include vault variables.
+#      ansible.builtin.include_vars: '../{{ vault_file }}'
+#      tags: [always]
+#  roles:
+#    - role: setup_hosted_services
+#      tags: [services]

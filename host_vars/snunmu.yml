@@ -1,6 +1,8 @@
 ---
 vault_file: vault_vars/qnap-vault.yml
 
+docker_backup_aws_s3_encrypt: false
+
 portainer_required_templates:
   - source_file: diun-config.j2
     dest_file_name: diun-config.yml

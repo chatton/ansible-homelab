@@ -8,6 +8,9 @@ bootstrap:
 qnap:
 	ansible-playbook playbooks/setup-homelab.yml --limit qnap
 
+dell:
+	ansible-playbook playbooks/setup-homelab.yml --limit dell
+
 services:
 	ansible-playbook playbooks/setup-homelab.yml --tags services
 
