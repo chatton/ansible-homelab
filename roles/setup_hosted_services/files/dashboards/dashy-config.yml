@@ -8,7 +8,7 @@ sections:
         icon: hl-hastey-paste
         url: http://snunmu:8000
       - title: Photoprism
-        description: Manager photos
+        description: Manage photos
         icon: hl-photoprism
         url: http://qnap:2342
       - title: Olivetin
@@ -16,7 +16,7 @@ sections:
         icon: hl-olivetin
         url: http://qnap:1337
       - title: Linkding
-        description: Manager photos
+        description: Bookmark manager
         icon: hl-linkding
         url: http://snunmu:9090
       - title: Nextcloud
@@ -80,7 +80,13 @@ sections:
       - title: Pihole
         icon: hl-pihole
         url: http://snunmu:85/admin
+  - name: Dell
+    items:
+      - title: Minio
+        icon: hl-minio
+        url: http://dell:11001
 
+# http://192.168.178.3:11001/
   - name: Media Stack
     items:
       - title: Plex
@@ -124,6 +130,7 @@ sections:
       - type: gl-disk-space
         options:
           hostname: http://snunmu:8083
+
 
 appConfig:
   statusCheck: true
