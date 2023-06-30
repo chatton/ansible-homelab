@@ -86,7 +86,6 @@ sections:
         icon: hl-minio
         url: http://dell:11001
 
-# http://192.168.178.3:11001/
   - name: Media Stack
     items:
       - title: Plex
