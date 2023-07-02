@@ -10,9 +10,15 @@
   pre_tasks:
     - name: Include vault variables.
       ansible.builtin.include_vars: '../{{ vault_file }}'
-      tags: [always]
+      tags: [ always ]
 
   tasks:
+    - name: Gotify Notification Begin
+      ansible.builtin.include_role:
+        name: gotify_message
+      vars:
+        gotify_message: "Backup started for host {{ inventory_hostname }}"
+
     - name: Find Containers With Backup Label
       docker_host_info:
         containers: true
@@ -34,3 +40,9 @@
       with_items: "{{ container_names }}"
       loop_control:
         loop_var: container_item
+
+    - name: Gotify Notification Complete
+      ansible.builtin.include_role:
+        name: gotify_message
+      vars:
+        gotify_message: "Backup finished for host {{ inventory_hostname }}"
