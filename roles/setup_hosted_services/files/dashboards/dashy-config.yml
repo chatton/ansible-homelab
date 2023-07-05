@@ -1,12 +1,8 @@
 pageInfo:
   title: Home Lab
 sections:
-  - name: Tools
+  - name: Qnap
     items:
-      - title: Hastey Paste
-        description: Paste bin service.
-        icon: hl-hastey-paste
-        url: http://snunmu:8000
       - title: Photoprism
         description: Manage photos
         icon: hl-photoprism
@@ -15,10 +11,6 @@ sections:
         description: Run pre-defined shell commands
         icon: hl-olivetin
         url: http://qnap:1337
-      - title: Linkding
-        description: Bookmark manager
-        icon: hl-linkding
-        url: http://snunmu:9090
       - title: Nextcloud
         icon: hl-nextcloud
         url: https://cloud.cianhatton.ie
@@ -69,7 +61,7 @@ sections:
       - title: Pihole
         icon: hl-pihole
         url: http://qnap:85/admin
-  - name: Snunmu Dashboards
+  - name: Snunmu
     items:
       - title: Dash Dot
         icon: hl-dashdot
@@ -80,6 +72,17 @@ sections:
       - title: Pihole
         icon: hl-pihole
         url: http://snunmu:85/admin
+      - title: Linkding
+        description: Bookmark manager
+        icon: hl-linkding
+        url: http://snunmu:9090
+      - title: Vaultwarden
+        icon: hl-vaultwarden
+        url: http://snunmu:80
+      - title: Hastey Paste
+        url: http://snunmu:8000
+        description: Paste bin service.
+        icon: hl-hasteypaste
   - name: Dell
     items:
       - title: Minio

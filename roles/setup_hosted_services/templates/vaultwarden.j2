@@ -1,0 +1,23 @@
+---
+version: '3.3'
+services:
+  vaultwarden:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+    image: "{{ template_vars.image }}:{{ template_vars.tag }}"
+    volumes:
+      - data:/data
+    environment:
+      WEBSOCKET_ENABLED: true
+      SENDS_ALLOWED: true
+      EMERGENCY_ACCESS_ALLOWED: true
+      WEB_VAULT_ENABLED: true
+      DOMAIN: "https://vault.cianhatton.ie"
+      ADMIN_TOKEN: "{{ vaultwarden_admin_token }}"
+      SIGNUPS_ALLOWED: false
+    restart: unless-stopped
+    ports:
+      - 80:80
+volumes:
+  data:

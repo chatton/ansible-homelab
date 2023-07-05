@@ -2,6 +2,7 @@
 vault_file: vault_vars/qnap-vault.yml
 
 docker_backup_aws_s3_encrypt: false
+docker_backup_host_backup_directory: "/tmp"
 
 portainer_required_templates:
   - source_file: diun-config.j2
@@ -11,6 +12,10 @@ portainer_required_templates:
 
 portainer_endpoint: 23
 services:
+  - name: vaultwarden
+    template_vars:
+      image: vaultwarden/server
+      tag: 1.28.1
   - name: linkding
   - name: pihole
   - name: hasteypaste
@@ -32,4 +37,3 @@ docker_daemon_options:
     - "tcp://0.0.0.0:2375"
     - "unix:///var/run/docker.sock"
 
-docker_backup_host_backup_directory: "/tmp"
