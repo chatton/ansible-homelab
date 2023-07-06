@@ -1,0 +1,25 @@
+---
+version: "3.1"
+services:
+  bookstack:
+    labels:
+      ie.cianhatton.backup.enabled: "true"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+    image: "{{ template_vars.image }}:{{ template_vars.tag }}"
+    container_name: bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DB_HOST=qnap
+      - DB_USER=bookstack
+      - DB_PASS="{{ bookstack_password }}"
+      - DB_DATABASE=bookstackapp
+      - APP_URL="https://bookstack.cianhatton.ie"
+    volumes:
+      - config:/config
+    ports:
+      - 6875:80
+    restart: unless-stopped
+
+volumes:
+  config:
