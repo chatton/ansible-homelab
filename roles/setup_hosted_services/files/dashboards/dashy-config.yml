@@ -3,6 +3,18 @@ pageInfo:
 sections:
   - name: Qnap
     items:
+      - title: Dash Dot
+        icon: hl-dashdot
+        url: http://qnap:3010
+      - title: Uptime Kuma
+        icon: hl-uptime-kuma
+        url: http://qnap:3001
+      - title: Glances
+        icon: hl-glances
+        url: http://qnap:8083
+      - title: Pihole
+        icon: hl-pihole
+        url: http://qnap:85/admin
       - title: Photoprism
         description: Manage photos
         icon: hl-photoprism
@@ -23,6 +35,7 @@ sections:
       - title: Paperless
         icon: hl-paperless
         url: http://qnap:8001
+
   - name: Docker Admin
     items:
       - title: Portainer
@@ -44,23 +57,6 @@ sections:
         icon: hl-nginx
         url: http://qnap:8181
 
-  - name: QNAP Dashboards
-    items:
-      - title: Dash Dot
-        icon: hl-dashdot
-        url: http://qnap:3010
-      - title: Uptime Kuma
-        icon: hl-uptime-kuma
-        url: http://qnap:3001
-      - title: Tautulli
-        icon: hl-tautulli
-        url: http://qnap:8182
-      - title: Glances
-        icon: hl-glances
-        url: http://qnap:8083
-      - title: Pihole
-        icon: hl-pihole
-        url: http://qnap:85/admin
   - name: Snunmu
     items:
       - title: Dash Dot
@@ -83,18 +79,26 @@ sections:
         url: http://snunmu:8000
         description: Paste bin service.
         icon: hl-hasteypaste
+      - title: Bookstack
+        icon: hl-bookstack
+        url: https://bookstack.cianhatton.ie
   - name: Dell
     items:
       - title: Minio
         icon: hl-minio
         url: http://dell:11001
-
+      - title: Dash Dot
+        icon: hl-dashdot
+        url: http://dell:3010
   - name: Media Stack
     items:
       - title: Plex
         icon: hl-plex
         url: http://qnap:32400
         statusCheck: false
+      - title: Tautulli
+        icon: hl-tautulli
+        url: http://qnap:8182
       - title: Sonarr
         icon: hl-sonarr
         url: http://qnap:8989
@@ -132,6 +136,12 @@ sections:
       - type: gl-disk-space
         options:
           hostname: http://snunmu:8083
+
+  - name: Dell
+    widgets:
+      - type: gl-disk-space
+        options:
+          hostname: http://dell:8083
 
 
 appConfig:
