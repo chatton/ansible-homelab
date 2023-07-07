@@ -1,0 +1,42 @@
+---
+- name: "Vaultwarden | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_restore_force: "{{ vaultwarden_docker_backup_restore_force }}"
+    docker_backup_restore_latest_s3_key: "{{ vaultwarden_docker_backup_restore_latest_s3_key }}"
+    docker_backup_fail_on_no_s3_backups: "{{ vaultwarden_docker_backup_fail_on_no_s3_backups }}"
+    docker_backup_s3_volume:
+      name: "{{ vaultwarden_portainer_stack_name }}_data"
+
+- name: "Vaultwarden | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ vaultwarden_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: present
+    definition:
+      version: '3.3'
+      services:
+        vaultwarden:
+          labels:
+            ie.cianhatton.backup.enabled: "{{ vaultwarden_backup_enabled }}"
+            ie.cianhatton.backup.schedule: "{{ vaultwarden_backup_schedule }}"
+          image: "{{ vaultwarden_image }}:{{ vaultwarden_tag }}"
+          environment:
+            WEBSOCKET_ENABLED: "{{ vaultwarden_websocket_enabled }}"
+            SENDS_ALLOWED: "{{ vaultwarden_sends_allowed }}"
+            EMERGENCY_ACCESS_ALLOWED: "{{ vaultwarden_emergency_access_allowed }}"
+            WEB_VAULT_ENABLED: "{{ vaultwarden_webvault_enabled }}"
+            DOMAIN: "{{ vaultwarden_domain }}"
+            ADMIN_TOKEN: "{{ vaultwarden_admin_token }}"
+            SIGNUPS_ALLOWED: "{{ vaultwarden_signups_allowed }}"
+          restart: unless-stopped
+          ports:
+            - "{{ vaultwarden_expose_port }}:80"
+          volumes:
+            - data:/data
+      volumes:
+        data: {}

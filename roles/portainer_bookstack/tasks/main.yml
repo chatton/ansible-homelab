@@ -35,7 +35,7 @@
             - DB_DATABASE={{ bookstack_database }}
             - APP_URL={{ bookstack_app_url }}
           volumes:
-            - config:/config"
+            - config:/config
           ports:
             - "{{ bookstack_expose_port }}:80"
           restart: "{{ bookstack_restart_policy }}"

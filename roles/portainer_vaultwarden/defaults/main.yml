@@ -1,0 +1,20 @@
+---
+vaultwarden_image: vaultwarden/server
+vaultwarden_tag: 1.28.1
+vaultwarden_backup_enabled: true
+vaultwarden_backup_schedule: "nightly"
+vaultwarden_expose_port: 80
+vaultwarden_portainer_stack_name: vaultwarden
+
+# Environment variables
+vaultwarden_websocket_enabled: true
+vaultwarden_sends_allowed: true
+vaultwarden_emergency_access_allowed: true
+vaultwarden_domain: "https://vault.cianhatton.ie"
+vaultwarden_signups_allowed: false
+vaultwarden_webvault_enabled: true
+
+# Backup variables
+vaultwarden_docker_backup_restore_force: false
+vaultwarden_docker_backup_restore_latest_s3_key: true
+vaultwarden_docker_backup_fail_on_no_s3_backups: false

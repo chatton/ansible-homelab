@@ -12,14 +12,6 @@ portainer_required_templates:
 
 portainer_endpoint: 23
 services:
-  - name: bookstack
-    template_vars:
-      image: linuxserver/bookstack
-      tag: 23.06.1
-  - name: vaultwarden
-    template_vars:
-      image: vaultwarden/server
-      tag: 1.28.1
   - name: linkding
   - name: pihole
   - name: hasteypaste

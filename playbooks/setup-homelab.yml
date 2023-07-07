@@ -59,14 +59,14 @@
 - name: Setup and deploy portainer services (snunmu).
   hosts: snunmu
   become: true
+  tags: [services]
   pre_tasks:
     - name: Include vault variables.
       ansible.builtin.include_vars: '../{{ vault_file }}'
       tags: [always]
   roles:
     - role: portainer_bookstack
-      tags: [services]
-
+    - role: portainer_vaultwarden
 
 #- name: Setup and deploy portainer services.
 #  hosts: servers
