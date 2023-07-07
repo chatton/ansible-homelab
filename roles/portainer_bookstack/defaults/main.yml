@@ -1,0 +1,18 @@
+---
+bookstack_image: linuxserver/bookstack
+bookstack_tag: 23.06.1
+bookstack_backup_enabled: true
+bookstack_backup_schedule: "nightly"
+bookstack_puid: 1000
+bookstack_pgid: 1000
+bookstack_db_host: qnap
+bookstack_database: bookstackapp
+bookstack_db_user: bookstack
+bookstack_app_url: https://bookstack.cianhatton.ie
+bookstack_expose_port: 6875
+bookstack_restart_policy: unless-stopped
+bookstack_container_name: bookstack
+bookstack_portainer_stack_name: bookstack
+bookstack_docker_backup_restore_force: false
+bookstack_docker_backup_restore_latest_s3_key: true
+bookstack_docker_backup_fail_on_no_s3_backups: false

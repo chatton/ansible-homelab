@@ -1,0 +1,43 @@
+---
+- name: "Bookstack | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_restore_force: "{{ bookstack_docker_backup_restore_force }}"
+    docker_backup_restore_latest_s3_key: "{{ bookstack_docker_backup_restore_latest_s3_key }}"
+    docker_backup_fail_on_no_s3_backups: "{{ bookstack_docker_backup_fail_on_no_s3_backups }}"
+    docker_backup_s3_volume:
+      name: "{{ bookstack_portainer_stack_name }}_config"
+
+- name: "Bookstack | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ bookstack_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: present
+    definition:
+      version: "3.1"
+      services:
+        bookstack:
+          labels:
+            ie.cianhatton.backup.enabled: "{{ bookstack_backup_enabled }}"
+            ie.cianhatton.backup.schedule: "{{ bookstack_backup_schedule }}"
+          image: "{{ bookstack_image }}:{{ bookstack_tag }}"
+          container_name: "{{ bookstack_container_name }}"
+          environment:
+            - PUID={{ bookstack_puid }}
+            - PGID={{ bookstack_pgid }}
+            - DB_HOST={{ bookstack_db_host }}
+            - DB_USER={{ bookstack_db_user }}
+            - DB_PASS={{ bookstack_password }}
+            - DB_DATABASE={{ bookstack_database }}
+            - APP_URL={{ bookstack_app_url }}
+          volumes:
+            - config:/config"
+          ports:
+            - "{{ bookstack_expose_port }}:80"
+          restart: "{{ bookstack_restart_policy }}"
+      volumes:
+        config: {}

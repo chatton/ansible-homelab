@@ -16,6 +16,8 @@ except ImportError:
         _query_params_to_string,
     )
 
+import yaml
+
 DOCUMENTATION = r"""
 ---
 module: portainer_stack
@@ -117,16 +119,14 @@ def _create_stack(client, module, file_contents):
 
 def _update_stack(client, module, stack_id):
     target_stack_name = module.params["stack_name"]
-    with open(module.params["docker_compose_file_path"]) as f:
-        file_contents = f.read()
+    contents = _get_stack_contents(module.params)
     return client.put(
         f"stacks/{stack_id}?&endpointId={client.endpoint}",
         body={
             "name": target_stack_name,
-            "stackFileContent": file_contents,
+            "stackFileContent": contents,
         },
     )
-
 
 def handle_state_present(client, module):
     result = dict(changed=False, stack_name=module.params["stack_name"])
@@ -135,8 +135,7 @@ def handle_state_present(client, module):
     stacks = client.get("stacks")
     result["stacks"] = stacks
 
-    with open(module.params["docker_compose_file_path"]) as f:
-        file_contents = f.read()
+    contents = _get_stack_contents(module.params)
 
     target_stack_name = module.params["stack_name"]
     for stack in stacks:
@@ -146,7 +145,7 @@ def handle_state_present(client, module):
             break
 
     if not already_exists:
-        stack = _create_stack(client, module, file_contents)
+        stack = _create_stack(client, module, contents)
         result["changed"] = True
         result["stack_id"] = stack["Id"]
         module.exit_json(**result)
@@ -158,7 +157,7 @@ def handle_state_present(client, module):
     )
 
     result["are_equal"] = (
-        current_file_contents_resp["StackFileContent"] == file_contents
+        current_file_contents_resp["StackFileContent"] == contents
     )
     if result["are_equal"]:
         module.exit_json(**result)
@@ -191,24 +190,28 @@ def handle_state_absent(client, module):
     )
     result["changed"] = True
     module.exit_json(**result)
+def _get_stack_contents(params):
+    if params.get("docker_compose_file_path"):
+        with open(params["docker_compose_file_path"]) as f:
+            return f.read()
 
+    if params.get("definition"):
+        return yaml.dump(params["definition"], indent=4)
+
+    raise ValueError("No docker_compose_file_path or definition provided.")
 
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
         stack_name=dict(type="str", required=True),
         docker_compose_file_path=dict(type="str"),
+        definition=dict(type=dict),
         username=dict(type="str", default="admin"),
         password=dict(type="str", required=True, no_log=True),
         endpoint_id=dict(type="int", required=True),
         base_url=dict(type="str", default="http://localhost:9000"),
         state=dict(type="str", default="present", choices=["present", "absent"]),
     )
-
-    required_if = [
-        # docker compose file is only required if we are ensuring the stack is present.
-        ["state", "present", ("docker_compose_file_path",)],
-    ]
 
     state_fns = {"present": handle_state_present, "absent": handle_state_absent}
 
@@ -218,7 +221,16 @@ def run_module():
     # supports check mode
     module = AnsibleModule(
         argument_spec=module_args,
-        required_if=required_if,
+        # required_if = [
+            # docker compose file is only required if we are ensuring the stack is present.
+            # ["state", "present", ("docker_compose_file_path",)],
+        # ],
+        mutually_exclusive=[
+            ('docker_compose_file_path', 'definition'),
+        ],
+        required_one_of=[
+            ('docker_compose_file_path', 'definition'),
+        ],
         # TODO: support check mode
         supports_check_mode=False,
     )

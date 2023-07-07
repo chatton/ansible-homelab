@@ -8,7 +8,7 @@ roles:
 collections:
   - name: https://github.com/chatton/ansible-portainer.git
     type: git
-    version: master
+    version: support_definition
   - name: https://github.com/chatton/ansible-docker-backup.git
     type: git
     version: master
