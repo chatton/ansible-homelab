@@ -1,7 +1,7 @@
 ---
-- name: Create a gotify message
+- name: Create a gotify message.
   ansible.builtin.uri:
-    url: "{{ gotify_base_url}}/message"
+    url: "{{ gotify_base_url }}/message"
     method: POST
     headers:
       X-Gotify-Key: "{{ gotify_api_token }}"
