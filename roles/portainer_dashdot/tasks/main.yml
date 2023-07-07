@@ -1,0 +1,20 @@
+---
+- name: "Dashy | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ dashdot_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: present
+    definition:
+      services:
+        dashdot:
+          container_name: "{{ dashdot_container_name}}"
+          image: "{{ dashdot_image }}:{{ dashdot_tag }}"
+          restart: "{{ dashdot_restart_policy }}"
+          privileged: true
+          ports:
+            - '{{ dashdot_expose_port }}:3001'
+          volumes:
+            - /:/mnt/host:ro
