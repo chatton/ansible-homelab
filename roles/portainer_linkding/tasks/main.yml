@@ -1,0 +1,35 @@
+---
+- name: "Linkding | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_restore_force: "{{ linkding_docker_backup_restore_force }}"
+    docker_backup_restore_latest_s3_key: "{{ linkding_docker_backup_restore_latest_s3_key }}"
+    docker_backup_fail_on_no_s3_backups: "{{ linkding_docker_backup_fail_on_no_s3_backups }}"
+    docker_backup_s3_volume:
+      name: "{{ linkding_portainer_stack_name }}_data"
+
+- name: "Linkding | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ linkding_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: present
+    definition:
+      version: '3'
+      services:
+        linkding:
+          labels:
+            ie.cianhatton.backup.enabled: "{{ linkding_backup_enabled }}"
+            ie.cianhatton.backup.schedule: "{{ linkding_backup_schedule }}"
+          container_name: "{{ linkding_container_name }}"
+          image: "{{ linkding_image }}:{{ linkding_tag }}"
+          ports:
+            - "{{ linkding_expose_port }}:9090"
+          volumes:
+            - "data:/etc/linkding/data"
+          restart: "{{ linkding_restart_policy }}"
+      volumes:
+        data: {}

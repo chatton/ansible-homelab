@@ -5,6 +5,8 @@ vaultwarden_backup_enabled: true
 vaultwarden_backup_schedule: "nightly"
 vaultwarden_expose_port: 80
 vaultwarden_portainer_stack_name: vaultwarden
+vaultwarden_container_name: vaultwarden
+vaultwarden_restart_policy: unless-stopped
 
 # Environment variables
 vaultwarden_websocket_enabled: true

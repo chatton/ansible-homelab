@@ -25,6 +25,7 @@
             ie.cianhatton.backup.enabled: "{{ vaultwarden_backup_enabled }}"
             ie.cianhatton.backup.schedule: "{{ vaultwarden_backup_schedule }}"
           image: "{{ vaultwarden_image }}:{{ vaultwarden_tag }}"
+          container_name: "{{ vaultwarden_container_name }}"
           environment:
             WEBSOCKET_ENABLED: "{{ vaultwarden_websocket_enabled }}"
             SENDS_ALLOWED: "{{ vaultwarden_sends_allowed }}"
@@ -33,7 +34,7 @@
             DOMAIN: "{{ vaultwarden_domain }}"
             ADMIN_TOKEN: "{{ vaultwarden_admin_token }}"
             SIGNUPS_ALLOWED: "{{ vaultwarden_signups_allowed }}"
-          restart: unless-stopped
+          restart: "{{ vaultwarden_restart_policy }}"
           ports:
             - "{{ vaultwarden_expose_port }}:80"
           volumes:
