@@ -14,11 +14,6 @@ portainer_endpoint: 23
 services:
   - name: pihole
   - name: hasteypaste
-  - name: dashboards
-    template_vars:
-      dashy: false
-      dashdot: true
-      glances: true
   - name: diun
 
 ansible_pull_path: /usr/local/bin/ansible-pull

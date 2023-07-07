@@ -89,11 +89,6 @@ services:
       default_network: mariadb_net
       image: nextcloud
       tag: 27.0
-  - name: dashboards
-    template_vars:
-      dashy: true
-      dashdot: true
-      glances: true
   - name: nginx-proxy-manager
   - name: plex
     template_vars:

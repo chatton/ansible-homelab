@@ -69,6 +69,7 @@
     - role: portainer_vaultwarden
     - role: portainer_dashy
     - role: portainer_dashdot
+    - role: portainer_glances
 
 - name: Setup and deploy portainer services (qnap).
   hosts: qnap
@@ -81,6 +82,7 @@
   roles:
     - role: portainer_dashy
     - role: portainer_dashdot
+    - role: portainer_glances
 
 #
 #- name: Setup and deploy templated portainer services.

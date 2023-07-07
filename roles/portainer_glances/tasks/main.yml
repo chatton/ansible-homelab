@@ -1,0 +1,21 @@
+---
+- name: "Glances | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ glances_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: present
+    definition:
+      services:
+        glances:
+          image: "{{ glances_image }}:{{ glances_tag }}"
+          restart: "{{ glances_restart_policy }}"
+          pid: "{{ glances_pid }}"
+          ports:
+            - "{{ glances_expose_port}}:61208"
+          volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+          environment:
+            - "GLANCES_OPT=-w"
