@@ -1,0 +1,46 @@
+---
+- name: Create config directory.
+  ansible.builtin.file:
+    path: '{{ dashy_config_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: Create config file.
+  ansible.builtin.copy:
+    src: "dashy-config.yml"
+    dest: '{{ dashy_config_dir }}/{{ dashy_config_file }}'
+    owner: root
+    group: root
+    mode: 0440
+  notify: restart-dashy
+
+- name: "Dashy | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ dashy_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: present
+    definition:
+      version: '3'
+      services:
+        dashy:
+          container_name: "{{ dashy_container_name }}"
+          image: "{{ dashy_image }}:{{ dashy_tag }}"
+          volumes:
+            - "{{ dashy_config_dir}}/{{ dashy_config_file }}:/app/public/conf.yml"
+          ports:
+            - "{{ dashy_expose_port}}:80"
+          environment:
+            - "NODE_ENV={{ dashy_node_env }}"
+            - "UID={{ dashy_uid }}"
+            - "GID={{ dashy_gid }}"
+          restart: "{{ dashy_restart_policy}}"
+          # Configure healthchecks
+          healthcheck:
+            test: ['CMD', 'node', '/app/services/healthcheck']
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s

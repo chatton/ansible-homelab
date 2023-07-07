@@ -1,0 +1,14 @@
+---
+dashy_image: lissy93/dashy
+dashy_tag: 2.1.1
+dashy_expose_port: 4000
+dashy_portainer_stack_name: dashy
+dashy_container_name: dashy
+dashy_restart_policy: unless-stopped
+
+dashy_config_dir: /etc/config/dashy
+dashy_config_file: dashy-config.yml
+# environment variables
+dashy_node_env: production
+dashy_uid: 1000
+dashy_gid: 1000

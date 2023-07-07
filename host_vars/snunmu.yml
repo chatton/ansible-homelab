@@ -12,7 +12,6 @@ portainer_required_templates:
 
 portainer_endpoint: 23
 services:
-  - name: linkding
   - name: pihole
   - name: hasteypaste
   - name: dashboards

@@ -68,7 +68,19 @@
     - role: portainer_bookstack
     - role: portainer_vaultwarden
 
-#- name: Setup and deploy portainer services.
+- name: Setup and deploy portainer services (qnap).
+  hosts: qnap
+  become: true
+  tags: [services]
+  pre_tasks:
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
+  roles:
+    - role: portainer_dashy
+
+#
+#- name: Setup and deploy templated portainer services.
 #  hosts: servers
 #  become: true
 #  pre_tasks:
