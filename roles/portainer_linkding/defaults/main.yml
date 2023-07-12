@@ -1,4 +1,5 @@
 ---
+linkding_state: present
 linkding_image: sissbruecker/linkding
 linkding_tag: latest
 linkding_backup_enabled: true

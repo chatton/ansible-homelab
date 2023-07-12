@@ -1,0 +1,35 @@
+---
+- name: "Gotify | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_restore_force: "{{ gotify_docker_backup_restore_force }}"
+    docker_backup_restore_latest_s3_key: "{{ gotify_docker_backup_restore_latest_s3_key }}"
+    docker_backup_fail_on_no_s3_backups: "{{ gotify_docker_backup_fail_on_no_s3_backups }}"
+    docker_backup_s3_volume:
+      name: "{{ gotify_portainer_stack_name }}_data"
+
+- name: "Gotify | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ gotify_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ gotify_state }}"
+    definition:
+      version: "3.1"
+      services:
+        gotify:
+          labels:
+            ie.cianhatton.backup.enabled: "{{ gotify_backup_enabled }}"
+            ie.cianhatton.backup.schedule: "{{ gotify_backup_schedule }}"
+          image: "{{ gotify_image}}:{{ gotify_tag }}"
+          container_name: "{{ gotify_container_name }}"
+          volumes:
+            - data:/app/data
+          ports:
+            - "{{ gotify_expose_port }}:80"
+          restart: "{{ gotify_restart_policy }}"
+      volumes:
+        data: {}

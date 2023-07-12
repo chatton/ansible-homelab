@@ -16,7 +16,7 @@
     base_url: '{{ portainer_base_url }}'
     stack_name: '{{ vaultwarden_portainer_stack_name }}'
     endpoint_id: '{{ portainer_endpoint }}'
-    state: present
+    state: "{{ vaultwarden_state }}"
     definition:
       version: '3.3'
       services:

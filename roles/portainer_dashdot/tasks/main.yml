@@ -6,7 +6,7 @@
     base_url: '{{ portainer_base_url }}'
     stack_name: '{{ dashdot_portainer_stack_name }}'
     endpoint_id: '{{ portainer_endpoint }}'
-    state: present
+    state: "{{ dashdot_state }}"
     definition:
       services:
         dashdot:

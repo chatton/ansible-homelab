@@ -1,4 +1,5 @@
 ---
+dashdot_state: present
 dashdot_image: mauricenino/dashdot
 dashdot_tag: latest
 dashdot_expose_port: 3010

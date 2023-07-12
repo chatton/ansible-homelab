@@ -1,4 +1,5 @@
 ---
+glances_state: present
 glances_image: nicolargo/glances
 glances_tag: latest-alpine
 glances_expose_port: 8083

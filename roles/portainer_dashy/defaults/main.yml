@@ -1,4 +1,5 @@
 ---
+dashy_state: present
 dashy_image: lissy93/dashy
 dashy_tag: 2.1.1
 dashy_expose_port: 4000

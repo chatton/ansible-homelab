@@ -1,4 +1,5 @@
 ---
+vaultwarden_state: present
 vaultwarden_image: vaultwarden/server
 vaultwarden_tag: 1.28.1
 vaultwarden_backup_enabled: true

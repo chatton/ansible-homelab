@@ -92,7 +92,6 @@ services:
   - name: olivetin
   - name: pihole
   - name: paperless
-  - name: gotify
   - name: diun
 
 portainer_roles:
@@ -100,5 +99,4 @@ portainer_roles:
   - role: portainer_dashdot
   - role: portainer_glances
   - role: portainer_arr
-
-
+  - role: portainer_gotify

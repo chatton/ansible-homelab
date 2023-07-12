@@ -1,4 +1,5 @@
 ---
+bookstack_state: present
 bookstack_image: linuxserver/bookstack
 bookstack_tag: 23.06.1
 bookstack_backup_enabled: true

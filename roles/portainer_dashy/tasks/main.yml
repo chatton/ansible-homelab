@@ -21,7 +21,7 @@
     base_url: '{{ portainer_base_url }}'
     stack_name: '{{ dashy_portainer_stack_name }}'
     endpoint_id: '{{ portainer_endpoint }}'
-    state: present
+    state: "{{ dashy_state }}"
     definition:
       version: '3'
       services:
