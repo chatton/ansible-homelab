@@ -41,6 +41,13 @@
     dest: /usr/local/bin/mergerfs.balance
     mode: 0755
 
+# Leave this as an option in case the url above goes down.
+#- name: Add local mergerfs balance tool.
+#  ansible.builtin.copy:
+#    src: mergerfs.balance
+#    dest: /usr/local/bin/mergerfs.balance
+#    mode: 0755
+
 - name: Add a cron job to balance mergerfs.
   ansible.builtin.cron:
     name: Balance mergerfs media.
