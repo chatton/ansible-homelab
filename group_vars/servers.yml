@@ -37,3 +37,16 @@ portainer_endpoint: -1
 portainer_base_url: "http://qnap:9000"
 external_docker_networks: []
 portainer_required_files: []
+restart_policy: unless-stopped
+backup_labels:
+  ie.cianhatton.backup.enabled: true
+  ie.cianhatton.backup.schedule: nightly
+
+docker_backup_aws_s3_encrypt: false
+docker_backup_host_backup_directory: "/tmp"
+docker_backup_retain_count: 3
+docker_backup_restore_latest_s3_key: true
+docker_backup_fail_on_no_s3_backups: false
+docker_backup_restore_force: false
+
+portainer_user: admin

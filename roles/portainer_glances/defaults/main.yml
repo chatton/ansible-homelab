@@ -5,5 +5,4 @@ glances_tag: latest-alpine
 glances_expose_port: 8083
 glances_portainer_stack_name: glances
 glances_container_name: glances
-glances_restart_policy: unless-stopped
 glances_pid: host

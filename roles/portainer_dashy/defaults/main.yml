@@ -5,7 +5,6 @@ dashy_tag: 2.1.1
 dashy_expose_port: 4000
 dashy_portainer_stack_name: dashy
 dashy_container_name: dashy
-dashy_restart_policy: unless-stopped
 
 dashy_config_dir: /etc/config/dashy
 dashy_config_file: dashy-config.yml

@@ -3,9 +3,6 @@
   ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
   vars:
-    docker_backup_restore_force: "{{ arr_docker_backup_restore_force }}"
-    docker_backup_restore_latest_s3_key: "{{ arr_docker_backup_restore_latest_s3_key }}"
-    docker_backup_fail_on_no_s3_backups: "{{ arr_docker_backup_fail_on_no_s3_backups }}"
     docker_backup_s3_volume: "{{ item }}"
   with_items:
     - name: "{{ arr_portainer_stack_name }}_qbittorrent_config"
@@ -15,7 +12,7 @@
 
 - name: "Arr | Update Portainer."
   chatton.portainer.portainer_stack:
-    username: admin
+    username: '{{ portainer_user }}'
     password: '{{ portainer.password }}'
     base_url: '{{ portainer_base_url }}'
     stack_name: '{{ arr_portainer_stack_name }}'
@@ -67,9 +64,7 @@
             - 8.8.8.8
 
         qbittorrent:
-            labels:
-              ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
-              ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+            labels: "{{ backup_labels}}"
             depends_on:
               - protonwire
             image: "{{ qbittorrent_image }}:{{ qbittorrent_tag }}"
@@ -86,9 +81,7 @@
             restart: unless-stopped
 
         radarr:
-          labels:
-            ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
-            ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+          labels: "{{ backup_labels}}"
           depends_on:
             - protonwire
           image: "{{ radarr_image }}:{{ radarr_tag }}"
@@ -108,9 +101,7 @@
           depends_on:
             - protonwire
           image: "{{ sonarr_image }}:{{ sonarr_tag }}"
-          labels:
-            ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
-            ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+          labels: "{{ backup_labels}}"
           container_name: "{{ sonarr_container_name }}"
           network_mode: "service:protonwire"
           environment:
@@ -124,9 +115,7 @@
           restart: unless-stopped
 
         jackett:
-          labels:
-            ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
-            ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+          labels: "{{ backup_labels}}"
           depends_on:
             - protonwire
           image: "{{ jackett_image }}:{{ jackett_tag }}"

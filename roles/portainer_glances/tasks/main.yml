@@ -1,7 +1,7 @@
 ---
 - name: "Glances | Update Portainer."
   chatton.portainer.portainer_stack:
-    username: admin
+    username: '{{ portainer_user }}'
     password: '{{ portainer.password }}'
     base_url: '{{ portainer_base_url }}'
     stack_name: '{{ glances_portainer_stack_name }}'
@@ -11,7 +11,7 @@
       services:
         glances:
           image: "{{ glances_image }}:{{ glances_tag }}"
-          restart: "{{ glances_restart_policy }}"
+          restart: "{{ restart_policy }}"
           pid: "{{ glances_pid }}"
           ports:
             - "{{ glances_expose_port}}:61208"

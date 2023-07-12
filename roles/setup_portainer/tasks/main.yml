@@ -8,9 +8,6 @@
   ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
   vars:
-    docker_backup_restore_force: false
-    docker_backup_restore_latest_s3_key: true
-    docker_backup_fail_on_no_s3_backups: false
     docker_backup_s3_volume:
       name: portainer_portainer_data
 
@@ -21,12 +18,10 @@
       version: '3.2'
       services:
         portainer:
-          labels:
-            ie.cianhatton.backup.enabled: 'true'
-            ie.cianhatton.backup.schedule: nightly
+          labels: "{{ backup_labels}}"
           image: "portainer/portainer-ce:{{ portainer_version }}"
           container_name: portainer
-          restart: unless-stopped
+          restart: "{{ restart_policy }}"
           ports:
             - 9000:9000
           volumes:

@@ -23,10 +23,6 @@ backup_directories:
 
 cron_hour: "5"
 
-docker_backup_aws_s3_encrypt: false
-docker_backup_host_backup_directory: "/tmp"
-docker_backup_retain_count: 3
-
 devices:
   - uuid: a54c1bde-1400-4975-bf24-08c603ca3a11     # /dev/sdc1
     path: /mnt/data/device0

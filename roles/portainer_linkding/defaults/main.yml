@@ -2,22 +2,6 @@
 linkding_state: present
 linkding_image: sissbruecker/linkding
 linkding_tag: latest
-linkding_backup_enabled: true
-linkding_backup_schedule: "nightly"
 linkding_expose_port: 9090
 linkding_portainer_stack_name: linkding
 linkding_container_name: linkding
-linkding_restart_policy: unless-stopped
-
-# Environment variables
-linkding_websocket_enabled: true
-linkding_sends_allowed: true
-linkding_emergency_access_allowed: true
-linkding_domain: "https://vault.cianhatton.ie"
-linkding_signups_allowed: false
-linkding_webvault_enabled: true
-
-# Backup variables
-linkding_docker_backup_restore_force: false
-linkding_docker_backup_restore_latest_s3_key: true
-linkding_docker_backup_fail_on_no_s3_backups: false

@@ -196,7 +196,7 @@ def _get_stack_contents(params):
             return f.read()
 
     if params.get("definition"):
-        return yaml.dump(params["definition"], indent=4)
+        return yaml.dump(params["definition"], indent=2)
 
     raise ValueError("No docker_compose_file_path or definition provided.")
 
