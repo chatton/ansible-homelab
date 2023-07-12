@@ -77,14 +77,14 @@
         name: "{{ item.role }}"
       with_items:  "{{ portainer_roles }}"
 
-#
-#- name: Setup and deploy templated portainer services.
-#  hosts: servers
-#  become: true
-#  pre_tasks:
-#    - name: Include vault variables.
-#      ansible.builtin.include_vars: '../{{ vault_file }}'
-#      tags: [always]
-#  roles:
-#    - role: setup_hosted_services
-#      tags: [services]
+
+- name: Setup and deploy templated portainer services.
+  hosts: servers
+  become: true
+  pre_tasks:
+    - name: Include vault variables.
+      ansible.builtin.include_vars: '../{{ vault_file }}'
+      tags: [always]
+  roles:
+    - role: setup_hosted_services
+      tags: [services]
