@@ -34,3 +34,20 @@
     name: sprat.mergerfs
   vars:
     mergerfs_mounts: '{{ mounts }}'
+
+- name: Download mergerfs balance tool.
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/trapexit/mergerfs-tools/master/src/mergerfs.balance
+    dest: /usr/local/bin/mergerfs.balance
+    mode: 0755
+
+- name: Add a cron job to balance mergerfs.
+  ansible.builtin.cron:
+    name: Balance mergerfs media.
+    user: "{{ homelab_user }}"
+    minute: 0
+    hour: 5
+    weekday: 0
+    job: /usr/local/bin/mergerfs.balance /mnt/mergerfs
+    state: present
+    cron_file: balance_mergerfs
