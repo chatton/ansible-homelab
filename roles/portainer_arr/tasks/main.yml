@@ -1,0 +1,148 @@
+---
+- name: "Arr | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_restore_force: "{{ arr_docker_backup_restore_force }}"
+    docker_backup_restore_latest_s3_key: "{{ arr_docker_backup_restore_latest_s3_key }}"
+    docker_backup_fail_on_no_s3_backups: "{{ arr_docker_backup_fail_on_no_s3_backups }}"
+    docker_backup_s3_volume: "{{ item }}"
+  with_items:
+    - name: "{{ arr_portainer_stack_name }}_qbittorrent_config"
+    - name: "{{ arr_portainer_stack_name }}_radarr_config"
+    - name: "{{ arr_portainer_stack_name }}_sonarr_config"
+    - name: "{{ arr_portainer_stack_name }}_jackett_config"
+
+- name: "Arr | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: admin
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ arr_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: present
+    definition:
+      version: "3.1"
+      services:
+        protonwire:
+          container_name: protonwire
+          image: "{{ arr_vpn_image }}:{{ arr_vpn_tag }}"
+          init: true
+          restart: unless-stopped
+          environment:
+            # Quote this value as server name can contain '#'.
+            PROTONVPN_SERVER: "{{ vpn.protonvpn_server }}"
+            # Set this to 1 to show debug logs for issue forms.
+            DEBUG: "1"
+            # Set this to 0 to disable kill-switch.
+            KILL_SWITCH: "0"
+            # follow instructions here https://github.com/tprasadtp/protonvpn-docker
+            WIREGUARD_PRIVATE_KEY: "{{ vpn.wireguard_private_key }}"
+            LAN_NETWORK: "{{ vpn.lan_network }}"
+          cap_add:
+            - NET_ADMIN
+          # sysctl net.ipv4.conf.all.rp_filter is mandatory!
+          # net.ipv6.conf.all.disable_ipv6 disables IPv6 as protonVPN does not support IPv6.
+          # 'net.*' sysctls are not required on application containers,
+          # as they share network stack with protonwire container.
+          sysctls:
+            net.ipv4.conf.all.rp_filter: 2
+            net.ipv6.conf.all.disable_ipv6: 1
+          volumes:
+            - type: tmpfs
+              target: /tmp
+          ports:
+            # qbittorrent
+            - "{{ qbittorrent_exposed_web_ui_port }}:15000"
+            - "{{ qbittorrent_exposed_download_port }}:6881"
+            - "{{ qbittorrent_exposed_download_port }}:6881/udp"
+            # radarr
+            - "{{ radarr_exposed_port }}:7878"
+            # sonarr
+            - "{{ sonarr_exposed_port }}:8989"
+            # jackett
+            - "{{ jackett_exposed_port }}:9117"
+          dns:
+            - 1.1.1.1
+            - 8.8.8.8
+
+        qbittorrent:
+            labels:
+              ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
+              ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+            depends_on:
+              - protonwire
+            image: "{{ qbittorrent_image }}:{{ qbittorrent_tag }}"
+            container_name: "{{ qbittorrent_container_name }}"
+            network_mode: "service:protonwire"
+            environment:
+              - "PUID={{ qbittorrent_puid }}"
+              - "PGID={{ qbittorrent_pgid }}"
+              - TZ=Europe/London
+              - "WEBUI_PORT=15000"
+            volumes:
+              - qbittorrent_config:/config
+              - "{{ directories.downloads_dir }}:/downloads"
+            restart: unless-stopped
+
+        radarr:
+          labels:
+            ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
+            ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+          depends_on:
+            - protonwire
+          image: "{{ radarr_image }}:{{ radarr_tag }}"
+          container_name: "{{ radarr_container_name }}"
+          network_mode: "service:protonwire"
+          environment:
+            - "PUID={{ radarr_puid }}"
+            - "PGID={{ radarr_pgid }}"
+            - TZ=Europe/London
+          volumes:
+            - radarr_config:/config
+            - "{{ directories.movies_dir }}:/movies"
+            - "{{ directories.downloads_dir }}:/downloads"
+          restart: unless-stopped
+
+        sonarr:
+          depends_on:
+            - protonwire
+          image: "{{ sonarr_image }}:{{ sonarr_tag }}"
+          labels:
+            ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
+            ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+          container_name: "{{ sonarr_container_name }}"
+          network_mode: "service:protonwire"
+          environment:
+            - "PUID={{ sonarr_puid }}"
+            - "PGID={{ sonarr_pgid }}"
+            - TZ=Europe/London
+          volumes:
+            - sonarr_config:/config
+            - "{{ directories.tv_dir }}:/tv"
+            - "{{ directories.downloads_dir }}:/downloads"
+          restart: unless-stopped
+
+        jackett:
+          labels:
+            ie.cianhatton.backup.enabled: "{{ arr_backup_enabled }}"
+            ie.cianhatton.backup.schedule: "{{ arr_backup_schedule }}"
+          depends_on:
+            - protonwire
+          image: "{{ jackett_image }}:{{ jackett_tag }}"
+          container_name: "{{ jackett_container_name }}"
+          network_mode: "service:protonwire"
+          environment:
+            - "PUID={{ jackett_puid }}"
+            - "PGID={{ jackett_pgid }}"
+            - TZ=Europe/London
+            - AUTO_UPDATE=true
+          volumes:
+            - jackett_config:/config
+            - "{{ directories.downloads_dir }}:/downloads"
+          restart: unless-stopped
+      volumes:
+         qbittorrent_config: {}
+         radarr_config: {}
+         sonarr_config: {}
+         jackett_config: {}

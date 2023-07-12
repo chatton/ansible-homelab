@@ -1,0 +1,45 @@
+---
+arr_portainer_stack_name: vpn-stack
+arr_vpn_image: "ghcr.io/tprasadtp/protonwire"
+arr_vpn_tag: "7.2.0"
+arr_backup_enabled: true
+arr_backup_schedule: nightly
+
+# backup
+arr_docker_backup_restore_force: false
+arr_docker_backup_fail_on_no_s3_backups: false
+arr_docker_backup_restore_latest_s3_key: true
+
+# Qbittorrent
+qbittorrent_image: lscr.io/linuxserver/qbittorrent
+qbittorrent_tag: 4.5.3
+qbittorrent_container_name: qbittorrent
+qbittorrent_puid: 1000
+qbittorrent_pgid: 1000
+qbittorrent_exposed_web_ui_port: 15000
+qbittorrent_exposed_download_port: 6881
+
+
+# Radarr
+radarr_image: lscr.io/linuxserver/radarr
+radarr_tag: 4.5.2
+radarr_container_name: radarr
+radarr_exposed_port: 7878
+radarr_puid: 1000
+radarr_pgid: 1000
+
+# Sonarr
+sonarr_image: lscr.io/linuxserver/sonarr
+sonarr_tag: 3.0.10
+sonarr_exposed_port: 8989
+sonarr_container_name: sonarr
+sonarr_puid: 1000
+sonarr_pgid: 1000
+
+# Jackett
+jackett_image: lscr.io/linuxserver/jackett
+jackett_tag: 0.21.235
+jackett_exposed_port: 9117
+jackett_container_name: jackett
+jackett_puid: 1000
+jackett_pgid: 1000

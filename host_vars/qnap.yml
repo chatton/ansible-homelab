@@ -59,25 +59,6 @@ portainer_required_templates:
 
 portainer_endpoint: 2
 services:
-  - name: vpn-stack
-    template_vars:
-      vpn: protonwire # protonwire or surfshark
-      qbittorrent:
-        enabled: true
-        image: lscr.io/linuxserver/qbittorrent
-        tag: 4.5.3
-      radarr:
-        enabled: true
-        image: lscr.io/linuxserver/radarr
-        tag: 4.5.2
-      sonarr:
-        enabled: true
-        image: lscr.io/linuxserver/sonarr
-        tag: 3.0.10
-      jackett:
-        enabled: true
-        image: lscr.io/linuxserver/jackett
-        tag: 0.21.235
   - name: gitea
     template_vars:
       image: gitea/gitea
@@ -113,6 +94,5 @@ services:
   - name: paperless
   - name: gotify
   - name: diun
-#  - name: ghost
 
 

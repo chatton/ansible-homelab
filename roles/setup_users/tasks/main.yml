@@ -3,7 +3,9 @@
   ansible.builtin.apt:
     pkg:
       - sudo
+      # TODO move these somewhere else
       - ufw
+      - htop
     state: latest
     update_cache: true
 

@@ -83,6 +83,7 @@
     - role: portainer_dashy
     - role: portainer_dashdot
     - role: portainer_glances
+    - role: portainer_arr
 
 #
 #- name: Setup and deploy templated portainer services.
