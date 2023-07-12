@@ -95,4 +95,10 @@ services:
   - name: gotify
   - name: diun
 
+portainer_roles:
+  - role: portainer_dashy
+  - role: portainer_dashdot
+  - role: portainer_glances
+  - role: portainer_arr
+
 

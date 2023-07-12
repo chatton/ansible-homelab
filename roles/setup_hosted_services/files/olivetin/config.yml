@@ -11,8 +11,8 @@ actions:
     timeout: 30
   - title: Restart Overseerr
     icon: overseerr
-    shell: docker restart plex
+    shell: docker restart overseerr
     timeout: 30
   - title: Restart VPN Stack
-    shell: docker restart surfshark sonarr radarr jackett qbittorrent
+    shell: docker restart protonvpn sonarr radarr jackett qbittorrent
     timeout: 90

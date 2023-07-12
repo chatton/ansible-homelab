@@ -67,3 +67,4 @@ cron_hour: "4"
 #    - "unix:///var/run/docker.sock"
 
 docker_backup_host_backup_directory: "/tmp"
+portainer_roles: []

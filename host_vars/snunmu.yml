@@ -27,3 +27,10 @@ docker_daemon_options:
     - "tcp://0.0.0.0:2375"
     - "unix:///var/run/docker.sock"
 
+
+portainer_roles:
+  - role: portainer_bookstack
+  - role: portainer_vaultwarden
+  - role: portainer_dashy
+  - role: portainer_dashdot
+  - role: portainer_glances
