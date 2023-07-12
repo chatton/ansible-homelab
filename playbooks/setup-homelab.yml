@@ -2,6 +2,8 @@
 - name: Update packages and ensure users on all hosts.
   hosts: all
   become: true
+  gather_facts: false
+  strategy: free
   pre_tasks:
     - name: Update Packages
       ansible.builtin.apt:
@@ -12,6 +14,7 @@
 
 - name: Configure mergerfs pools.
   hosts: mergerfs
+  strategy: free
   become: true
   roles:
     - role: setup_mergerfs
@@ -19,6 +22,7 @@
 
 - name: Configure samba shares.
   hosts: all
+  strategy: free
   become: true
   roles:
     - role: geerlingguy.samba
@@ -27,11 +31,13 @@
 - name: Install Docker on Docker hosts.
   hosts: docker
   become: true
+  strategy: free
   roles:
     - role: geerlingguy.pip
     - role: geerlingguy.docker
 
 - name: Install Portainer on Portainer hosts.
+  gather_facts: false
   hosts: portainer
   become: true
   pre_tasks:
@@ -56,6 +62,7 @@
       tags: [compose]
 
 - name: Setup and deploy portainer services.
+  gather_facts: false
   hosts: servers
   become: true
   strategy: free
