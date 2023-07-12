@@ -1,9 +1,6 @@
 ---
 vault_file: vault_vars/qnap-vault.yml
 
-docker_backup_aws_s3_encrypt: false
-docker_backup_host_backup_directory: "/tmp"
-
 portainer_required_templates:
   - source_file: diun-config.j2
     dest_file_name: diun-config.yml
@@ -12,7 +9,7 @@ portainer_required_templates:
 
 portainer_endpoint: 23
 services:
-  - name: pihole
+#  - name: pihole
   - name: hasteypaste
   - name: diun
 
@@ -28,9 +25,17 @@ docker_daemon_options:
     - "unix:///var/run/docker.sock"
 
 
+# Note: this must be inline with the host name,
+# this is a work around as it is not possible to template
+# the name of the volume in the portainer task.
+pihole_volumes:
+  snunmu_app: {}
+  snunmu_dns: {}
+
 portainer_roles:
   - role: portainer_bookstack
   - role: portainer_vaultwarden
   - role: portainer_dashy
   - role: portainer_dashdot
   - role: portainer_glances
+  - role: portainer_pihole

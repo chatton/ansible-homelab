@@ -18,7 +18,7 @@
       version: '3.2'
       services:
         portainer:
-          labels: "{{ backup_labels}}"
+          labels: "{{ backup_labels }}"
           image: "portainer/portainer-ce:{{ portainer_version }}"
           container_name: portainer
           restart: "{{ restart_policy }}"
