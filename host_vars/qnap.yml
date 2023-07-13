@@ -77,8 +77,6 @@ services:
     template_vars:
       image: gitea/gitea
       tag: 1.19.0
-  - name: mealie
-  - name: overseerr
   - name: nextcloud
     template_vars:
       default_network: mariadb_net
@@ -119,3 +117,4 @@ portainer_roles:
   - role: portainer_arr
   - role: portainer_gotify
   - role: portainer_pihole
+  - role: portainer_overseerr

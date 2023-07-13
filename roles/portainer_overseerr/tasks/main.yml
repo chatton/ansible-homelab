@@ -1,0 +1,34 @@
+---
+- name: "Overseerr | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume:
+      name: "{{ overseerr_portainer_stack_name }}_config"
+
+- name: "Overseerr | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ overseerr_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ overseerr_state }}"
+    definition:
+      version: "3.1"
+      services:
+        overseerr:
+          labels: "{{ backup_labels }}"
+          image: "{{ overseerr_image }}:{{ overseerr_tag }}"
+          container_name: "{{ overseerr_container_name }}"
+          environment:
+            - PUID={{ overseerr_puid }}
+            - PGID={{ overseerr_pgid }}
+            - TZ=Europe/London
+          volumes:
+            - config:/app/config
+          ports:
+            - "{{ overseerr_expose_port }}:5055"
+          restart: "{{ restart_policy }}"
+      volumes:
+        config: {}
