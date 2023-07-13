@@ -4,6 +4,7 @@ vikunja_api_image: vikunja/api
 vikunja_api_tag: 0.21.0
 vikunja_api_container_name: vikunja_api
 vikunja_api_expose_port: 3456
+vikunja_enable_registration: false
 
 vikunja_frontend_container_name: vikunja_frontend
 vikunja_frontend_image: vikunja/frontend
