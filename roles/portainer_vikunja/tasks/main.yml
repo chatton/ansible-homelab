@@ -1,0 +1,45 @@
+---
+- name: "Vikunja | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume: "{{ item }}"
+  with_items:
+    - name: "{{ vikunja_portainer_stack_name }}_app"
+
+- name: "Vikunja | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ vikunja_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ vikunja_state }}"
+    definition:
+      version: "3.1"
+      services:
+        api:
+          labels: "{{ backup_labels }}"
+          container_name: "{{ vikunja_api_container_name }}"
+          image: "{{ vikunja_api_image }}:{{ vikunja_api_tag }}"
+          environment:
+            VIKUNJA_SERVICE_JWTSECRET: "{{ vikunja_jwt_token }}"
+            VIKUNJA_SERVICE_FRONTENDURL: https://tasks.cianhatton.ie/
+            VIKUNJA_DATABASE_TYPE: sqlite
+            PUID: 1000
+            PGID: 1000
+          ports:
+            - "{{ vikunja_api_expose_port}}:3456"
+          volumes:
+             - app:/app/vikunja
+          restart: "{{ restart_policy }}"
+        frontend:
+          container_name: "{{ vikunja_frontend_container_name }}"
+          image: "{{ vikunja_frontend_image }}:{{ vikunja_frontend_tag }}"
+          ports:
+            - "{{ vikunja_frontend_expose_port }}:80"
+          environment:
+            VIKUNJA_API_URL: "https://tasksapi.cianhatton.ie/api/v1"
+          restart: "{{ restart_policy }}"
+      volumes:
+         app: {}

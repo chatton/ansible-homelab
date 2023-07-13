@@ -32,3 +32,21 @@ docker_backup_fail_on_no_s3_backups: false
 docker_backup_restore_force: false
 
 portainer_user: admin
+
+directories:
+  # path on qnap where downloads go
+  downloads_dir: /mnt/ssd0/downloads
+  # path on qnap where plex transcoding happens
+  transcoding_dir: /mnt/ssd0/transcoding
+  # path on qnap where movies are stored
+  movies_dir: /mnt/mergerfs/media/movies
+  # path on qnap where tv shows are stored
+  tv_dir: /mnt/mergerfs/media/tv
+  # path on qnap where docker compose files are stored
+  docker_compose_directory: /etc/docker-compose
+  # path where photoprism photos are stored
+  photoprism_dir: /mnt/mergerfs/photoprism
+  # path to youtube videos
+  youtube_dir: /mnt/mergerfs/media/youtube
+  # path to where paperless docs will be stored
+  documents_dir: /mnt/mergerfs/documents

@@ -9,7 +9,6 @@ portainer_required_templates:
 
 portainer_endpoint: 23
 services:
-#  - name: pihole
   - name: hasteypaste
   - name: diun
 
@@ -39,3 +38,4 @@ portainer_roles:
   - role: portainer_dashdot
   - role: portainer_glances
   - role: portainer_pihole
+  - role: portainer_vikunja
