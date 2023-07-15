@@ -25,10 +25,7 @@ pihole_volumes:
   snunmu_dns: {}
 
 portainer_roles:
-  - role: portainer_bookstack
-  - role: portainer_vaultwarden
   - role: portainer_dashy
   - role: portainer_dashdot
   - role: portainer_glances
   - role: portainer_pihole
-  - role: portainer_vikunja
