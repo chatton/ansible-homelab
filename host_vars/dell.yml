@@ -10,6 +10,10 @@ ansible_pull_path: /usr/local/bin/ansible-pull
 backup_directories: []
 cron_hour: "4"
 
+pihole_volumes:
+  dell_app: {}
+  dell_dns: {}
+
 portainer_roles:
   - role: portainer_minio
   - role: portainer_glances
@@ -19,6 +23,7 @@ portainer_roles:
   - role: portainer_bookstack
   - role: portainer_vikunja
   - role: portainer_linkding
-#  - role: portainer_gotify
-#  - role: portainer_overseerr
-#  - role: portainer_pihole
+  - role: portainer_gotify
+  - role: portainer_overseerr
+  - role: portainer_pihole
+  - role: portainer_uptime_kuma

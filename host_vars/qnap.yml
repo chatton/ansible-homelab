@@ -92,8 +92,5 @@ portainer_roles:
   - role: portainer_dashdot
   - role: portainer_glances
   - role: portainer_arr
-  - role: portainer_gotify
   - role: portainer_pihole
-  - role: portainer_overseerr
-  - role: portainer_uptime_kuma
   - role: portainer_nginx_proxy_manager
