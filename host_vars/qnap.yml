@@ -69,10 +69,6 @@ services:
     template_vars:
       plex_image: lscr.io/linuxserver/plex
       plex_tag: 1.32.4
-  - name: uptime-kuma
-    template_vars:
-      image: louislam/uptime-kuma
-      tag: 1.22.0
   - name: mariadb
     template_vars:
       image: mariadb
@@ -100,3 +96,4 @@ portainer_roles:
   - role: portainer_gotify
   - role: portainer_pihole
   - role: portainer_overseerr
+  - role: portainer_uptime_kuma

@@ -1,0 +1,31 @@
+---
+- name: "Uptime Kuma | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume:
+      name: "{{ uptime_kuma_portainer_stack_name }}_data"
+
+- name: "Uptime Kuma | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ uptime_kuma_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ uptime_kuma_state }}"
+    definition:
+      version: '3.3'
+      services:
+        uptime-kuma:
+          labels: "{{ backup_labels }}"
+          image: "{{ uptime_kuma_image }}:{{ uptime_kuma_tag }}"
+          container_name: "{{ uptime_kuma_container_name }}"
+          volumes:
+            - data:/app/data
+          ports:
+            - "{{ uptime_kuma_expose_port }}:3001"
+          restart: "{{ restart_policy }}"
+
+      volumes:
+        data:

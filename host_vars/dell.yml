@@ -19,3 +19,6 @@ portainer_roles:
   - role: portainer_bookstack
   - role: portainer_vikunja
   - role: portainer_linkding
+#  - role: portainer_gotify
+#  - role: portainer_overseerr
+#  - role: portainer_pihole
