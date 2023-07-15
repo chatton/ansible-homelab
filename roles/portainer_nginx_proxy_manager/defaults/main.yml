@@ -1,0 +1,11 @@
+---
+ngnix_proxy_manager_state: present
+ngnix_proxy_manager_image: jlesage/nginx-proxy-manager
+ngnix_proxy_manager_tag: v23.04.1
+ngnix_proxy_manager_http_expose_port: 80
+ngnix_proxy_manager_https_expose_port: 433
+ngnix_proxy_manager_expose_port: 8181
+ngnix_proxy_manager_container_name: _ngnix_proxy_manager
+ngnix_proxy_manager_portainer_stack_name: _ngnix_proxy_manager
+ngnix_proxy_manager_puid: 1000
+ngnix_proxy_manager_pgid: 1000

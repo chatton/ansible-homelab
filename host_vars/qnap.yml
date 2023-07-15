@@ -64,7 +64,6 @@ services:
       default_network: mariadb_net
       image: nextcloud
       tag: 27.0
-  - name: nginx-proxy-manager
   - name: plex
     template_vars:
       plex_image: lscr.io/linuxserver/plex
@@ -97,3 +96,4 @@ portainer_roles:
   - role: portainer_pihole
   - role: portainer_overseerr
   - role: portainer_uptime_kuma
+  - role: portainer_nginx_proxy_manager
