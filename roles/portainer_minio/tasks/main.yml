@@ -1,0 +1,32 @@
+---
+- name: "Minio | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ minio_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ minio_state }}"
+    definition:
+      version: '3'
+      services:
+        minio:
+          container_name: "{{ minio_container_name }}"
+          image: "{{ minio_image }}:{{ minio_tag }}"
+          ports:
+            # The API
+            - "{{ minio_api_expose_port }}:9000"
+            # The web console
+            - "{{ minio_console_expose_port }}:9001"
+          volumes:
+            - minio_storage:/data
+          environment:
+            # specified in the vault file
+            MINIO_ROOT_USER: "{{ minio_username }}"
+            MINIO_ROOT_PASSWORD: "{{ minio_password }}"
+            MINIO_API_ROOT_ACCESS: "on"
+            MINIO_BROWSER_REDIRECT_URL: "http://{{ ansible_default_ipv4.address }}:11000"
+
+          command: server --console-address ":9001" /data
+      volumes:
+        minio_storage: {}

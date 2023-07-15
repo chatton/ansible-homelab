@@ -4,66 +4,13 @@ vault_file: vault_vars/qnap-vault.yml
 portainer_required_templates: []
 portainer_endpoint: 34
 services: []
-
-docker_compose_services:
-  - name: dashboards
-    definition:
-      version: '3.5'
-      services:
-        dash-dot:
-          container_name: dashdot
-          image: mauricenino/dashdot:latest
-          restart: unless-stopped
-          privileged: true
-          ports:
-            - '3010:3001'
-          volumes:
-            - /:/mnt/host:ro
-        glances:
-          image: nicolargo/glances:latest-alpine
-          restart: unless-stopped
-          pid: host
-          ports:
-            - "8083:61208"
-          volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-          environment:
-            - "GLANCES_OPT=-w"
-
-  - name: minio
-    definition:
-      version: '3'
-      services:
-        minio:
-          image: "minio/minio:RELEASE.2023-06-29T05-12-28Z"
-          ports:
-            # The API
-            - "11000:9000"
-            # The web console
-            - "11001:9001"
-          volumes:
-            - minio_storage:/data
-          environment:
-            # specified in the vault file
-            MINIO_ROOT_USER: "{{ minio_username }}"
-            MINIO_ROOT_PASSWORD: "{{ minio_password }}"
-            MINIO_API_ROOT_ACCESS: "on"
-            MINIO_BROWSER_REDIRECT_URL: "http://{{ ansible_default_ipv4.address }}:11000"
-
-          command: server --console-address ":9001" /data
-      volumes:
-        minio_storage: {}
-
-
+docker_compose_services: []
 ansible_pull_path: /usr/local/bin/ansible-pull
 
 backup_directories: []
 cron_hour: "4"
 
-# docker options
-#docker_daemon_options:
-#  hosts:
-#    - "tcp://0.0.0.0:2375"
-#    - "unix:///var/run/docker.sock"
-
-portainer_roles: []
+portainer_roles:
+  - role: portainer_minio
+  - role: portainer_glances
+  - role: portainer_dashdot

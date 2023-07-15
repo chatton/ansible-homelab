@@ -1,0 +1,8 @@
+---
+minio_state: present
+minio_image: minio/minio
+minio_tag: RELEASE.2023-06-29T05-12-28Z
+minio_api_expose_port: 11000
+minio_console_expose_port: 11001
+minio_container_name: minio
+minio_portainer_stack_name: minio
