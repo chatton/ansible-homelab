@@ -22,6 +22,7 @@
       # TODO move these somewhere else
       - ufw
       - htop
+      - gdisk
     state: latest
     update_cache: true
 
