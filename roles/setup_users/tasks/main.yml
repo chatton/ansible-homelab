@@ -1,4 +1,20 @@
 # https://stackoverflow.com/questions/37333305/ansible-create-a-user-with-sudo-privileges
+- name: Add sources list
+  ansible.builtin.copy:
+    src: sources_list
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: 0440
+
+- name: Copy vault key.
+  ansible.builtin.copy:
+    content: "{{ lookup('file', '~/.vault-key') }}"
+    dest: "/home/{{ homelab_user }}/.vault-key"
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: 0440
+
 - name: Install Packages.
   ansible.builtin.apt:
     pkg:

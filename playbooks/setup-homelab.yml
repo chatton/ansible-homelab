@@ -4,11 +4,6 @@
   become: true
   gather_facts: false
   strategy: free
-  pre_tasks:
-    - name: Update Packages
-      ansible.builtin.apt:
-        upgrade: dist
-        update_cache: true
   roles:
     - role: setup_users
 
