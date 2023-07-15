@@ -14,5 +14,5 @@ actions:
     shell: docker restart overseerr
     timeout: 30
   - title: Restart VPN Stack
-    shell: docker restart protonvpn sonarr radarr jackett qbittorrent
+    shell: docker restart protonwire sonarr radarr jackett qbittorrent
     timeout: 90

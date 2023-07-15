@@ -1,0 +1,61 @@
+---
+- name: "Diun | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume:
+      name: "{{ diun_portainer_stack_name }}_data"
+
+- name: Diun | Create config directory.
+  ansible.builtin.file:
+    path: '{{ diun_config_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: Diun | Template config.
+  ansible.builtin.template:
+    src: diun-config.j2
+    dest: "{{ diun_config_dir }}/{{ diun_config_file}}"
+    owner: root
+    group: root
+    mode: 0440
+  notify: restart-diun
+
+- name: Diun | Set fact diun_labels.
+  set_fact:
+    diun_labels:
+      diun.enable: true
+
+- name: "Diun | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ diun_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ diun_state }}"
+    definition:
+      version: "3.5"
+      services:
+        diun:
+          image: "{{ diun_image }}:{{ diun_tag }}"
+          container_name: diun
+          command: serve
+          volumes:
+            - data:/data
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /etc/config/diun/diun-config.yml:/data/config.yml
+          environment:
+            - TZ=Europe/Dublin
+            - LOG_LEVEL=debug
+            - LOG_JSON=false
+            - DIUN_WATCH_WORKERS=20
+            - DIUN_WATCH_SCHEDULE=0 */6 * * *
+            - DIUN_WATCH_JITTER=30s
+            - DIUN_PROVIDERS_DOCKER=true
+            - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
+            - CONFIG=/data/config.yml
+          labels: "{{ backup_labels | combine(diun_labels) }}"
+          restart: unless-stopped
+      volumes:
+        data:

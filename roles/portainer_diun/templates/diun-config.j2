@@ -1,0 +1,24 @@
+db:
+  path: diun.db
+
+watch:
+  workers: 10
+  schedule: "0 */6 * * *"
+  jitter: 30s
+  # always want notification if an update is available
+  firstCheckNotif: true
+
+notif:
+  gotify:
+    endpoint: https://gotify.cianhatton.ie
+    token: {{ diun_gotify_token }}
+    priority: 1
+    timeout: 10s
+    templateTitle: "{% raw %}{{ .Entry.Image }}{% endraw %} released"
+    templateBody: |
+      Docker tag {% raw %}{{ .Entry.Image }}{% endraw %} which you subscribed to through {% raw %}{{ .Entry.Provider }}{% endraw %} provider has been released.
+
+providers:
+# check these separate to the docker system
+  File:
+    filename: /data/config.yml

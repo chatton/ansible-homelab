@@ -1,0 +1,9 @@
+---
+diun_state: present
+diun_image: crazymax/diun
+diun_tag: latest
+diun_portainer_stack_name: diun
+diun_container_name: diun
+
+diun_config_dir: /etc/config/diun
+diun_config_file: diun-config.yml

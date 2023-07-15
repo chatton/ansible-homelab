@@ -80,7 +80,6 @@ services:
       tag: 230615
   - name: olivetin
   - name: paperless
-  - name: diun
 
 pihole_volumes:
   qnap_app: {}
@@ -89,6 +88,7 @@ pihole_volumes:
 
 portainer_roles:
   - role: portainer_dashy
+  - role: portainer_diun
   - role: portainer_dashdot
   - role: portainer_glances
   - role: portainer_arr

@@ -10,7 +10,6 @@ portainer_required_templates:
 portainer_endpoint: 35
 services:
   - name: hasteypaste
-  - name: diun
 
 ansible_pull_path: /usr/local/bin/ansible-pull
 
@@ -26,6 +25,7 @@ pihole_volumes:
 
 portainer_roles:
   - role: portainer_dashy
+  - role: portainer_diun
   - role: portainer_dashdot
   - role: portainer_glances
   - role: portainer_pihole

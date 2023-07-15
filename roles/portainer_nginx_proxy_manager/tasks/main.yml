@@ -1,31 +1,31 @@
 ---
-- name: "Overseerr | Restore any missing volumes from S3"
+- name: "Nginx proxy manager | Restore any missing volumes from S3"
   ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
   vars:
     docker_backup_s3_volume:
-      name: "{{ ngnix_proxy_manager_portainer_stack_name }}_data"
+      name: "{{ nginx_proxy_manager_portainer_stack_name }}_data"
 
-- name: "Overseerr | Update Portainer."
+- name: "Nginx proxy manager | Update Portainer."
   chatton.portainer.portainer_stack:
     username: '{{ portainer_user }}'
     password: '{{ portainer.password }}'
     base_url: '{{ portainer_base_url }}'
-    stack_name: '{{ ngnix_proxy_manager_portainer_stack_name }}'
+    stack_name: '{{ nginx_proxy_manager_portainer_stack_name }}'
     endpoint_id: '{{ portainer_endpoint }}'
-    state: "{{ ngnix_proxy_manager_state }}"
+    state: "{{ nginx_proxy_manager_state }}"
     definition:
       version: "3"
       services:
         nginx-proxy-manager:
           labels: "{{ backup_labels }}"
           image: "{{ nginx_proxy_manager_image }}:{{ nginx_proxy_manager_tag }}"
-          container_name: "{{ ngnix_proxy_manager_container_name }}"
+          container_name: "{{ nginx_proxy_manager_container_name }}"
           restart: "{{ restart_policy }}"
           ports:
-            - "{{ ngnix_proxy_manager_expose_port }}:8181"
-            - "{{ ngnix_proxy_manager_http_expose_port }}:8080"
-            - "{{ ngnix_proxy_manager_https_expose_port }}:4443"
+            - "{{ nginx_proxy_manager_expose_port }}:8181"
+            - "{{ nginx_proxy_manager_http_expose_port }}:8080"
+            - "{{ nginx_proxy_manager_https_expose_port }}:4443"
           volumes:
             - "data:/config:rw"
       volumes:

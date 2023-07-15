@@ -19,6 +19,7 @@ portainer_roles:
   - role: portainer_glances
   - role: portainer_dashdot
   - role: portainer_dashy
+  - role: portainer_diun
   - role: portainer_vaultwarden
   - role: portainer_bookstack
   - role: portainer_vikunja
