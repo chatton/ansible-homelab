@@ -42,8 +42,14 @@
   roles:
     - role: setup_portainer
       tags: [services, portainer]
-      vars:
-        portainer_version: "2.18.3"
+
+- name: Install Portainer agent on Portainer agent hosts.
+  gather_facts: false
+  hosts: portainer_agent
+  become: true
+  roles:
+    - role: setup_portainer_agent
+      tags: [services, portainer_agent]
 
 - name: Setup and deploy compose services.
   hosts: dell
