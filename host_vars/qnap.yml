@@ -46,13 +46,6 @@ portainer_required_files:
     dest_directory: /etc/config/OliveTin
     handler: restart-olivetin
 
-portainer_required_templates:
-  - source_file: diun-config.j2
-    dest_file_name: diun-config.yml
-    dest_directory: /etc/config/diun
-    handler: restart-diun
-
-
 portainer_endpoint: 2
 services:
   - name: gitea
@@ -64,10 +57,6 @@ services:
       default_network: mariadb_net
       image: nextcloud
       tag: 27.0
-  - name: plex
-    template_vars:
-      plex_image: lscr.io/linuxserver/plex
-      plex_tag: 1.32.4
   - name: mariadb
     template_vars:
       image: mariadb
@@ -85,8 +74,8 @@ pihole_volumes:
   qnap_app: {}
   qnap_dns: {}
 
-
 portainer_roles:
+  - role: portainer_plex
   - role: portainer_dashy
   - role: portainer_diun
   - role: portainer_dashdot

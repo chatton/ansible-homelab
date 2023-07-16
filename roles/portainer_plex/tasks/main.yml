@@ -1,0 +1,58 @@
+---
+- name: "Plex | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume: "{{ item }}"
+  with_items:
+    - name: "{{ plex_portainer_stack_name }}_config"
+    - name: "{{ plex_portainer_stack_name }}_tautulli_config"
+
+- name: "Plex | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ plex_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ plex_state }}"
+    definition:
+      version: "3"
+      services:
+        plex:
+          labels: "{{ backup_labels }}"
+          image: "{{ plex_image }}:{{ plex_tag }}"
+          container_name: "{{ plex_container_name }}"
+          ports:
+           - "{{ plex_expose_port }}:32400"
+          network_mode: host
+          environment:
+            - PUID=1000
+            - PGID=1000
+            - VERSION=docker
+          volumes:
+            - config:/config
+            - "{{ directories.tv_dir }}:/tv"
+            - "{{ directories.movies_dir }}:/movies"
+            - "{{ directories.transcoding_dir }}:/transcoding"
+          restart: "{{ restart_policy }}"
+          devices:
+            - /dev/dri:/dev/dri
+
+        tautulli:
+          labels: "{{ backup_labels }}"
+          image: lscr.io/linuxserver/tautulli:latest
+          container_name: tautulli
+          environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/London
+          volumes:
+            - tautulli_config:/config
+          ports:
+            - "{{ tautulli_expose_port }}:8181"
+          restart: "{{ restart_policy }}"
+
+      volumes:
+        config:
+        tautulli_config:

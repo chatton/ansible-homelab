@@ -1,7 +1,6 @@
 ---
 vault_file: vault_vars/qnap-vault.yml
 
-portainer_required_templates: []
 portainer_endpoint: 34
 services: []
 docker_compose_services: []

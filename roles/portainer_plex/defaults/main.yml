@@ -1,0 +1,12 @@
+---
+plex_portainer_stack_name: plex
+plex_state: present
+plex_image: lscr.io/linuxserver/plex
+plex_tag: 1.32.4
+plex_container_name: plex
+plex_expose_port: 32400
+
+tautulli_container_name: tautulli
+tautulli_image: lscr.io/linuxserver/tautulli
+tautulli_tag: latest
+tautulli_expose_port: 8182

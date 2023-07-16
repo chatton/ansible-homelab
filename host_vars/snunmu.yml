@@ -1,12 +1,6 @@
 ---
 vault_file: vault_vars/qnap-vault.yml
 
-portainer_required_templates:
-  - source_file: diun-config.j2
-    dest_file_name: diun-config.yml
-    dest_directory: /etc/config/diun
-    handler: restart-diun
-
 portainer_endpoint: 35
 services:
   - name: hasteypaste

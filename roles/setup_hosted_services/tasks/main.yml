@@ -32,27 +32,6 @@
     loop_var: file_item
   notify: "{{ file_item.handler }}"
 
-- name: Create required directories (templates).
-  ansible.builtin.file:
-    path: '{{ file_template.dest_directory }}'
-    state: directory
-    mode: '0755'
-  with_items: "{{ portainer_required_templates }}"
-  loop_control:
-    loop_var: file_template
-
-- name: Create required templates.
-  ansible.builtin.template:
-    src: "{{ file_template.source_file }}"
-    dest: "{{ file_template.dest_directory }}/{{ file_template.dest_file_name }}"
-    owner: root
-    group: root
-    mode: 0440
-  with_items: "{{ portainer_required_templates }}"
-  loop_control:
-    loop_var: file_template
-  notify: "{{ file_template.handler }}"
-
 - name: Create external docker networks.
   docker_network:
     name: '{{ item }}'
