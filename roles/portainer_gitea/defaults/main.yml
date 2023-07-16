@@ -1,0 +1,8 @@
+---
+gitea_state: present
+gitea_image: gitea/gitea
+gitea_tag: 1.19.0
+gitea_expose_port: 3000
+gitea_expose_port_ssh: 222
+gitea_portainer_stack_name: gitea
+gitea_container_name: gitea

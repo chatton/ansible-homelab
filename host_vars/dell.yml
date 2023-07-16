@@ -27,3 +27,4 @@ portainer_roles:
   - role: portainer_overseerr
   - role: portainer_pihole
   - role: portainer_uptime_kuma
+  - role: portainer_gitea

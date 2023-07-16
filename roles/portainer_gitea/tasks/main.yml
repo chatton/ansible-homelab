@@ -1,0 +1,36 @@
+---
+- name: "Gitea | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume:
+      name: "{{ gitea_portainer_stack_name }}_data"
+
+- name: "Gitea | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ gitea_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ gitea_state }}"
+    definition:
+      version: "3"
+      services:
+        gitea:
+          labels: "{{ backup_labels }}"
+          image: "{{ gitea_image }}:{{ gitea_tag }}"
+          container_name: "{{ gitea_container_name }}"
+          environment:
+            - USER_UID=1000
+            - USER_GID=1000
+          restart: "{{ restart_policy }}"
+          volumes:
+            - data:/data
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+          ports:
+            - "{{ gitea_expose_port }}:3000"
+            - "{{ gitea_expose_port_ssh }}:22"
+      volumes:
+        data:
