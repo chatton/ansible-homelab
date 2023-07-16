@@ -34,10 +34,6 @@ devices:
   - uuid: c528bf82-61ab-4f3d-87e0-d1e6e02ef7ec     # /dev/sdf
     path: /mnt/ssd0/
 
-# docker networks to be created before portainer stacks are created.
-external_docker_networks:
-  - mariadb_net
-
 ansible_pull_path: /home/{{ homelab_user }}/.local/bin/ansible-pull
 
 portainer_required_files:

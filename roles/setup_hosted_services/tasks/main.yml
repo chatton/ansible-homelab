@@ -32,11 +32,6 @@
     loop_var: file_item
   notify: "{{ file_item.handler }}"
 
-- name: Create external docker networks.
-  docker_network:
-    name: '{{ item }}'
-  with_items: '{{ external_docker_networks }}'
-
 - name: Deploy Portainer stacks.
   ansible.builtin.include_role:
     name: deploy_portainer_stack

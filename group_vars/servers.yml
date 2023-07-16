@@ -17,7 +17,6 @@ desired_docker_images:
 
 portainer_endpoint: -1
 portainer_base_url: "http://qnap:9000"
-external_docker_networks: []
 portainer_required_files: []
 restart_policy: unless-stopped
 backup_labels:
