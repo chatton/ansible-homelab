@@ -48,20 +48,6 @@ portainer_required_files:
 
 portainer_endpoint: 2
 services:
-  - name: gitea
-    template_vars:
-      image: gitea/gitea
-      tag: 1.19.0
-  - name: nextcloud
-    template_vars:
-      default_network: mariadb_net
-      image: nextcloud
-      tag: 27.0
-  - name: mariadb
-    template_vars:
-      image: mariadb
-      tag: 10.8.3
-      default_network: mariadb_net
   - name: photoprism
     template_vars:
       default_network: mariadb_net
@@ -83,3 +69,4 @@ portainer_roles:
   - role: portainer_arr
   - role: portainer_pihole
   - role: portainer_nginx_proxy_manager
+#  - role: portainer_minio

@@ -1,0 +1,39 @@
+---
+- name: Nextcloud | Create docker network.
+  docker_network:
+    name: '{{ mariadb_network }}'
+
+- name: "Nextcloud | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume:
+      name: "{{ nextcloud_portainer_stack_name }}_data"
+
+- name: "Nextcloud | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ nextcloud_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ nextcloud_state }}"
+    definition:
+      version: '3.2'
+      services:
+        nextcloud:
+          labels: "{{ backup_labels }}"
+          image: "{{ nextcloud_image }}:{{ nextcloud_tag }}"
+          container_name: "{{ nextcloud_container_name }}"
+          restart: "{{ restart_policy }}"
+          ports:
+            - "{{ nextcloud_expose_port }}:80"
+          volumes:
+            - data:/var/www/html
+      volumes:
+        data:
+
+      networks:
+        default:
+          name: "{{ mariadb_network }}"
+          external: true

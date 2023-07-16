@@ -1,0 +1,7 @@
+---
+nextcloud_state: present
+nextcloud_image: nextcloud
+nextcloud_tag: 27.0
+nextcloud_expose_port: 8081
+nextcloud_container_name: nextcloud
+nextcloud_portainer_stack_name: nextcloud
