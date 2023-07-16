@@ -4,7 +4,7 @@ bookstack_image: linuxserver/bookstack
 bookstack_tag: 23.06.1
 bookstack_puid: 1000
 bookstack_pgid: 1000
-bookstack_db_host: qnap
+bookstack_db_host: mariadb # this works only if bookstack is on the mariadb_network
 bookstack_database: bookstackapp
 bookstack_db_user: bookstack
 bookstack_app_url: https://bookstack.cianhatton.ie

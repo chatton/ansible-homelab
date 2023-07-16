@@ -1,4 +1,8 @@
 ---
+- name: Bookstack | Create docker network.
+  docker_network:
+    name: '{{ mariadb_network }}'
+
 - name: "Bookstack | Restore any missing volumes from S3"
   ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
@@ -36,3 +40,8 @@
           restart: "{{ restart_policy }}"
       volumes:
         config: {}
+
+      networks:
+        default:
+          name: "{{ mariadb_network }}"
+          external: true

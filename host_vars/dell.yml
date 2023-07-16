@@ -13,14 +13,20 @@ pihole_volumes:
   dell_app: {}
   dell_dns: {}
 
+
+mariadb_network: mariadb_net
+
 portainer_roles:
+   # mariadb network
+  - role: portainer_mariadb
+  - role: portainer_bookstack
+  # individual networks
   - role: portainer_minio
   - role: portainer_glances
   - role: portainer_dashdot
   - role: portainer_dashy
   - role: portainer_diun
   - role: portainer_vaultwarden
-  - role: portainer_bookstack
   - role: portainer_vikunja
   - role: portainer_linkding
   - role: portainer_gotify

@@ -1,0 +1,55 @@
+---
+- name: Mariadb | Create docker network.
+  docker_network:
+    name: '{{ mariadb_network }}'
+
+- name: "Mariadb | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume: "{{ item }}"
+  with_items:
+    - name: "{{ mariadb_portainer_stack_name }}_data"
+    - name: "{{ mariadb_portainer_stack_name }}_config"
+
+- name: "Mariadb | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ mariadb_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ mariadb_state }}"
+    definition:
+      version: '3.1'
+      services:
+        mariadb:
+          labels: "{{ backup_labels }}"
+          container_name: "{{ mariadb_container_name }}"
+          image: "{{ mariadb_image }}:{{ mariadb_tag }}"
+          hostname: mariadb
+          restart: "{{ restart_policy }}"
+          ports:
+            - "{{ mariadb_expose_port }}:3306"
+          volumes:
+            - data:/var/lib/mysql
+            - config:/etc/mysql/conf.d
+          environment:
+            - MYSQL_ROOT_PASSWORD={{ mariadb.mysql_root_password }}
+
+        adminer:
+          restart: "{{ restart_policy }}"
+          image: "{{ adminer_image }}:{{ adminer_tag }}"
+          environment:
+            ADMINER_DEFAULT_SERVER: mariadb
+            ADMINER_DESIGN: galkaev
+          ports:
+            - "{{ adminer_expose_port }}:8080"
+      volumes:
+        data:
+        config:
+
+      networks:
+        default:
+          name: "{{ mariadb_network }}"
+          external: true
