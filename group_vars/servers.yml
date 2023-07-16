@@ -39,6 +39,8 @@ directories:
   transcoding_dir: /mnt/ssd0/transcoding
   # path on qnap where movies are stored
   movies_dir: /mnt/mergerfs/media/movies
+  # path on qnap where music is stored
+  music_dir: /mnt/mergerfs/media/music
   # path on qnap where tv shows are stored
   tv_dir: /mnt/mergerfs/media/tv
   # path on qnap where docker compose files are stored

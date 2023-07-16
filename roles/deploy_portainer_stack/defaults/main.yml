@@ -2,6 +2,7 @@
 # defaults file for chatton.deploy_portainer_stack
 
 portainer_stack_name: ""
+
 # required directories for this stack
 portainer_stack_directories: []
 
