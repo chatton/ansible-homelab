@@ -1,0 +1,36 @@
+---
+- name: "Navidrome | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume:
+      name: "{{ navidrome_portainer_stack_name }}_data"
+
+- name: "Navidrome | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ navidrome_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ navidrome_state }}"
+    definition:
+      version: "3"
+      services:
+        navidrome:
+          labels: "{{ backup_labels }}"
+          container_name: "{{ navidrome_container_name }}"
+          image: "{{ navidrome_image }}:{{ navidrome_tag }}"
+          user: 1000:1000 # should be owner of volumes
+          ports:
+            - "{{ navidrome_expose_port }}:4533"
+          restart: "{{ restart_policy }}"
+          environment:
+            ND_SCANSCHEDULE: 1h
+            ND_LOGLEVEL: info
+            ND_SESSIONTIMEOUT: 24h
+          volumes:
+            - "data:/data"
+            - "{{ directories.music_dir }}:/music:ro"
+      volumes:
+        data: {}

@@ -23,7 +23,7 @@ backup_labels:
   ie.cianhatton.backup.enabled: true
   ie.cianhatton.backup.schedule: nightly
 
-docker_backup_aws_s3_encrypt: false
+docker_backup_aws_s3_encrypt: true
 docker_backup_host_backup_directory: "/tmp"
 docker_backup_retain_count: 3
 docker_backup_restore_latest_s3_key: true

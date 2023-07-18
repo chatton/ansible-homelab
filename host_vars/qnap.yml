@@ -57,6 +57,7 @@ pihole_volumes:
   qnap_dns: {}
 
 portainer_roles:
+  - role: portainer_navidrome
   - role: portainer_plex
   - role: portainer_dashy
   - role: portainer_diun
@@ -65,4 +66,4 @@ portainer_roles:
   - role: portainer_arr
   - role: portainer_pihole
   - role: portainer_nginx_proxy_manager
-#  - role: portainer_minio
+  - role: portainer_minio

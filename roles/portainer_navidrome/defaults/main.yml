@@ -1,0 +1,9 @@
+---
+navidrome_state: present
+navidrome_image: deluan/navidrome
+navidrome_tag: latest
+navidrome_puid: 1000
+navidrome_pgid: 1000
+navidrome_expose_port: 4533
+navidrome_container_name: navidrome
+navidrome_portainer_stack_name: navidrome

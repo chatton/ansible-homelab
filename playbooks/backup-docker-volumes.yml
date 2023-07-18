@@ -17,7 +17,7 @@
       ansible.builtin.include_role:
         name: gotify_message
       vars:
-        gotify_message: "Backup started for host {{ inventory_hostname }}"
+        gotify_message: "Backup started for host {{ inventory_hostname }} at {{ ansible_date_time.iso8601 }}"
 
     - name: Find Containers With Backup Label
       docker_host_info:
@@ -45,4 +45,4 @@
       ansible.builtin.include_role:
         name: gotify_message
       vars:
-        gotify_message: "Backup finished for host {{ inventory_hostname }}"
+        gotify_message: "Backup finished for host {{ inventory_hostname }} at {{ ansible_date_time.iso8601 }}"
