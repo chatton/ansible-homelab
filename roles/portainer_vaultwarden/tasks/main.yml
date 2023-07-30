@@ -29,6 +29,8 @@
             DOMAIN: "{{ vaultwarden_domain }}"
             ADMIN_TOKEN: "{{ vaultwarden_admin_token }}"
             SIGNUPS_ALLOWED: "{{ vaultwarden_signups_allowed }}"
+#            YUBICO_CLIENT_ID: "{{ vault_warden_client_id }}"
+#            YUBICO_SECRET_KEY: "{{ vault_warden_secret_key }}"
           restart: "{{ restart_policy }}"
           ports:
             - "{{ vaultwarden_expose_port }}:80"
