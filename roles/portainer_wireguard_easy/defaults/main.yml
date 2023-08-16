@@ -1,0 +1,7 @@
+---
+wireguard_easy_state: present
+wireguard_easy_image: weejewel/wg-easy
+wireguard_easy_tag: 1.28.1
+wireguard_easy_expose_port: 80
+wireguard_easy_portainer_stack_name: wg-easy
+wireguard_easy_container_name: wg-easy

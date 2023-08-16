@@ -23,6 +23,7 @@
       - ufw
       - htop
       - gdisk
+      - rename
     state: latest
     update_cache: true
 

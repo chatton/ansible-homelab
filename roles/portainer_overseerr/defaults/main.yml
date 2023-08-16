@@ -1,7 +1,7 @@
 ---
 overseerr_state: present
 overseerr_image: sctx/overseerr
-overseerr_tag: 1.33.0
+overseerr_tag: 1.33.2
 overseerr_expose_port: 5055
 overseerr_container_name: overseerr
 overseerr_portainer_stack_name: overseerr
