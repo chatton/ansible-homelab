@@ -8,6 +8,11 @@
     - name: "{{ plex_portainer_stack_name }}_config"
     - name: "{{ plex_portainer_stack_name }}_tautulli_config"
 
+- name: Plex | Set fact plex_labels.
+  set_fact:
+    plex_labels:
+      ie.cianhatton.backup.schedule: monthly
+
 - name: "Plex | Update Portainer."
   chatton.portainer.portainer_stack:
     username: '{{ portainer_user }}'
@@ -20,7 +25,7 @@
       version: "3"
       services:
         plex:
-          labels: "{{ backup_labels }}"
+          labels: "{{ backup_labels | combine(plex_labels) }}"
           image: "{{ plex_image }}:{{ plex_tag }}"
           container_name: "{{ plex_container_name }}"
           ports:

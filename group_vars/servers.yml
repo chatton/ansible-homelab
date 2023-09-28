@@ -2,6 +2,7 @@ backups:
   schedule_keys:
     monthly: monthly
     nightly: nightly
+    weekly: weekly
 
 homelab_user: &main_user cianhatton
 
@@ -21,7 +22,7 @@ portainer_required_files: []
 restart_policy: unless-stopped
 backup_labels:
   ie.cianhatton.backup.enabled: true
-  ie.cianhatton.backup.schedule: nightly
+  ie.cianhatton.backup.schedule: weekly
 
 docker_backup_aws_s3_encrypt: true
 docker_backup_host_backup_directory: "/tmp"

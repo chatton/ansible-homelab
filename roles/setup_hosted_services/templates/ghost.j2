@@ -4,7 +4,7 @@ services:
   ghost:
     labels:
       ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.weekly }}"
     image: ghost:4-alpine
     restart: unless-stopped
     container_name: ghost

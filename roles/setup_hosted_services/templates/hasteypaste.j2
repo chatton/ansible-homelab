@@ -4,7 +4,7 @@ services:
   hastey-paste:
     labels:
       ie.cianhatton.backup.enabled: "true"
-      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.nightly }}"
+      ie.cianhatton.backup.schedule: "{{ backups.schedule_keys.weekly }}"
     container_name: hastey-paste
     image: ghcr.io/enchant97/hasty-paste:1
     restart: unless-stopped

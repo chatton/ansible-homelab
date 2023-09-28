@@ -5,7 +5,7 @@
   vars:
     # corrsponds to which category of backups will be used.
     # determined based on the docker labels.
-    schedule: nightly
+    schedule: weekly
 
   pre_tasks:
     - name: Include vault variables.

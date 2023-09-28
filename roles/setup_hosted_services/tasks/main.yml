@@ -62,4 +62,33 @@
       {{ ansible_pull_path }}
       -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=nightly >> ~/logs/nightly.log 2>&1
     cron_file: ansible_nightly_docker_volume_backup
+    state: absent
+
+- name: Ensure Weekly Cron Backups
+  tags: ["cron"]
+  ansible.builtin.cron:
+    name: backup docker volumes (weekly)
+    weekday: "0"
+    minute: "0"
+    hour: "{{ cron_hour }}"
+    user: "{{ homelab_user }}"
+    job: >
+      {{ ansible_pull_path }}
+      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=weekly >> ~/logs/weekly.log 2>&1
+    cron_file: ansible_weekly_docker_volume_backup
+    state: present
+
+
+- name: Ensure Monthly Cron Backups
+  tags: ["cron"]
+  ansible.builtin.cron:
+    name: backup docker volumes (monthly)
+    day: "1"
+    minute: "0"
+    hour: "{{ cron_hour }}"
+    user: "{{ homelab_user }}"
+    job: >
+      {{ ansible_pull_path }}
+      -U https://github.com/chatton/ansible-homelab playbooks/backup-docker-volumes.yml -e schedule=monthly >> ~/logs/monthly.log 2>&1
+    cron_file: ansible_monthly_docker_volume_backup
     state: present
