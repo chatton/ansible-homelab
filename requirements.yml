@@ -4,6 +4,7 @@ roles:
   - src: geerlingguy.pip
   - src: geerlingguy.docker
   - src: geerlingguy.samba
+  - src: gantsign.golang
 
 collections:
   - name: https://github.com/chatton/ansible-portainer.git

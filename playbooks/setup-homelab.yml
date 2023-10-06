@@ -7,6 +7,15 @@
   roles:
     - role: setup_users
 
+- name: Install go on all hosts.
+  hosts: all
+  become: true
+  strategy: free
+  roles:
+    - role: gantsign.golang
+      golang_version: '1.21.1'
+      golang_gopath: '$HOME/workspace-go'
+
 - name: Configure mergerfs pools.
   hosts: mergerfs
   strategy: free
