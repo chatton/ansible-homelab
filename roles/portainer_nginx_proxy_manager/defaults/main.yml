@@ -9,3 +9,4 @@ nginx_proxy_manager_container_name: nginx-proxy-manager
 nginx_proxy_manager_portainer_stack_name: nginx-proxy-manager
 nginx_proxy_manager_puid: 1000
 nginx_proxy_manager_pgid: 1000
+nginx_proxy_manager_snippets_dir: /etc/nginx-proxy-manager/snippets

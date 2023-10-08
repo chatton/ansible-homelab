@@ -1,0 +1,92 @@
+# yamllint disable rule:comments-indentation
+---
+###############################################################################
+#                           Authelia Configuration                            #
+###############################################################################
+
+theme: dark
+jwt_secret: "{{ authelia_jwt_secret }}"
+
+default_redirection_url: https://google.com/ #where to redirect for a non-existent URL
+
+server:
+  host: 0.0.0.0
+  port: "{{ authelia_expose_port }}"
+  path: ""
+  read_buffer_size: 4096
+  write_buffer_size: 4096
+  enable_pprof: false
+  enable_expvars: false
+  disable_healthcheck: false
+  tls:
+    key: ""
+    certificate: ""
+
+log:
+  level: debug
+
+totp:
+  issuer: cianhatton.ie
+  period: 30
+  skew: 1
+
+authentication_backend:
+  disable_reset_password: false
+  refresh_interval: 5m
+  file:
+    path: /config/users_database.yml #this is where your authorized users are stored
+    password:
+      algorithm: argon2id
+      iterations: 1
+      key_length: 32
+      salt_length: 16
+      memory: 1024
+      parallelism: 8
+
+access_control:
+  default_policy: deny
+  rules:
+    ## bypass rule
+    - domain:
+        - "auth.cianhatton.ie"
+      policy: bypass
+    - domain: "git.cianhatton.ie"
+      policy: one_factor
+      #add or remove additional subdomains as necessary. currenlty only supports ONE top-level domain
+      #any time you add a new subdomain, you will need to restart the Authelia container to recognize the new settings/rules
+
+session:
+  name: authelia_session
+  secret: unsecure_session_secret #any text or number you want to add here to create jwt Token
+  expiration: 3600  # 1 hour
+  inactivity: 300  # 5 minutes
+  domain: cianhatton.ie  # Should match whatever your root protected domain is
+
+regulation:
+  max_retries: 3
+  find_time: 10m
+  ban_time: 12h
+
+storage:
+  local:
+    path: /config/db.sqlite3 #this is your databse. You could use a mysql database if you wanted, but we're going to use this one.
+  encryption_key: "{{ authelia_ecryption_key }}"
+
+notifier:
+  disable_startup_check: true #true/false
+  smtp:
+    username: "{{ authelia_email }}"
+    password: "{{ authelia_email_password}}"
+    host: smtp.gmail.com
+    port: 587
+    sender: "{{ authelia_email }}"
+    identifier: localhost
+    subject: "[Authelia] {title}" #email subject
+    startup_check_address: "{{ authelia_email }}"
+    disable_require_tls: false
+    disable_html_emails: false
+    tls:
+      skip_verify: false
+      minimum_version: TLS1.2
+
+

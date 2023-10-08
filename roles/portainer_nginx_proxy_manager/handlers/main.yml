@@ -1,0 +1,3 @@
+---
+- name: restart-nginx-proxy-manager
+  ansible.builtin.command: docker restart nginx-proxy-manager

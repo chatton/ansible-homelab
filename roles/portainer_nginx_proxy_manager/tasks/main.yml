@@ -1,4 +1,38 @@
 ---
+- name: Create snippets directory.
+  ansible.builtin.file:
+    path: '{{ nginx_proxy_manager_snippets_dir }}'
+    state: directory
+    mode: '0755'
+  notify: restart-nginx-proxy-manager
+
+- name: Create authrequest files.
+  notify: restart-nginx-proxy-manager
+  ansible.builtin.template:
+    src: "authelia-authrequest.j2"
+    dest: '{{ nginx_proxy_manager_snippets_dir }}/authelia-authrequest.conf'
+    owner: root
+    group: root
+    mode: 0440
+
+- name: Create authelia-location.conf.
+  ansible.builtin.template:
+    src: "authelia-location.j2"
+    dest: '{{ nginx_proxy_manager_snippets_dir }}/authelia-location.conf'
+    owner: root
+    group: root
+    mode: 0440
+  notify: restart-nginx-proxy-manager
+
+- name: Create proxy.conf.
+  ansible.builtin.template:
+    src: "proxy.j2"
+    dest: '{{ nginx_proxy_manager_snippets_dir }}/proxy.conf'
+    owner: root
+    group: root
+    mode: 0440
+  notify: restart-nginx-proxy-manager
+
 - name: "Nginx proxy manager | Restore any missing volumes from S3"
   ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
@@ -28,5 +62,6 @@
             - "{{ nginx_proxy_manager_https_expose_port }}:4443"
           volumes:
             - "data:/config:rw"
+            - "{{ nginx_proxy_manager_snippets_dir }}:/snippets:ro"
       volumes:
         data:

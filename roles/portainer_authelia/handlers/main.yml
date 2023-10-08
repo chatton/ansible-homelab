@@ -1,0 +1,3 @@
+---
+- name: restart-authelia
+  ansible.builtin.command: docker restart authelia

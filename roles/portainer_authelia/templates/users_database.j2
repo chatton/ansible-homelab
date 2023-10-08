@@ -1,0 +1,8 @@
+users:
+  chatton:
+    displayname: "chatton" #whatever you want the display name to be
+    password: "{{ chatton_user_password_hash }}" #generated at https:/cargon2.online/
+    email: "{{ authelia_email }}"
+    groups: #enter the groups you want the user to be part of belowc
+      - admins
+      - dev

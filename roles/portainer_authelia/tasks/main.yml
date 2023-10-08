@@ -1,0 +1,45 @@
+---
+- name: Create config directory.
+  ansible.builtin.file:
+    path: '{{ authelia_config_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: Template config file.
+  ansible.builtin.template:
+    src: "configuration.j2"
+    dest: '{{ authelia_config_dir }}/{{ authelia_config_file }}'
+    owner: root
+    group: root
+    mode: 0440
+  notify: restart-authelia
+
+- name: Template users database file.
+  ansible.builtin.template:
+    src: "users_database.j2"
+    dest: '{{ authelia_config_dir }}/{{ authelia_users_database_file }}'
+    owner: root
+    group: root
+    mode: 0440
+  notify: restart-authelia
+
+- name: "Authelia | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ authelia_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ authelia_state }}"
+    definition:
+      version: '3.3'
+      services:
+        authelia:
+          image: "{{ authelia_image }}:{{ authelia_tag }}"
+          container_name: authelia
+          volumes:
+            - "{{ authelia_config_dir }}:/config"
+          ports:
+            - "{{ authelia_expose_port }}:9091"
+          environment:
+            - TZ=Europe/Dublin

@@ -1,0 +1,11 @@
+---
+authelia_state: present
+authelia_image: authelia/authelia
+authelia_tag: 4.37
+authelia_app_url: https://auth.cianhatton.ie
+authelia_expose_port: 9091
+authelia_container_name: authelia
+authelia_portainer_stack_name: authelia
+authelia_config_dir: /etc/config/authelia
+authelia_config_file: configuration.yml
+authelia_users_database_file: users_database.yml
