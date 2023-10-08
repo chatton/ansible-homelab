@@ -61,6 +61,9 @@ backup-snunmu: deps
 backup-qnap: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap
 
+backup-qnap-weekly: deps
+	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap -e schedule=weekly
+
 backup-qnap-monthly: deps
 	ansible-playbook playbooks/backup-docker-volumes.yml --limit qnap -e schedule=monthly
 

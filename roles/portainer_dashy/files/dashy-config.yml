@@ -8,7 +8,7 @@ sections:
         url: http://qnap:3010
       - title: Uptime Kuma
         icon: hl-uptime-kuma
-        url: http://qnap:3001
+        url: https://uptime.cianhatton.ie
       - title: Glances
         icon: hl-glances
         url: http://qnap:8083
@@ -26,9 +26,6 @@ sections:
       - title: Nextcloud
         icon: hl-nextcloud
         url: https://cloud.cianhatton.ie
-      - title: Mealie
-        icon: hl-mealie
-        url: https://mealie.cianhatton.ie
       - title: Gitea
         icon: hl-gitea
         url: https://git.cianhatton.ie
@@ -71,10 +68,10 @@ sections:
       - title: Linkding
         description: Bookmark manager
         icon: hl-linkding
-        url: http://snunmu:9090
+        url: https://bookmarks.cianhatton.ie
       - title: Vaultwarden
         icon: hl-vaultwarden
-        url: http://snunmu:80
+        url: https://vault.cianhatton.ie
       - title: Hastey Paste
         url: http://snunmu:8000
         description: Paste bin service.
