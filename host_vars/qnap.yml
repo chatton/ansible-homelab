@@ -64,7 +64,7 @@ portainer_roles:
 #  - role: portainer_diun
 #  - role: portainer_dashdot
 #  - role: portainer_glances
-#  - role: portainer_arr
+  - role: portainer_arr
 #  - role: portainer_pihole
   - role: portainer_nginx_proxy_manager
 #  - role: portainer_minio

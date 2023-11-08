@@ -1,7 +1,7 @@
 ---
 arr_portainer_stack_name: vpn-stack
 arr_vpn_image: "ghcr.io/tprasadtp/protonwire"
-arr_vpn_tag: "7.2.0"
+arr_vpn_tag: "7.2.5"
 
 # Qbittorrent
 qbittorrent_image: lscr.io/linuxserver/qbittorrent

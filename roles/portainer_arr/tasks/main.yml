@@ -31,11 +31,12 @@
             # Quote this value as server name can contain '#'.
             PROTONVPN_SERVER: "{{ vpn.protonvpn_server }}"
             # Set this to 1 to show debug logs for issue forms.
-            DEBUG: "1"
+            DEBUG: "0"
             # Set this to 0 to disable kill-switch.
             KILL_SWITCH: "0"
             # follow instructions here https://github.com/tprasadtp/protonvpn-docker
             WIREGUARD_PRIVATE_KEY: "{{ vpn.wireguard_private_key }}"
+            SKIP_DNS_CONFIG: "1"
             LAN_NETWORK: "{{ vpn.lan_network }}"
           cap_add:
             - NET_ADMIN
@@ -62,9 +63,6 @@
             - "{{ jackett_exposed_port }}:9117"
             # lidarr
             - "{{ lidarr_exposed_port }}:8686"
-          dns:
-            - 1.1.1.1
-            - 8.8.8.8
 
         qbittorrent:
             labels: "{{ backup_labels}}"
