@@ -31,7 +31,7 @@ sonarr_pgid: 1000
 
 # Jackett
 jackett_image: lscr.io/linuxserver/jackett
-jackett_tag: 0.21.235
+jackett_tag: 0.21.1635
 jackett_exposed_port: 9117
 jackett_container_name: jackett
 jackett_puid: 1000
