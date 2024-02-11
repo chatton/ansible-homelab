@@ -63,6 +63,7 @@
             - "{{ jackett_exposed_port }}:9117"
             # lidarr
             - "{{ lidarr_exposed_port }}:8686"
+            - "8191:8191"
 
         qbittorrent:
             labels: "{{ backup_labels}}"
@@ -130,6 +131,19 @@
           volumes:
             - jackett_config:/config
             - "{{ directories.downloads_dir }}:/downloads"
+          restart: unless-stopped
+
+        flaresolverr:
+          network_mode: "service:protonwire"
+          depends_on:
+            - protonwire
+          image: ghcr.io/flaresolverr/flaresolverr:latest
+          container_name: flaresolverr
+          environment:
+            - "LOG_LEVEL=info"
+            - "LOG_HTML=false"
+            - "CAPTCHA_SOLVER=none"
+            - "TZ=Europe/London"
           restart: unless-stopped
 
         lidarr:
