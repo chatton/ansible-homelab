@@ -1,11 +1,14 @@
 ---
 arr_portainer_stack_name: vpn-stack
 arr_vpn_image: "ghcr.io/tprasadtp/protonwire"
-arr_vpn_tag: "7.2.5"
+
+# https://github.com/tprasadtp/protonvpn-docker/releases
+arr_vpn_tag: "7.5.0"
 
 # Qbittorrent
+# https://github.com/linuxserver/docker-qbittorrent/releases
 qbittorrent_image: lscr.io/linuxserver/qbittorrent
-qbittorrent_tag: 4.5.3
+qbittorrent_tag: 4.6.3
 qbittorrent_container_name: qbittorrent
 qbittorrent_puid: 1000
 qbittorrent_pgid: 1000
@@ -14,25 +17,27 @@ qbittorrent_exposed_download_port: 6881
 
 
 # Radarr
+# https://docs.linuxserver.io/images/docker-radarr/
 radarr_image: lscr.io/linuxserver/radarr
-radarr_tag: 4.5.2
+radarr_tag: 5.3.6
 radarr_container_name: radarr
 radarr_exposed_port: 7878
 radarr_puid: 1000
 radarr_pgid: 1000
 
 # Sonarr
+# https://docs.linuxserver.io/images/docker-sonarr/
 sonarr_image: lscr.io/linuxserver/sonarr
-sonarr_tag: 3.0.10
+sonarr_tag: 4.0.3
 sonarr_exposed_port: 8989
 sonarr_container_name: sonarr
 sonarr_puid: 1000
 sonarr_pgid: 1000
 
 # Jackett
-jackett_image: lscr.io/linuxserver/jackett
 # https://github.com/Jackett/Jackett/releases
-jackett_tag: 0.21.1635
+jackett_image: lscr.io/linuxserver/jackett
+jackett_tag: 0.21.2354
 jackett_exposed_port: 9117
 jackett_container_name: jackett
 jackett_puid: 1000
