@@ -35,3 +35,4 @@ portainer_roles:
   - role: portainer_pihole
   - role: portainer_uptime_kuma
   - role: portainer_gitea
+  - role: portainer_christmas

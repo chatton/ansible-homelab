@@ -1,0 +1,8 @@
+---
+# https://github.com/Wingysam/Christmas-Community/tree/master
+christmas_state: present
+christmas_image: wingysam/christmas-community
+christmas_tag: latest
+christmas_expose_port: 8082
+christmas_container_name: christmas
+christmas_portainer_stack_name: christmas
