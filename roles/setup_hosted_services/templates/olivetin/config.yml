@@ -14,5 +14,5 @@ actions:
     shell: docker restart overseerr
     timeout: 30
   - title: Restart VPN Stack
-    shell: docker restart protonwire sonarr radarr jackett qbittorrent
+    shell: curl -H 'X-API-Key:{{ portainer.api_key }}' -X POST http://qnap:9000/api/stacks/218/stop?endpointId=2 && curl -H 'X-API-Key:{{ portainer.api_key }}' -X POST http://qnap:9000/api/stacks/218/start?endpointId=2
     timeout: 90

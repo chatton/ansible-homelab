@@ -21,7 +21,7 @@
     loop_var: file_item
 
 - name: Create required files.
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: "{{ file_item.source_file }}"
     dest: '{{ file_item.dest_directory }}/{{ file_item.dest_file_name }}'
     owner: root
