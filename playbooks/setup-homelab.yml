@@ -32,13 +32,13 @@
     - role: geerlingguy.samba
       tags: [samba]
 
-- name: Install Docker on Docker hosts.
+- name: Install docker
   hosts: docker
   become: true
   strategy: free
   roles:
-    - role: geerlingguy.pip
-    - role: geerlingguy.docker
+    - role: setup_docker
+      tags: [docker]
 
 - name: Install Portainer on Portainer hosts.
   gather_facts: false

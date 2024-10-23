@@ -6,6 +6,9 @@ backups:
 
 homelab_user: &main_user cianhatton
 
+version_codename: bullseye
+arch: amd64
+
 samba_group: smbgroup
 samba_user: smbuser
 users:
