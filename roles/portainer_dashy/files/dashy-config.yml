@@ -87,6 +87,9 @@ sections:
       - title: Dash Dot
         icon: hl-dashdot
         url: http://dell:3010
+      - title: Pihole
+        icon: hl-pihole
+        url: http://dell:85/admin
   - name: Media Stack
     items:
       - title: Plex
