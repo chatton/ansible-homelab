@@ -10,6 +10,6 @@
 
 - name: "{{ item.name }} | Docker compose up"
   with_items: "{{ docker_compose_services }}"
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_name: "{{ item.name }}"
     definition: "{{ item.definition }}"

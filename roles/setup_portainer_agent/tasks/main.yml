@@ -1,6 +1,6 @@
 ---
 - name: Portainer Agent
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_name: portainer_agent
     definition:
       version: '3.3'

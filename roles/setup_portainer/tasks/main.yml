@@ -12,7 +12,7 @@
       name: portainer_portainer_data
 
 - name: Portainer | Docker compose up
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_name: portainer
     definition:
       version: '3.2'
