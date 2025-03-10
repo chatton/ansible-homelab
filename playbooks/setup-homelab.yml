@@ -60,17 +60,6 @@
     - role: setup_portainer_agent
       tags: [services, portainer_agent]
 
-- name: Setup and deploy compose services.
-  hosts: dell
-  become: true
-  pre_tasks:
-    - name: Include vault variables.
-      ansible.builtin.include_vars: '../{{ vault_file }}'
-      tags: [always]
-  roles:
-    - role: setup_compose_services
-      tags: [compose]
-
 - name: Setup and deploy portainer services.
   gather_facts: false
   hosts: servers

@@ -9,7 +9,6 @@
     - name: "{{ arr_portainer_stack_name }}_radarr_config"
     - name: "{{ arr_portainer_stack_name }}_sonarr_config"
     - name: "{{ arr_portainer_stack_name }}_jackett_config"
-    - name: "{{ arr_portainer_stack_name }}_lidarr_config"
 
 - name: "Arr | Update Portainer."
   chatton.portainer.portainer_stack:
@@ -61,8 +60,6 @@
             - "{{ sonarr_exposed_port }}:8989"
             # jackett
             - "{{ jackett_exposed_port }}:9117"
-            # lidarr
-            - "{{ lidarr_exposed_port }}:8686"
             - "8191:8191"
 
         qbittorrent:
@@ -145,24 +142,7 @@
             - "CAPTCHA_SOLVER=none"
             - "TZ=Europe/London"
           restart: unless-stopped
-
-        lidarr:
-          image: "{{ lidarr_image }}:{{ lidarr_tag }}"
-          depends_on:
-            - protonwire
-          network_mode: "service:protonwire"
-          container_name: "{{ lidarr_container_name }}"
-          environment:
-            - PUID=1000
-            - PGID=1000
-            - TZ=Etc/UTC
-          volumes:
-            - lidarr_config:/config
-            - "{{ directories.music_dir }}:/music"
-            - "{{ directories.downloads_dir }}:/downloads"
-          restart: unless-stopped
       volumes:
-         lidarr_config: {}
          qbittorrent_config: {}
          radarr_config: {}
          sonarr_config: {}

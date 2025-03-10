@@ -3,7 +3,6 @@ vault_file: vault_vars/qnap-vault.yml
 
 portainer_endpoint: 34
 services: []
-docker_compose_services: []
 ansible_pull_path: /usr/local/bin/ansible-pull
 
 backup_directories: []
@@ -35,4 +34,3 @@ portainer_roles:
   - role: portainer_pihole
   - role: portainer_uptime_kuma
   - role: portainer_gitea
-  - role: portainer_christmas
