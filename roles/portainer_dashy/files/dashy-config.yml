@@ -90,6 +90,10 @@ sections:
       - title: Pihole
         icon: hl-pihole
         url: http://dell:85/admin
+      - title: Habit Trove
+        description: gamified habit tracker
+        icon: fas fa-seedling
+        url: http://dell:3011
   - name: Media Stack
     items:
       - title: Plex

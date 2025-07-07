@@ -1,0 +1,7 @@
+---
+habit_trove_state: present
+habit_trove_image: dohsimpson/habittrove
+habit_trove_tag: v0.2.23
+habit_trove_container_name: habit_trove
+habit_trove_expose_port: 3011
+habit_trove_portainer_stack_name: habit_trove
