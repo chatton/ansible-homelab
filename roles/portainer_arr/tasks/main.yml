@@ -9,6 +9,7 @@
     - name: "{{ arr_portainer_stack_name }}_radarr_config"
     - name: "{{ arr_portainer_stack_name }}_sonarr_config"
     - name: "{{ arr_portainer_stack_name }}_jackett_config"
+    - name: "{{ arr_portainer_stack_name }}_gluetun"
 
 - name: "Arr | Update Portainer."
   chatton.portainer.portainer_stack:
@@ -23,32 +24,18 @@
       services:
         protonwire:
           container_name: protonwire
-          image: "{{ arr_vpn_image }}:{{ arr_vpn_tag }}"
-          init: true
+          image: "qmcgaw/gluetun"
           restart: unless-stopped
           environment:
-            # Quote this value as server name can contain '#'.
-            PROTONVPN_SERVER: "{{ vpn.protonvpn_server }}"
-            # Set this to 1 to show debug logs for issue forms.
-            DEBUG: "0"
-            # Set this to 0 to disable kill-switch.
-            KILL_SWITCH: "0"
-            # follow instructions here https://github.com/tprasadtp/protonvpn-docker
+            VPN_SERVICE_PROVIDER: protonvpn
+            VPN_TYPE: wireguard
+            SERVER_COUNTRIES: Netherlands
             WIREGUARD_PRIVATE_KEY: "{{ vpn.wireguard_private_key }}"
-            SKIP_DNS_CONFIG: "1"
-            LAN_NETWORK: "{{ vpn.lan_network }}"
+            FIREWALL_OUTBOUND_SUBNETS: "{{ vpn.lan_network }}"
           cap_add:
             - NET_ADMIN
-          # sysctl net.ipv4.conf.all.rp_filter is mandatory!
-          # net.ipv6.conf.all.disable_ipv6 disables IPv6 as protonVPN does not support IPv6.
-          # 'net.*' sysctls are not required on application containers,
-          # as they share network stack with protonwire container.
-          sysctls:
-            net.ipv4.conf.all.rp_filter: 2
-            net.ipv6.conf.all.disable_ipv6: 1
           volumes:
-            - type: tmpfs
-              target: /tmp
+            - gluetun:/gluetun
           ports:
             # qbittorrent
             - "{{ qbittorrent_exposed_web_ui_port }}:15000"
@@ -147,3 +134,4 @@
          radarr_config: {}
          sonarr_config: {}
          jackett_config: {}
+         gluetun: {}

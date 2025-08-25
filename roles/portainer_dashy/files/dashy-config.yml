@@ -5,24 +5,24 @@ sections:
     items:
       - title: Dash Dot
         icon: hl-dashdot
-        url: http://qnap:3010
+        url: http://10.4.5.200:3010
       - title: Uptime Kuma
         icon: hl-uptime-kuma
         url: https://uptime.cianhatton.ie
       - title: Glances
         icon: hl-glances
-        url: http://qnap:8083
+        url: http://10.4.5.200:8083
       - title: Pihole
         icon: hl-pihole
-        url: http://qnap:85/admin
+        url: http://10.4.5.200:85/admin
       - title: Photoprism
         description: Manage photos
         icon: hl-photoprism
-        url: http://qnap:2342
+        url: http://10.4.5.200:2342
       - title: Olivetin
         description: Run pre-defined shell commands
         icon: hl-olivetin
-        url: http://qnap:1337
+        url: http://10.4.5.200:1337
       - title: Nextcloud
         icon: hl-nextcloud
         url: https://cloud.cianhatton.ie
@@ -38,92 +38,67 @@ sections:
       - title: Portainer
         description: Manage docker apps using Portainer
         icon: hl-portainer
-        url: http://qnap:9000
+        url: http://10.4.5.200:9000
 
   - name: System Admin
     items:
       - title: Webmin
         icon: hl-webmin
-        url: http://qnap:10000
+        url: http://10.4.5.200:10000
       - title: Adminer
         description: Manage MariaDB
         icon: hl-adminer
-        url: http://qnap:3307
+        url: http://10.4.5.200:3307
       - title: Nginx Proxy Manager
         description: Manage reverse proxies
         icon: hl-nginx
-        url: http://qnap:8181
+        url: http://10.4.5.200:8181
 
-  - name: Snunmu
-    items:
-      - title: Dash Dot
-        icon: hl-dashdot
-        url: http://snunmu:3010
-      - title: Glances
-        icon: hl-glances
-        url: http://snunmu:8083
-      - title: Pihole
-        icon: hl-pihole
-        url: http://snunmu:85/admin
-      - title: Linkding
-        description: Bookmark manager
-        icon: hl-linkding
-        url: https://bookmarks.cianhatton.ie
-      - title: Vaultwarden
-        icon: hl-vaultwarden
-        url: https://vault.cianhatton.ie
-      - title: Hastey Paste
-        url: http://snunmu:8000
-        description: Paste bin service.
-        icon: hl-hasteypaste
-      - title: Bookstack
-        icon: hl-bookstack
-        url: https://bookstack.cianhatton.ie
   - name: Dell
     items:
       - title: Minio
         icon: hl-minio
-        url: http://dell:11001
+        url: http://10.4.5.201:11001
       - title: Dash Dot
         icon: hl-dashdot
-        url: http://dell:3010
+        url: http://10.4.5.201:3010
       - title: Pihole
         icon: hl-pihole
-        url: http://dell:85/admin
+        url: http://10.4.5.201:85/admin
       - title: Habit Trove
         description: gamified habit tracker
         icon: fas fa-seedling
-        url: http://dell:3011
+        url: http://10.4.5.201:3011
   - name: Media Stack
     items:
       - title: Plex
         icon: hl-plex
-        url: http://qnap:32400
+        url: http://10.4.5.200:32400
         statusCheck: false
       - title: Tautulli
         icon: hl-tautulli
-        url: http://qnap:8182
+        url: http://10.4.5.200:8182
       - title: Sonarr
         icon: hl-sonarr
-        url: http://qnap:8989
+        url: http://10.4.5.200:8989
       - title: Radarr
         icon: hl-radarr
-        url: http://qnap:7878
+        url: http://10.4.5.200:7878
       - title: Overseerr
         icon: hl-overseerr
         url: https://overseerr.cianhatton.ie
       - title: Jackett
         icon: hl-jackett
-        url: http://qnap:9117
+        url: http://10.4.5.200:9117
         statusCheckUrl: http://qnap:9117/health
       - title: Qbittorrent
         icon: hl-qbittorrent
-        url: http://qnap:15000
+        url: http://10.4.5.200:15000
   - name: QNAP
     widgets:
       - type: gl-disk-space
         options:
-          hostname: http://qnap:8083
+          hostname: http://10.4.5.200:8083
       - type: crypto-watch-list
         options:
           currency: USD
@@ -132,20 +107,13 @@ sections:
             - bitcoin
             - ethereum
             - cosmos
-            - evmos
-            - osmosis
 
-  - name: Snunmu
-    widgets:
-      - type: gl-disk-space
-        options:
-          hostname: http://snunmu:8083
 
   - name: Dell
     widgets:
       - type: gl-disk-space
         options:
-          hostname: http://dell:8083
+          hostname: http://10.4.5.201:8083
 
 
 appConfig:
