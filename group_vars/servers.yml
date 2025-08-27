@@ -47,6 +47,7 @@ directories:
   music_dir: /mnt/mergerfs/media/music
   # path on qnap where tv shows are stored
   tv_dir: /mnt/mergerfs/media/tv
+  exercise_dir: /mnt/mergerfs/media/exercise
   # path on qnap where docker compose files are stored
   docker_compose_directory: /etc/docker-compose
   # path where photoprism photos are stored

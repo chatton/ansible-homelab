@@ -38,12 +38,13 @@
           volumes:
             - config:/config
             - "{{ directories.tv_dir }}:/tv"
+            - "{{ directories.exercise_dir }}:/exercise"
             - "{{ directories.movies_dir }}:/movies"
             - "{{ directories.transcoding_dir }}:/transcoding"
           restart: "{{ restart_policy }}"
           devices:
             - /dev/dri:/dev/dri
-
+  
         tautulli:
           labels: "{{ backup_labels }}"
           image: lscr.io/linuxserver/tautulli:latest

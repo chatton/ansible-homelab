@@ -10,6 +10,7 @@
     - name: "{{ arr_portainer_stack_name }}_sonarr_config"
     - name: "{{ arr_portainer_stack_name }}_jackett_config"
     - name: "{{ arr_portainer_stack_name }}_gluetun"
+    - name: "{{ arr_portainer_stack_name }}_nzbget_config"
 
 - name: "Arr | Update Portainer."
   chatton.portainer.portainer_stack:
@@ -48,6 +49,22 @@
             # jackett
             - "{{ jackett_exposed_port }}:9117"
             - "8191:8191"
+        nzbget:
+          labels: "{{ backup_labels}}"
+          container_name: nzbget
+          image: ghcr.io/nzbgetcom/nzbget:latest
+          environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/London
+            - "NZBGET_USER={{ nzbget_username }}"
+            - "NZBGET_PASS={{ nzbget_password }}"
+          volumes:
+            - nzbget_config:/config
+            - "{{ directories.downloads_dir }}:/downloads"
+          ports:
+            - 6789:6789
+          restart: unless-stopped
 
         qbittorrent:
             labels: "{{ backup_labels}}"
@@ -135,3 +152,4 @@
          sonarr_config: {}
          jackett_config: {}
          gluetun: {}
+         nzbget_config: {}
