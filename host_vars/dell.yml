@@ -1,7 +1,7 @@
 ---
 vault_file: vault_vars/qnap-vault.yml
 
-portainer_endpoint: 34
+portainer_endpoint: 36
 services: []
 ansible_pull_path: /usr/local/bin/ansible-pull
 

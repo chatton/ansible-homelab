@@ -19,7 +19,7 @@ qbittorrent_exposed_download_port: 6881
 # Radarr
 # https://docs.linuxserver.io/images/docker-radarr/
 radarr_image: lscr.io/linuxserver/radarr
-radarr_tag: 5.3.6
+radarr_tag: 5.26.2.10099-ls281
 radarr_container_name: radarr
 radarr_exposed_port: 7878
 radarr_puid: 1000
@@ -28,7 +28,7 @@ radarr_pgid: 1000
 # Sonarr
 # https://docs.linuxserver.io/images/docker-sonarr/
 sonarr_image: lscr.io/linuxserver/sonarr
-sonarr_tag: 4.0.3
+sonarr_tag: 4.0.15.2941-ls290
 sonarr_exposed_port: 8989
 sonarr_container_name: sonarr
 sonarr_puid: 1000
