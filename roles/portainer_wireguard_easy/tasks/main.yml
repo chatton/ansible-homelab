@@ -1,12 +1,17 @@
 ---
-- name: "Wireguard Easy | Restore any missing volumes from S3"
+- name: "WireGuard Easy | Restore any missing volumes from S3"
   ansible.builtin.include_role:
     name: chatton.docker_backup.docker_s3_volume_restore
   vars:
     docker_backup_s3_volume:
-      name: "{{ wireguard_easy_portainer_stack_name }}_data"
+      name: "{{ wireguard_easy_portainer_stack_name }}_wg_data"
 
-- name: "Wireguard Easy | Update Portainer."
+- name: "WireGuard Easy | Set backup labels"
+  ansible.builtin.set_fact:
+    wg_easy_labels:
+      ie.cianhatton.backup.schedule: weekly
+
+- name: "WireGuard Easy | Deploy to Portainer"
   chatton.portainer.portainer_stack:
     username: '{{ portainer_user }}'
     password: '{{ portainer.password }}'
@@ -18,17 +23,21 @@
       version: "3.8"
       services:
         wg-easy:
+          labels: "{{ backup_labels | combine(wg_easy_labels) }}"
+          image: "{{ wireguard_easy_image }}:{{ wireguard_easy_tag }}"
+          container_name: "{{ wireguard_easy_container_name }}"
           environment:
             WG_HOST: "remote.cianhatton.ie"
             PASSWORD: "{{ wireguard_easy_password }}"
-
-          image: "{{ wireguard_easy_image }}"
-          container_name: "{{ wireguard_easy_container_name }}"
+            WG_DEFAULT_ADDRESS: "10.8.0.x"
+            WG_DEFAULT_DNS: "1.1.1.1"
+            WG_ALLOWED_IPS: "10.4.5.0/24"
+            WG_PERSISTENT_KEEPALIVE: "25"
           volumes:
-            - data:/etc/wireguard
+            - wg_data:/etc/wireguard
           ports:
-            - "51820:51820/udp"
-            - "51821:51821/tcp"
+            - "{{ wireguard_easy_vpn_port }}:51820/udp"
+            - "{{ wireguard_easy_web_port }}:51821/tcp"
           restart: unless-stopped
           cap_add:
             - NET_ADMIN
@@ -37,4 +46,4 @@
             - net.ipv4.ip_forward=1
             - net.ipv4.conf.all.src_valid_mark=1
       volumes:
-        data: {}
+        wg_data: {}
