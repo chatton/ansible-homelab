@@ -18,6 +18,9 @@
       version: '3.3'
       services:
         uptime-kuma:
+          extra_hosts:
+            - "qnap:10.4.5.200"
+            - "dell:10.4.5.201"
           labels: "{{ backup_labels }}"
           image: "{{ uptime_kuma_image }}:{{ uptime_kuma_tag }}"
           container_name: "{{ uptime_kuma_container_name }}"

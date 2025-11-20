@@ -84,6 +84,9 @@ sections:
       - title: Radarr
         icon: hl-radarr
         url: http://10.4.5.200:7878
+      - title: Lidarr
+        icon: hl-lidarr
+        url: http://10.4.5.200:8686
       - title: Overseerr
         icon: hl-overseerr
         url: https://overseerr.cianhatton.ie

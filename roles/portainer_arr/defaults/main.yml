@@ -34,6 +34,16 @@ sonarr_container_name: sonarr
 sonarr_puid: 1000
 sonarr_pgid: 1000
 
+# Lidarr
+# https://docs.linuxserver.io/images/docker-lidarr/
+#lidarr_image: lscr.io/linuxserver/lidarr
+lidarr_image: blampe/lidarr
+lidarr_tag: latest
+lidarr_exposed_port: 8686
+lidarr_container_name: lidarr
+lidarr_puid: 1000
+lidarr_pgid: 1000
+
 # Jackett
 # https://github.com/Jackett/Jackett/releases
 jackett_image: lscr.io/linuxserver/jackett

@@ -8,6 +8,7 @@
     - name: "{{ arr_portainer_stack_name }}_qbittorrent_config"
     - name: "{{ arr_portainer_stack_name }}_radarr_config"
     - name: "{{ arr_portainer_stack_name }}_sonarr_config"
+    - name: "{{ arr_portainer_stack_name }}_lidarr_config"
     - name: "{{ arr_portainer_stack_name }}_jackett_config"
     - name: "{{ arr_portainer_stack_name }}_gluetun"
     - name: "{{ arr_portainer_stack_name }}_nzbget_config"
@@ -46,6 +47,8 @@
             - "{{ radarr_exposed_port }}:7878"
             # sonarr
             - "{{ sonarr_exposed_port }}:8989"
+            # lidarr
+            - "{{ lidarr_exposed_port }}:8686"
             # jackett
             - "{{ jackett_exposed_port }}:9117"
             - "8191:8191"
@@ -117,6 +120,23 @@
             - "{{ directories.downloads_dir }}:/downloads"
           restart: unless-stopped
 
+        lidarr:
+          depends_on:
+            - protonwire
+          image: "{{ lidarr_image }}:{{ lidarr_tag }}"
+          labels: "{{ backup_labels}}"
+          container_name: "{{ lidarr_container_name }}"
+          network_mode: "service:protonwire"
+          environment:
+            - "PUID={{ lidarr_puid }}"
+            - "PGID={{ lidarr_pgid }}"
+            - TZ=Europe/London
+          volumes:
+            - lidarr_config:/config
+            - "{{ directories.music_dir }}:/music"
+            - "{{ directories.downloads_dir }}:/downloads"
+          restart: unless-stopped
+
         jackett:
           labels: "{{ backup_labels}}"
           depends_on:
@@ -150,6 +170,7 @@
          qbittorrent_config: {}
          radarr_config: {}
          sonarr_config: {}
+         lidarr_config: {}
          jackett_config: {}
          gluetun: {}
          nzbget_config: {}

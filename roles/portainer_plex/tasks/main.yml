@@ -38,6 +38,7 @@
           volumes:
             - config:/config
             - "{{ directories.tv_dir }}:/tv"
+            - "{{ directories.music_dir }}:/music"
             - "{{ directories.exercise_dir }}:/exercise"
             - "{{ directories.movies_dir }}:/movies"
             - "{{ directories.transcoding_dir }}:/transcoding"
