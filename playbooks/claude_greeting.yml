@@ -1,0 +1,8 @@
+---
+- name: send daily greeting to claude
+  hosts: dell
+  gather_facts: true
+  vars_files:
+    - ../vault_vars/qnap-vault.yml
+  roles:
+    - role: ../roles/claude_daily_greeting

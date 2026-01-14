@@ -1,0 +1,29 @@
+---
+- name: ensure claude config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.claude"
+    state: directory
+    mode: '0700'
+
+- name: write claude oauth token to sandbox volume
+  ansible.builtin.shell: |
+    docker volume create docker-claude-sandbox-data 2>/dev/null || true
+    docker run --rm -v docker-claude-sandbox-data:/data alpine sh -c "mkdir -p /data/.claude && echo '{{ claude_oath_token }}' > /data/.claude/session_token && chmod 600 /data/.claude/session_token"
+  changed_when: true
+
+- name: send message to claude via docker sandbox
+  ansible.builtin.shell: docker sandbox run --credentials=sandbox claude -- claude -p "{{ claude_message }}"
+  register: claude_response
+  changed_when: false
+
+- name: display claude response
+  ansible.builtin.debug:
+    msg: "{{ claude_response.stdout }}"
+
+- name: ensure cron job for daily claude greeting
+  ansible.builtin.cron:
+    name: "daily claude greeting"
+    minute: "0"
+    hour: "6"
+    job: "docker sandbox run --credentials=sandbox claude -- claude -p '{{ claude_message }}'"
+    state: absent
