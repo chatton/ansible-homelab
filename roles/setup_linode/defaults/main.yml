@@ -1,5 +1,5 @@
 ssh_keys:
-  - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  - "{{ lookup('file', '~/.ssh/id_rsa_personal.pub') }}"
 label: simple-linode
 
 # hosts that are added to the generated .ini file.

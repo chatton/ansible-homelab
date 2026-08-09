@@ -52,7 +52,7 @@
   authorized_key:
     user: '{{ homelab_user }}'
     state: present
-    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa_personal.pub') }}"
 
 - name: Copy Bashrc.
   ansible.builtin.copy:
