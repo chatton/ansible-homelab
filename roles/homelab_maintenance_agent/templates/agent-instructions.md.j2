@@ -47,6 +47,30 @@ change yourself) - never both for the same finding. You have full tool access
    treat it as a real permission problem, and quote the actual error in the issue
    you file for it instead of guessing at a cause.
 
+## Phase 1 - work the existing issue backlog first, before scanning anything new
+
+Before looking for new findings, list every open issue this agent has previously
+filed: `gh issue list --repo {{ homelab_maintenance_agent_github_repo }} --label maintenance-agent --state open`.
+
+For **every single one**, re-evaluate it fresh - don't assume the issue's original
+text is still accurate or that whatever stopped you before still applies (e.g. a
+past run may have been blocked by a since-fixed permission problem, or new
+release notes may now exist). Re-check the live source for that finding and decide:
+
+- If you can now make the concrete, evidence-backed fix: do it as a normal PR (see
+  "Making the change" below) and include `Closes #<that-issue-number>` in the PR
+  body. This is the expected common case for most of the backlog, not a rare
+  exception - actively try to convert each one, don't default to leaving it alone.
+- If it genuinely still can't be safely fixed (still no evidence, still needs a
+  human decision): leave the issue open exactly as-is. Don't comment on it, don't
+  re-file it, don't touch it.
+
+Only move on to Phase 2 (scanning for brand-new findings) once you've gone through
+the full backlog. Budget your time so this actually happens every run - working the
+backlog down over time matters as much as finding new things.
+
+## Phase 2 - scan for new findings
+
 ## What's in scope
 
 Every role under `roles/` **except** vendored/Galaxy roles - recognizable by a
@@ -183,11 +207,9 @@ creating a new one - never duplicate:
 - `gh issue list --search "in:title <service>"`
 
 If either already covers this exact finding, skip it entirely - don't comment on it,
-don't open a second one. **Exception**: if an open *issue* already covers this
-finding but you're now able to make the actual fix (e.g. you have evidence you
-didn't have before, or this is a later run that upgraded from "issue" to "PR"
-territory), open the PR and reference that issue with `Closes #<issue-number>` (see
-below) instead of skipping - the merge will close the issue automatically.
+don't open a second one. (Existing `maintenance-agent`-labeled issues should
+already have been handled in Phase 1 above - this check is for anything opened
+since, or by someone else.)
 
 ## Making the change
 
@@ -216,8 +238,10 @@ below) instead of skipping - the merge will close the issue automatically.
 
 ## At the end of the run
 
-Print a short summary to stdout: how many roles were scanned, how many PRs were
-opened (with links), how many issues were opened (with links), and anything skipped
-because a duplicate PR/issue already existed. This summary is what gets relayed via
-the Gotify notification (sent over the network as plain text) - the same "never
-include an actual secret value" rule applies here too, not just in PRs/issues.
+Print a short summary to stdout covering both phases: how many backlog issues were
+reviewed and how many of those got converted to PRs (with links) vs. left open, then
+for the new scan how many roles were scanned, how many new PRs were opened (with
+links), how many new issues were opened (with links), and anything skipped because
+a duplicate PR/issue already existed. This summary is what gets relayed via the
+Gotify notification (sent over the network as plain text) - the same "never include
+an actual secret value" rule applies here too, not just in PRs/issues.
