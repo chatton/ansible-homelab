@@ -54,10 +54,12 @@
   no_log: true
 
 - name: Homelab Maintenance Agent | Ensure nightly cron entry.
+  become: true
   ansible.builtin.cron:
     name: "homelab maintenance agent (nightly)"
     minute: "{{ homelab_maintenance_agent_cron_minute }}"
     hour: "{{ homelab_maintenance_agent_cron_hour }}"
     job: "{{ homelab_maintenance_agent_script_path }} >> {{ homelab_maintenance_agent_log_dir }}/cron.log 2>&1"
+    user: "{{ homelab_user }}"
     cron_file: homelab_maintenance_agent
     state: "{{ homelab_maintenance_agent_cron_state }}"
