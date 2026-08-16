@@ -69,6 +69,10 @@ sections:
         description: gamified habit tracker
         icon: fas fa-seedling
         url: http://10.4.5.201:3011
+      - title: Actual Budget
+        description: Personal finance and budgeting
+        icon: hl-actual-budget
+        url: https://budget.cianhatton.ie
   - name: Media Stack
     items:
       - title: Plex

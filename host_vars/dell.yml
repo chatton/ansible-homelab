@@ -35,3 +35,4 @@ portainer_roles:
   - role: portainer_uptime_kuma
   - role: portainer_gitea
   - role: portainer_habit_trove
+  - role: portainer_actual_budget

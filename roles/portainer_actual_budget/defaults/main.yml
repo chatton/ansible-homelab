@@ -1,0 +1,8 @@
+---
+actual_budget_state: present
+actual_budget_image: actualbudget/actual-server
+# https://github.com/actualbudget/actual/releases
+actual_budget_tag: 26.8.1
+actual_budget_expose_port: 5006
+actual_budget_portainer_stack_name: actual-budget
+actual_budget_container_name: actual-budget
