@@ -1,0 +1,21 @@
+---
+homelab_maintenance_agent_cron_state: present # flip to present once a manual run looks right
+homelab_maintenance_agent_cron_hour: "2"
+homelab_maintenance_agent_cron_minute: "0"
+
+# swappable "brain" - change to point at a different CLI-based coding agent later
+homelab_maintenance_agent_command: claude
+homelab_maintenance_agent_timeout: 90m
+
+homelab_maintenance_agent_repo_url: https://github.com/chatton/ansible-homelab.git
+homelab_maintenance_agent_github_repo: chatton/ansible-homelab
+homelab_maintenance_agent_base_branch: master
+homelab_maintenance_agent_branch_prefix: maint
+
+homelab_maintenance_agent_base_dir: "/home/{{ homelab_user }}/.homelab-maintenance-agent"
+homelab_maintenance_agent_repo_path: "{{ homelab_maintenance_agent_base_dir }}/repo"
+homelab_maintenance_agent_log_dir: "{{ homelab_maintenance_agent_base_dir }}/logs"
+homelab_maintenance_agent_script_path: "{{ homelab_maintenance_agent_base_dir }}/run-agent.sh"
+homelab_maintenance_agent_instructions_path: "{{ homelab_maintenance_agent_base_dir }}/agent-instructions.md"
+homelab_maintenance_agent_gh_token_path: "{{ homelab_maintenance_agent_base_dir }}/gh_token"
+homelab_maintenance_agent_claude_token_path: "{{ homelab_maintenance_agent_base_dir }}/claude_oauth_token"

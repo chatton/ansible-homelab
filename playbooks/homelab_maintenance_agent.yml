@@ -1,8 +1,8 @@
 ---
-- name: send daily greeting to claude
+- name: Deploy and schedule the homelab maintenance agent.
   hosts: dell
   gather_facts: true
   vars_files:
     - ../vault_vars/qnap-vault.yml
   roles:
-    - role: ../roles/claude_daily_greeting
+    - role: homelab_maintenance_agent

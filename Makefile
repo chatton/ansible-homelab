@@ -49,3 +49,6 @@ restore: deps
 
 cron:
 	ansible-playbook playbooks/setup-homelab.yml --tags cron
+
+maintenance-agent:
+	ansible-playbook playbooks/homelab_maintenance_agent.yml

@@ -1,7 +1,0 @@
----
-# default message to send to Claude
-claude_message: "hello"
-# claude API endpoint
-claude_api_url: "https://api.anthropic.com/v1/messages"
-# claude model to use
-claude_model: "claude-3-5-sonnet-20241022"

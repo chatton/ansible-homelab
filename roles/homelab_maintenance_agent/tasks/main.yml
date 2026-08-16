@@ -1,0 +1,63 @@
+---
+- name: Homelab Maintenance Agent | Ensure base directory exists.
+  ansible.builtin.file:
+    path: "{{ homelab_maintenance_agent_base_dir }}"
+    state: directory
+    mode: '0700'
+
+- name: Homelab Maintenance Agent | Ensure log directory exists.
+  ansible.builtin.file:
+    path: "{{ homelab_maintenance_agent_log_dir }}"
+    state: directory
+    mode: '0700'
+
+- name: Homelab Maintenance Agent | Clone or update repo checkout.
+  ansible.builtin.git:
+    repo: "{{ homelab_maintenance_agent_repo_url }}"
+    dest: "{{ homelab_maintenance_agent_repo_path }}"
+    version: "{{ homelab_maintenance_agent_base_branch }}"
+    force: true
+
+- name: Homelab Maintenance Agent | Write GitHub token.
+  ansible.builtin.copy:
+    content: "{{ homelab_maintenance_agent_gh_token }}"
+    dest: "{{ homelab_maintenance_agent_gh_token_path }}"
+    mode: '0600'
+  no_log: true
+
+- name: Homelab Maintenance Agent | Write Claude Code OAuth token.
+  ansible.builtin.copy:
+    content: "{{ homelab_maintenance_agent_claude_oauth_token }}"
+    dest: "{{ homelab_maintenance_agent_claude_token_path }}"
+    mode: '0600'
+  no_log: true
+
+- name: Homelab Maintenance Agent | Configure gh as the git credential helper.
+  ansible.builtin.shell: |
+    export GH_TOKEN="$(cat {{ homelab_maintenance_agent_gh_token_path }})"
+    gh auth setup-git
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Homelab Maintenance Agent | Template agent instructions.
+  ansible.builtin.template:
+    src: agent-instructions.md.j2
+    dest: "{{ homelab_maintenance_agent_instructions_path }}"
+    mode: '0644'
+
+- name: Homelab Maintenance Agent | Template run script.
+  ansible.builtin.template:
+    src: run-agent.sh.j2
+    dest: "{{ homelab_maintenance_agent_script_path }}"
+    mode: '0700'
+  no_log: true
+
+- name: Homelab Maintenance Agent | Ensure nightly cron entry.
+  ansible.builtin.cron:
+    name: "homelab maintenance agent (nightly)"
+    minute: "{{ homelab_maintenance_agent_cron_minute }}"
+    hour: "{{ homelab_maintenance_agent_cron_hour }}"
+    job: "{{ homelab_maintenance_agent_script_path }} >> {{ homelab_maintenance_agent_log_dir }}/cron.log 2>&1"
+    cron_file: homelab_maintenance_agent
+    state: "{{ homelab_maintenance_agent_cron_state }}"
