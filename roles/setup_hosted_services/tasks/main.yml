@@ -5,7 +5,7 @@
       - boto3
 
 - name: Docker | Pull images
-  docker_image:
+  community.docker.docker_image:
     name: '{{ item }}'
     source: pull
   with_items:

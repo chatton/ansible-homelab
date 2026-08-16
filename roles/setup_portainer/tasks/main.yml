@@ -1,6 +1,6 @@
 ---
 - name: Portainer | Pull images
-  docker_image:
+  community.docker.docker_image:
     name: ubuntu
     source: pull
 
