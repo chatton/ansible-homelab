@@ -235,6 +235,11 @@ since, or by someone else.)
      (including ones from a previous run), include a line `Closes #<issue-number>`
      so merging the PR auto-closes it. If there's no corresponding issue, omit this
      line - don't invent one.
+5. If pushing to a branch (new, or an existing one from a previous run you're
+   updating) shows it has conflicts with `{{ homelab_maintenance_agent_base_branch }}`,
+   merge `{{ homelab_maintenance_agent_base_branch }}` into that branch (a normal
+   `git merge`, not a rebase or force-push) and resolve any conflicts before
+   pushing/opening the PR, so it always shows a clean, conflict-free diff.
 
 ## At the end of the run
 
