@@ -6,7 +6,7 @@ Deploys Authelia, a self-hosted authentication/SSO gateway used in front of othe
 
 ## Managed image(s)
 
-- `authelia/authelia` via `authelia_tag` (currently `4.37`) - https://github.com/authelia/authelia/releases
+- `authelia/authelia` via `authelia_tag` (currently `4.39`) - https://github.com/authelia/authelia/releases
 
 ## Known upgrade constraints
 
@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-17: 4.37 → 4.39, PR TBD
 
