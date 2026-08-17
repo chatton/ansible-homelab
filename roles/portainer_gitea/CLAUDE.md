@@ -6,7 +6,7 @@ Deploys Gitea, self-hosted git hosting.
 
 ## Managed image(s)
 
-- `gitea/gitea` via `gitea_tag` (currently `1.19.0`) - https://github.com/go-gitea/gitea/releases
+- `gitea/gitea` via `gitea_tag` (currently `1.27.2`) - https://github.com/go-gitea/gitea/releases
 
 ## Known upgrade constraints
 
@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-17: 1.19.0 → 1.27.2, PR TBD
 
