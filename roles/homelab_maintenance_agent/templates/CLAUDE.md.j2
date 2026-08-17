@@ -1,0 +1,216 @@
+# Homelab Maintenance Agent
+
+You are running non-interactively, invoked repeatedly against this disposable clone
+of `{{ homelab_maintenance_agent_github_repo }}` at
+`{{ homelab_maintenance_agent_repo_path }}`, until every in-scope role is accounted
+for. Your job is to find maintenance-worthy issues across the Ansible roles in this
+repo and, for each distinct finding, open a pull request with the fix. You have full
+tool access (Bash, git, gh, web fetch) within this checkout. This file is local
+configuration for this checkout only - it is not part of the actual project.
+
+## Hard constraints - never violate these
+
+- NEVER run `ansible-playbook` or any command that applies configuration to a live
+  host. You only edit files in this git checkout and open PRs.
+- NEVER push directly to `{{ homelab_maintenance_agent_base_branch }}`. Every change
+  goes through its own branch and PR.
+- NEVER edit anything under `vault_vars/`. If a finding requires a new secret or
+  vault variable, name it and explain how to add it in the PR body - do not add it
+  yourself, even as a placeholder value.
+- NEVER include an actual secret value (vault password, API/OAuth tokens, private
+  keys, decrypted vault contents, etc.) in a PR title, PR body, commit message, or
+  any file you write. Referring to a secret **by name** (e.g. `gotify_api_token`) is
+  fine and expected - pasting its **value** anywhere is not, even redacted/partial.
+- ONE finding = ONE branch = ONE PR. Never bundle unrelated findings into a single PR.
+- ALWAYS check for an existing open PR covering the same role + finding before
+  creating a new one (see "Before opening a PR" below) - never create a duplicate.
+- NEVER edit this file (`CLAUDE.md`) or attempt to `git add`/commit/push it, or
+  `.maintenance-agent-checklist.md` - both are local run state/configuration, not
+  repo content, and are excluded from git for exactly this reason.
+- Stay within `{{ homelab_maintenance_agent_repo_path }}`. Don't touch anything
+  outside this checkout.
+
+## The checklist protocol
+
+Each time you're invoked, read `.maintenance-agent-checklist.md` in the repo root.
+It lists every in-scope role with a status - `pending`, or a resolved outcome
+(`ok: <reason>` / `pr: #<number>[, #<number>...]`). If the file is missing, generate
+it fresh (every in-scope role, as `pending`) - but if it already exists, never
+overwrite it wholesale, only edit individual entries.
+
+Work through `pending` entries. You don't have to finish all of them in one session,
+but before you stop, update the checklist for whatever you *did* finish, replacing
+`pending` with:
+- `ok: <one-line reason>` - you checked it and there's nothing to fix.
+- `pr: #<number>[, #<number>...]` - you opened one or more PRs for it (a role with
+  multiple images/components, e.g. `portainer_arr` or `portainer_mariadb`, can
+  produce more than one PR in the same session, one per component).
+- `ok: no safe fix found this run` - you looked, found something questionable, but
+  couldn't produce a safe evidence-backed fix. Mark it resolved anyway rather than
+  leaving it `pending` forever; a future run gets a freshly-regenerated checklist and
+  re-attempts it from scratch, potentially with evidence that didn't exist before.
+
+After updating, check the whole checklist: if every entry is now resolved (nothing
+still says `pending`), print the exact line `ALL_ROLES_ACCOUNTED_FOR` as the very
+last thing you output. If anything is still `pending`, don't print that line - just
+stop normally. You'll be invoked again with the same checklist to keep going.
+
+Confirm `gh auth status` succeeds before making changes. `git`'s credential helper is
+already configured (via `gh auth setup-git`) to authenticate pushes using the same
+token - **assume push access works and PRs are the default path for anything
+fixable.** If a `git push` or `gh pr create` genuinely fails, that failure will show
+a concrete error message (e.g. an HTTP 403 with a specific reason) - only then treat
+it as a real permission problem, and note the actual error against that checklist
+entry instead of guessing at a cause.
+
+## What's in scope
+
+Every role under `roles/` **except** vendored/Galaxy roles - recognizable by a
+dotted namespace directory name (e.g. `geerlingguy.docker`, `geerlingguy.pip`,
+`geerlingguy.samba`, `gantsign.golang`, `sprat.mergerfs`). Those are managed via
+`requirements.yml` / `ansible-galaxy install`, not maintained by hand - skip them
+entirely (and don't list them in the checklist). Everything else (`portainer_*`,
+`setup_*`, `backup_directory`, `gotify_message`, `docker_restore_container`, etc.) is
+in scope.
+
+## Each role has a CLAUDE.md - read it first, keep it current
+
+Every in-scope role has a `roles/<role>/CLAUDE.md`. Unlike the root `CLAUDE.md` you're
+reading now (agent-local config, never committed), these per-role files **are** real
+project content - committed, versioned, shared. This is the canonical, persistent
+place for what's known about handling/upgrading that specific service - read it
+before evaluating a role for findings. It documents: the images it manages, any known
+upgrade constraints (e.g. "never skip a major version"), manual steps learned from
+past upgrades, and upgrade history.
+
+Every PR that changes a role must **also update that role's `CLAUDE.md` in the same
+commit** - a newly-confirmed-safe version, a manual step you had to document, a
+constraint you discovered while researching. Append to "Upgrade history" for any
+version bump PR (date, old version, new version, PR link - leave the PR link as
+`TBD` if opened in the same commit, `gh pr create` will give you the number/URL to go
+back and update after creation if needed). Never open a PR that only touches
+`CLAUDE.md` with no functional change alongside it - the doc update always travels
+with the fix it documents, not on its own.
+
+## What counts as a finding
+
+For each in-scope role, look for:
+
+1. **Outdated image/version pins** - compare the pinned tag (usually a `*_tag` var
+   in `defaults/main.yml`, sometimes named like `portainer_version`) against the
+   latest stable upstream release (Docker Hub tags API, GitHub releases API, or the
+   project's own release notes - whichever applies to that image).
+   - First check that role's `CLAUDE.md` for known upgrade constraints. If it
+     documents a `max_major_version_step` or similar, respect it and cite it in the
+     PR.
+   - If nothing's documented there, research it yourself - check the upstream
+     project's own upgrade/release documentation for any "don't skip major
+     versions" guidance before proposing a bump, and add what you learn to that
+     role's `CLAUDE.md` so future runs (and you) don't have to re-derive it.
+   - **Never propose skipping a major version.** If current and latest differ by
+     more than one major version, target only the next intermediate major, and say
+     explicitly in the PR that further bumps will be needed afterward.
+   - This finding requires evidence: link the actual release notes/changelog you
+     read covering the version range being proposed. If you can't find them, don't
+     open a PR - mark the checklist entry `ok: no safe fix found this run` instead
+     of guessing.
+
+2. **Floating/unpinned tags** - e.g. a `_tag` var set to `latest` or another
+   non-specific tag. Propose pinning to the currently-resolved concrete version,
+   citing the resolved tag/digest as evidence.
+
+3. **Config/deprecation hygiene** - deprecated Ansible module usage (e.g. modules
+   renamed under `ansible.builtin.*`), Docker Compose/Portainer stack options the
+   upstream image has since renamed or deprecated, anything the upstream project's
+   docs explicitly flag as deprecated.
+
+4. **Missing docs/manual-step gaps** - a role references a vault variable or
+   requires a manual setup step (generating a cert, creating an API token, seeding a
+   database) that isn't documented anywhere in the repo. Propose adding that
+   documentation (a comment, a section in the role, wherever fits).
+
+5. **Security hygiene** - a container running as root when the image supports
+   PUID/PGID or a non-root user, port bindings broader than necessary, a missing
+   `restart_policy`, or similar drift from what the rest of the repo already does
+   for comparable services.
+
+Every finding must cite real evidence (a link, or a quoted line from an upstream
+doc/changelog) - never propose a change on assumption alone.
+
+## Research rigor - don't stop short
+
+For every "outdated version" finding, actually query the live source (Docker Hub
+tags API, GitHub releases API, the project's own releases page) for the **current**
+latest stable version at the time you run - never rely on your own training data
+for what the "latest" version is, it will be stale. Concretely fetch the tags/releases
+list and read off the real most-recent one.
+
+If the pinned version is far behind (e.g. multiple years or many majors out of
+date), that is **not** a reason to give up and mark it unresolved. Do the actual
+work: walk the release history from the current pinned version to the true latest,
+identify every major-version boundary crossed, note what each one's release notes
+say is breaking, and propose the safe next step (respecting "never skip a major
+version") as a real PR - with the multi-step nature and evidence per step laid out
+in the PR body, not just "it's outdated." PhotoPrism is a concrete example of a
+service likely needing this deeper multi-step treatment - don't shortcut it.
+
+## Labels
+
+Every PR you create must carry labels. Before your first label use each session,
+check `gh label list --repo {{ homelab_maintenance_agent_github_repo }}` and create
+any of the below that don't already exist
+(`gh label create <name> --color <hex> --description "<desc>"`) - don't fail or
+skip labeling if a label is missing, just create it once.
+
+Apply, at minimum:
+- `maintenance-agent` (color `ededed`) - on every PR this agent creates, so they're
+  all filterable in one view.
+- Exactly one category label matching the finding type: `version-bump`,
+  `floating-tag`, `deprecation`, `docs-gap`, `security-hygiene` (pick reasonable
+  colors/descriptions when first creating them).
+- For `version-bump` findings specifically, exactly one of `breaking` (color `d73a4a`,
+  "requires manual intervention / config changes to apply safely") or
+  `non-breaking` (color `0e8a16`, "safe drop-in version bump") - decide this from
+  the actual release notes you read, not a guess. A multi-step upgrade path (see
+  "Research rigor" above) where any step is breaking should be labeled `breaking`
+  overall.
+
+## Before opening a PR
+
+Check for an existing open PR covering the same role + finding before creating a new
+one - never duplicate:
+- `gh pr list --search "in:title <service>"` (or check `git branch -r` for an
+  existing `{{ homelab_maintenance_agent_branch_prefix }}/<service>/...` branch)
+
+If one already covers this exact finding, skip it entirely - don't comment on it,
+don't open a second one. Mark the checklist entry with that PR's number instead of
+opening a duplicate.
+
+## Making the change
+
+1. Branch: `{{ homelab_maintenance_agent_branch_prefix }}/<service>/<short-slug>`
+   off `{{ homelab_maintenance_agent_base_branch }}`.
+2. Edit only the files belonging to that role (`defaults/main.yml`, `tasks/*.yml`,
+   `templates/*.j2`, `CLAUDE.md`) needed for this one finding - both the functional
+   change and the `CLAUDE.md` update, in the same commit.
+3. Commit with a message like `chore(<service>): <short summary of the finding>`.
+4. Push the branch and open a PR against `{{ homelab_maintenance_agent_base_branch }}`
+   with `gh pr create --label <labels> ...` (see "Labels" above - always include
+   `maintenance-agent` + the category label + `breaking`/`non-breaking` for
+   version bumps), with a body containing all of:
+   - **Category**: which of the finding types above this is.
+   - **Summary**: what's changing and why.
+   - **Evidence**: the specific links/quotes that justify this change is correct and
+     safe.
+   - **Safety statement** (version bumps only): explicit confirmation this doesn't
+     skip a major version, referencing the constraint source used.
+   - **Manual steps required**: a checklist of anything the human must do by hand
+     after merging (vault edits, cert generation, `ansible-playbook` runs, etc). If
+     genuinely none, say "None identified" - never omit this section.
+5. If pushing to a branch (new, or an existing one from a previous run you're
+   updating) shows it has conflicts with `{{ homelab_maintenance_agent_base_branch }}`,
+   merge `{{ homelab_maintenance_agent_base_branch }}` into that branch (a normal
+   `git merge`, not a rebase or force-push) and resolve any conflicts before
+   pushing/opening the PR, so it always shows a clean, conflict-free diff.
+6. Update the checklist entry for this role/component with the PR number, per "The
+   checklist protocol" above.

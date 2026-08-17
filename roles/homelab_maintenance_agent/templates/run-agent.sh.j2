@@ -3,14 +3,21 @@ set -uo pipefail
 
 REPO_PATH="{{ homelab_maintenance_agent_repo_path }}"
 LOG_DIR="{{ homelab_maintenance_agent_log_dir }}"
-INSTRUCTIONS="{{ homelab_maintenance_agent_instructions_path }}"
+CHECKLIST_PATH="{{ homelab_maintenance_agent_checklist_path }}"
 GH_TOKEN_PATH="{{ homelab_maintenance_agent_gh_token_path }}"
 CLAUDE_TOKEN_PATH="{{ homelab_maintenance_agent_claude_token_path }}"
 GOTIFY_BASE_URL="{{ gotify_base_url }}"
 GOTIFY_API_TOKEN="{{ gotify_api_token }}"
-AGENT_TIMEOUT="{{ homelab_maintenance_agent_timeout }}"
+ITERATION_TIMEOUT="{{ homelab_maintenance_agent_iteration_timeout }}"
 AGENT_CMD="{{ homelab_maintenance_agent_command }}"
 BASE_BRANCH="{{ homelab_maintenance_agent_base_branch }}"
+
+VENDORED_ROLE_PATTERN='^(geerlingguy\.|gantsign\.|sprat\.|homelab_maintenance_agent$)'
+
+PROMPT="Follow this repo's CLAUDE.md. Work the maintenance checklist
+(.maintenance-agent-checklist.md) until every in-scope role is accounted for. If
+it's already fully resolved when you check, print ALL_ROLES_ACCOUNTED_FOR and stop
+without making any changes."
 
 mkdir -p "$LOG_DIR"
 RUN_LOG="$LOG_DIR/run-$(date +%Y%m%d-%H%M%S).log"
@@ -22,6 +29,16 @@ notify() {
     -F "message=$1" >/dev/null 2>&1
 }
 
+generate_checklist() {
+  for role_dir in "$REPO_PATH"/roles/*/; do
+    role=$(basename "$role_dir")
+    if [[ "$role" =~ $VENDORED_ROLE_PATTERN ]]; then
+      continue
+    fi
+    echo "- [ ] $role: pending"
+  done
+}
+
 run() {
   echo "=== run started $(date -Is) ==="
 
@@ -30,18 +47,43 @@ run() {
     return 1
   fi
 
-  git -C "$REPO_PATH" fetch origin || return 1
-  git -C "$REPO_PATH" checkout "$BASE_BRANCH" || return 1
-  git -C "$REPO_PATH" reset --hard "origin/$BASE_BRANCH" || return 1
-
   export GH_TOKEN
   GH_TOKEN="$(cat "$GH_TOKEN_PATH")"
 
   export CLAUDE_CODE_OAUTH_TOKEN
   CLAUDE_CODE_OAUTH_TOKEN="$(cat "$CLAUDE_TOKEN_PATH")"
 
-  cd "$REPO_PATH" || return 1
-  timeout "$AGENT_TIMEOUT" "$AGENT_CMD" -p "$(cat "$INSTRUCTIONS")" --dangerously-skip-permissions
+  git -C "$REPO_PATH" checkout "$BASE_BRANCH" || return 1
+  git -C "$REPO_PATH" fetch origin || return 1
+  git -C "$REPO_PATH" reset --hard "origin/$BASE_BRANCH" || return 1
+
+  # fresh checklist every run - the checkout persists across weekly runs, so a
+  # fully-resolved checklist from last time must not be mistaken for "nothing to do"
+  generate_checklist > "$CHECKLIST_PATH"
+
+  local role_count
+  role_count=$(generate_checklist | wc -l)
+  local max_iterations=$((role_count + 15))
+
+  local i status output
+  for ((i = 1; i <= max_iterations; i++)); do
+    git -C "$REPO_PATH" checkout "$BASE_BRANCH" || return 1
+    git -C "$REPO_PATH" reset --hard "origin/$BASE_BRANCH" || return 1
+
+    echo "--- iteration $i/$max_iterations $(date -Is) ---"
+    output=$(cd "$REPO_PATH" && timeout "$ITERATION_TIMEOUT" "$AGENT_CMD" -p "$PROMPT" --dangerously-skip-permissions 2>&1)
+    status=$?
+    echo "$output"
+    echo "--- iteration $i exit code $status ---"
+
+    if echo "$output" | grep -q "ALL_ROLES_ACCOUNTED_FOR"; then
+      echo "=== checklist fully resolved after $i iteration(s) ==="
+      return 0
+    fi
+  done
+
+  echo "=== stopped after $max_iterations iterations without full resolution ===" >&2
+  return 1
 }
 
 run >>"$RUN_LOG" 2>&1
@@ -50,9 +92,9 @@ status=$?
 echo "=== run finished $(date -Is) with exit code $status ===" >>"$RUN_LOG"
 
 if [ "$status" -eq 0 ]; then
-  notify "Nightly maintenance run finished OK. Log: $RUN_LOG"
+  notify "Weekly maintenance run finished OK. Log: $RUN_LOG"
 else
-  notify "Nightly maintenance run FAILED (exit $status). Log: $RUN_LOG"
+  notify "Weekly maintenance run FAILED or incomplete (exit $status). Log: $RUN_LOG"
 fi
 
 exit "$status"

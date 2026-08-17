@@ -40,11 +40,21 @@
     executable: /bin/bash
   changed_when: false
 
-- name: Homelab Maintenance Agent | Template agent instructions.
+- name: Homelab Maintenance Agent | Template CLAUDE.md (agent-local, never committed).
   ansible.builtin.template:
-    src: agent-instructions.md.j2
-    dest: "{{ homelab_maintenance_agent_instructions_path }}"
+    src: CLAUDE.md.j2
+    dest: "{{ homelab_maintenance_agent_claude_md_path }}"
     mode: '0644'
+
+- name: Homelab Maintenance Agent | Exclude agent-local files from git.
+  ansible.builtin.lineinfile:
+    path: "{{ homelab_maintenance_agent_repo_path }}/.git/info/exclude"
+    line: "{{ item }}"
+    create: true
+    mode: '0644'
+  loop:
+    - "/CLAUDE.md"
+    - "/.maintenance-agent-checklist.md"
 
 - name: Homelab Maintenance Agent | Template run script.
   ansible.builtin.template:
@@ -53,12 +63,20 @@
     mode: '0700'
   no_log: true
 
-- name: Homelab Maintenance Agent | Ensure nightly cron entry.
+- name: Homelab Maintenance Agent | Remove old nightly-named cron entry.
   become: true
   ansible.builtin.cron:
     name: "homelab maintenance agent (nightly)"
+    cron_file: homelab_maintenance_agent
+    state: absent
+
+- name: Homelab Maintenance Agent | Ensure weekly cron entry.
+  become: true
+  ansible.builtin.cron:
+    name: "homelab maintenance agent (weekly)"
     minute: "{{ homelab_maintenance_agent_cron_minute }}"
     hour: "{{ homelab_maintenance_agent_cron_hour }}"
+    weekday: "{{ homelab_maintenance_agent_cron_weekday }}"
     job: "{{ homelab_maintenance_agent_script_path }} >> {{ homelab_maintenance_agent_log_dir }}/cron.log 2>&1"
     user: "{{ homelab_user }}"
     cron_file: homelab_maintenance_agent
