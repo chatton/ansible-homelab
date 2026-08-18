@@ -6,15 +6,11 @@ Deploys linkding, a self-hosted bookmark manager.
 
 ## Managed image(s)
 
-- `sissbruecker/linkding` via `linkding_tag` (currently `latest`) - https://github.com/sissbruecker/linkding/releases
+- `sissbruecker/linkding` via `linkding_tag` (currently `1.46.1`) - https://github.com/sissbruecker/linkding/releases
 
 ## Known upgrade constraints
 
 None documented yet.
-
-## Other notes
-
-`linkding_tag` is currently `latest` (floating, unpinned) - a candidate for pinning.
 
 ## Manual steps required for an upgrade
 
@@ -26,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-18: Pinned floating `latest` tag to `1.46.1` (PR TBD)
 

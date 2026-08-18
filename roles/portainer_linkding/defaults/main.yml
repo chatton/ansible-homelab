@@ -1,7 +1,7 @@
 ---
 linkding_state: present
 linkding_image: sissbruecker/linkding
-linkding_tag: latest
+linkding_tag: 1.46.1
 linkding_expose_port: 9090
 linkding_portainer_stack_name: linkding
 linkding_container_name: linkding
