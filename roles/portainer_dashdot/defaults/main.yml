@@ -1,7 +1,7 @@
 ---
 dashdot_state: present
 dashdot_image: mauricenino/dashdot
-dashdot_tag: latest
+dashdot_tag: 6.3.4
 dashdot_expose_port: 3010
 dashdot_portainer_stack_name: dashdot
 dashdot_container_name: dashdot
