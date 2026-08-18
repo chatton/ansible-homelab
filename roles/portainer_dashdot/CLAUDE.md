@@ -6,15 +6,11 @@ Deploys dash. (dashdot), a server stats dashboard.
 
 ## Managed image(s)
 
-- `mauricenino/dashdot` via `dashdot_tag` (currently `latest`) - https://github.com/mauricegw/dashdot/releases
+- `mauricenino/dashdot` via `dashdot_tag` (currently `6.3.4`) - https://github.com/MauriceNino/dashdot/releases
 
 ## Known upgrade constraints
 
 None documented yet.
-
-## Other notes
-
-`dashdot_tag` is currently `latest` (floating, unpinned) - a candidate for pinning.
 
 ## Manual steps required for an upgrade
 
@@ -26,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-18: Pinned floating `latest` tag to `6.3.4` (PR TBD)
 
