@@ -6,15 +6,11 @@ Deploys Diun, which watches running container images for new upstream tags and n
 
 ## Managed image(s)
 
-- `crazymax/diun` via `diun_tag` (currently `latest`) - https://github.com/crazy-max/diun/releases
+- `crazymax/diun` via `diun_tag` (currently `4.33.0`) - https://github.com/crazy-max/diun/releases
 
 ## Known upgrade constraints
 
 None documented yet.
-
-## Other notes
-
-`diun_tag` is currently `latest` (floating, unpinned) - a candidate for pinning.
 
 ## Manual steps required for an upgrade
 
@@ -26,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-18: Pinned floating `latest` tag to `4.33.0` (PR TBD)
 

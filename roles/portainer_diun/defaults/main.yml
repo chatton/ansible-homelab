@@ -1,7 +1,7 @@
 ---
 diun_state: present
 diun_image: crazymax/diun
-diun_tag: latest
+diun_tag: 4.33.0
 diun_portainer_stack_name: diun
 diun_container_name: diun
 
