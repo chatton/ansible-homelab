@@ -8,7 +8,7 @@ Deploys the *arr media-automation stack (Sonarr, Radarr, Lidarr, Jackett, qBitto
 
 - `ghcr.io/tprasadtp/protonwire` via `arr_vpn_tag` (currently `7.5.0`) - https://github.com/tprasadtp/protonvpn-docker/releases
 - `lscr.io/linuxserver/qbittorrent` via `qbittorrent_tag` (currently `4.6.3`) - https://github.com/linuxserver/docker-qbittorrent/releases
-- `lscr.io/linuxserver/radarr` via `radarr_tag` (currently `5.26.2.10099-ls281`) - https://docs.linuxserver.io/images/docker-radarr/
+- `lscr.io/linuxserver/radarr` via `radarr_tag` (currently `6.0.4.10291-ls313`) - https://docs.linuxserver.io/images/docker-radarr/
 - `lscr.io/linuxserver/sonarr` via `sonarr_tag` (currently `4.0.15.2941-ls290`) - https://docs.linuxserver.io/images/docker-sonarr/
 - `blampe/lidarr` via `lidarr_tag` (currently `latest`) - https://docs.linuxserver.io/images/docker-lidarr/
 - `lscr.io/linuxserver/jackett` via `jackett_tag` (currently `0.21.2354`) - https://github.com/Jackett/Jackett/releases
@@ -17,6 +17,7 @@ Deploys the *arr media-automation stack (Sonarr, Radarr, Lidarr, Jackett, qBitto
 
 - `lidarr_tag` is currently `latest` (floating, unpinned) - this is a known open item. When pinning it, note the role also has `lidarr_image: lscr.io/linuxserver/lidarr` commented out in favor of `blampe/lidarr`; check whether the linuxserver.io image has since become viable again before switching back.
 - linuxserver.io tags (`radarr`/`sonarr`/`qbittorrent`/`jackett`) use a vendor-specific scheme (`<app-version>-ls<build>`), not plain semver - compare the leading app version, not the whole string.
+- Radarr 6.0.0 introduced breaking changes: removed Basic Auth (changed to Forms authentication), migrated to .NET 8, removed linux-x86 support, changed default wanted language to Original. Future upgrades crossing major versions should be done one major version at a time.
 
 ## Manual steps required for an upgrade
 
@@ -28,5 +29,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-19: Radarr 5.26.2.10099-ls281 → 6.0.4.10291-ls313, PR: #84
 
