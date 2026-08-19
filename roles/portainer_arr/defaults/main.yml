@@ -19,7 +19,7 @@ qbittorrent_exposed_download_port: 6881
 # Radarr
 # https://docs.linuxserver.io/images/docker-radarr/
 radarr_image: lscr.io/linuxserver/radarr
-radarr_tag: 5.26.2.10099-ls281
+radarr_tag: 6.0.4.10291-ls313
 radarr_container_name: radarr
 radarr_exposed_port: 7878
 radarr_puid: 1000
