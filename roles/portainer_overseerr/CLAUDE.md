@@ -6,7 +6,7 @@ Deploys Overseerr, a media request-management UI that sits in front of the Plex/
 
 ## Managed image(s)
 
-- `sctx/overseerr` via `overseerr_tag` (currently `1.34.0`) - https://github.com/sct/overseerr/releases
+- `sctx/overseerr` via `overseerr_tag` (currently `1.35.0`) - https://github.com/sct/overseerr/releases
 
 ## Known upgrade constraints
 
@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-20: overseerr `1.34.0` → `1.35.0` - PR TBD
 
