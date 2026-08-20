@@ -11,12 +11,13 @@ Deploys the *arr media-automation stack (Sonarr, Radarr, Lidarr, Jackett, qBitto
 - `lscr.io/linuxserver/radarr` via `radarr_tag` (currently `5.26.2.10099-ls281`) - https://docs.linuxserver.io/images/docker-radarr/
 - `lscr.io/linuxserver/sonarr` via `sonarr_tag` (currently `4.0.15.2941-ls290`) - https://docs.linuxserver.io/images/docker-sonarr/
 - `blampe/lidarr` via `lidarr_tag` (currently `latest`) - https://docs.linuxserver.io/images/docker-lidarr/
-- `lscr.io/linuxserver/jackett` via `jackett_tag` (currently `0.21.2354`) - https://github.com/Jackett/Jackett/releases
+- `lscr.io/linuxserver/jackett` via `jackett_tag` (currently `0.22.2451`) - https://github.com/Jackett/Jackett/releases
 
 ## Known upgrade constraints
 
 - `lidarr_tag` is currently `latest` (floating, unpinned) - this is a known open item. When pinning it, note the role also has `lidarr_image: lscr.io/linuxserver/lidarr` commented out in favor of `blampe/lidarr`; check whether the linuxserver.io image has since become viable again before switching back.
 - linuxserver.io tags (`radarr`/`sonarr`/`qbittorrent`/`jackett`) use a vendor-specific scheme (`<app-version>-ls<build>`), not plain semver - compare the leading app version, not the whole string.
+- Jackett uses a 0.X.YYYY versioning scheme - do not skip "minor" versions (0.21→0.22→0.23→0.24), upgrade incrementally.
 
 ## Manual steps required for an upgrade
 
@@ -28,5 +29,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-20: jackett `0.21.2354` → `0.22.2451` (first step; 0.23 and 0.24 still pending) - PR TBD
 
