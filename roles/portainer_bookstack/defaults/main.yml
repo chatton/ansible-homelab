@@ -1,7 +1,7 @@
 ---
 bookstack_state: present
 bookstack_image: linuxserver/bookstack
-bookstack_tag: 23.06.1
+bookstack_tag: 24.12.1
 bookstack_puid: 1000
 bookstack_pgid: 1000
 bookstack_db_host: mariadb # this works only if bookstack is on the mariadb_network
