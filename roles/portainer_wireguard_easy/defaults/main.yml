@@ -1,7 +1,7 @@
 ---
 wireguard_easy_state: present
 wireguard_easy_image: ghcr.io/wg-easy/wg-easy
-wireguard_easy_tag: "13"
+wireguard_easy_tag: "14"
 wireguard_easy_web_port: 51821
 wireguard_easy_vpn_port: 51820
 wireguard_easy_portainer_stack_name: wg-easy
