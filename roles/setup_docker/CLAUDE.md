@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-22: Updated copy module to use FQCN (ansible.builtin.copy) - PR TBD
 
