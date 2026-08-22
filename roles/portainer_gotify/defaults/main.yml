@@ -1,7 +1,7 @@
 ---
 gotify_state: present
 gotify_image: gotify/server
-gotify_tag: 2.2.5
+gotify_tag: 3.0.0
 gotify_expose_port: 7875
 gotify_portainer_stack_name: gotify
 gotify_container_name: gotify
