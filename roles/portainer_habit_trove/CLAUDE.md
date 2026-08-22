@@ -6,7 +6,7 @@ Deploys HabitTrove, a habit-tracking app.
 
 ## Managed image(s)
 
-- `dohsimpson/habittrove` via `habit_trove_tag` (currently `v0.2.23`) - https://github.com/dohsimpson/habittrove/releases
+- `dohsimpson/habittrove` via `habit_trove_tag` (currently `v0.2.31`) - https://github.com/dohsimpson/habittrove/releases
 
 ## Known upgrade constraints
 
@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-22: v0.2.23 → v0.2.31 - PR #103
 
