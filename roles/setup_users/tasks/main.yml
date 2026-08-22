@@ -49,7 +49,7 @@
   when: item.passwordless_sudo
 
 - name: Set authorized key.
-  authorized_key:
+  ansible.posix.authorized_key:
     user: '{{ homelab_user }}'
     state: present
     key: "{{ lookup('file', '~/.ssh/id_rsa_personal.pub') }}"
