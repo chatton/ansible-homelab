@@ -4,21 +4,21 @@
 # https://docs.docker.com/storage/volumes/#backup-restore-or-migrate-data-volumes
 
 - name: Get container details
-  docker_container_info:
+  community.docker.docker_container_info:
     name: "{{ container_restore }}"
   register: result
 
 - name: Fail if container is not present
-  fail:
+  ansible.builtin.fail:
     msg: Cannot restore volumes for a container when it does not exist. Ensure the container exists and try again.
   when: result.exists == false
 
-- debug: msg="{{ result }}"
+- ansible.builtin.debug: msg="{{ result }}"
 
 - name: Extract only the volume mounts (not bind mounts)
-  set_fact: volume_mounts="{{ result.container.Mounts | selectattr("Type", "equalto", "volume")}}"
+  ansible.builtin.set_fact: volume_mounts="{{ result.container.Mounts | selectattr("Type", "equalto", "volume")}}"
 
-- debug: msg="{{ volume_mounts }}"
+- ansible.builtin.debug: msg="{{ volume_mounts }}"
 
 - name: Find relevant volume(s) in S3
   amazon.aws.aws_s3:
@@ -32,13 +32,13 @@
   register: s3_list_output
   with_items: "{{ volume_mounts }}"
 
-- debug: msg="{{ s3_list_output }}"
+- ansible.builtin.debug: msg="{{ s3_list_output }}"
 
 - name: Extract s3 keys for container
-  set_fact: container_s3_keys="{{ container_s3_keys | default([]) + [item.s3_keys | last] }}"
+  ansible.builtin.set_fact: container_s3_keys="{{ container_s3_keys | default([]) + [item.s3_keys | last] }}"
   with_items: "{{ s3_list_output.results }}"
 
-- debug: msg="{{ container_s3_keys }}"
+- ansible.builtin.debug: msg="{{ container_s3_keys }}"
 
 - name: Create a directory for temporary backups if they do not exist
   ansible.builtin.file:
@@ -60,15 +60,15 @@
   with_items: "{{ container_s3_keys }}"
   register: get_out
 
-- debug: msg="{{ get_out }}"
+- ansible.builtin.debug: msg="{{ get_out }}"
 
-- set_fact:
+- ansible.builtin.set_fact:
     volume_details: "{{ volume_details | default([]) + [ {'mount': item.0, 's3_key': item.1} ] }}"
   with_together:
     - "{{ volume_mounts }}"
     - "{{ container_s3_keys }}"
 
-- debug: msg="{{ volume_details }}"
+- ansible.builtin.debug: msg="{{ volume_details }}"
 
 - name: Stop a container
   community.docker.docker_container:
@@ -76,7 +76,7 @@
     state: stopped
 
 - name: Ensure Volume
-  docker_volume:
+  community.docker.docker_volume:
     name: "{{ item.mount.Name }}"
     state: present
   with_items: "{{ volume_details }}"

@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-22: Updated all module calls to use FQCN format (ansible.builtin.*, community.docker.*) to address deprecation warnings - PR TBD
 
