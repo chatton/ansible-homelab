@@ -3,7 +3,7 @@ arr_portainer_stack_name: vpn-stack
 arr_vpn_image: "ghcr.io/tprasadtp/protonwire"
 
 # https://github.com/tprasadtp/protonvpn-docker/releases
-arr_vpn_tag: "7.5.0"
+arr_vpn_tag: "7.5.3"
 
 # Qbittorrent
 # https://github.com/linuxserver/docker-qbittorrent/releases
