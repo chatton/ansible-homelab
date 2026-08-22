@@ -28,7 +28,7 @@
           container_name: "{{ wireguard_easy_container_name }}"
           environment:
             WG_HOST: "remote.cianhatton.ie"
-            PASSWORD: "{{ wireguard_easy_password }}"
+            PASSWORD_HASH: "{{ wireguard_easy_password_hash }}"
             WG_DEFAULT_ADDRESS: "10.8.0.x"
             WG_DEFAULT_DNS: "1.1.1.1"
             WG_ALLOWED_IPS: "10.4.5.0/24"
