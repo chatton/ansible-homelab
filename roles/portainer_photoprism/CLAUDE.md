@@ -6,7 +6,7 @@ Deploys PhotoPrism, self-hosted photo management with AI-based tagging.
 
 ## Managed image(s)
 
-- `photoprism/photoprism` via `photoprism_tag` (currently `230615`) - https://github.com/photoprism/photoprism/releases
+- `photoprism/photoprism` via `photoprism_tag` (currently `231128`) - https://github.com/photoprism/photoprism/releases
 
 ## Known upgrade constraints
 
@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-22: PhotoPrism 230615 (2023-06-15) → 231128 (2023-11-28) - PR TBD (multi-step upgrade to current latest 260728 will follow in separate PRs)
 
