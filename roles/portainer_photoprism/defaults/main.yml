@@ -1,7 +1,7 @@
 ---
 # photoprism configuration
 photoprism_image: photoprism/photoprism
-photoprism_tag: 230615
+photoprism_tag: 231128
 photoprism_container_name: photoprism
 photoprism_restart_policy: unless-stopped
 
