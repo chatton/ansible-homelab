@@ -6,11 +6,11 @@ Deploys Uptime Kuma, the homelab's uptime/status-check monitoring dashboard.
 
 ## Managed image(s)
 
-- `louislam/uptime-kuma` via `uptime_kuma_tag` (currently `1.22.0`) - https://github.com/louislam/uptime-kuma/releases
+- `louislam/uptime-kuma` via `uptime_kuma_tag` (currently `2.0.0`) - https://github.com/louislam/uptime-kuma/releases
 
 ## Known upgrade constraints
 
-None documented yet.
+Major version upgrades (v1 → v2) require following the migration guide. Do not skip major versions.
 
 ## Manual steps required for an upgrade
 
@@ -22,5 +22,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-22: Uptime Kuma 1.22.0 → 2.0.0 - PR TBD (migration guide required; 2.5.0 upgrade will follow)
 
