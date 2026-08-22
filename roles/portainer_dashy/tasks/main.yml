@@ -29,9 +29,9 @@
           container_name: "{{ dashy_container_name }}"
           image: "{{ dashy_image }}:{{ dashy_tag }}"
           volumes:
-            - "{{ dashy_config_dir}}/{{ dashy_config_file }}:/app/public/conf.yml"
+            - "{{ dashy_config_dir}}/{{ dashy_config_file }}:/app/user-data/conf.yml"
           ports:
-            - "{{ dashy_expose_port}}:80"
+            - "{{ dashy_expose_port}}:8080"
           environment:
             - "NODE_ENV={{ dashy_node_env }}"
             - "UID={{ dashy_uid }}"
