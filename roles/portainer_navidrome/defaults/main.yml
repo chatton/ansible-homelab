@@ -1,7 +1,7 @@
 ---
 navidrome_state: present
 navidrome_image: deluan/navidrome
-navidrome_tag: latest
+navidrome_tag: 0.63.2
 navidrome_puid: 1000
 navidrome_pgid: 1000
 navidrome_expose_port: 4533
