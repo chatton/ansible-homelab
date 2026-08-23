@@ -6,7 +6,7 @@ Deploys Navidrome, a self-hosted music streaming server.
 
 ## Managed image(s)
 
-- `deluan/navidrome` via `navidrome_tag` (currently `latest`) - https://github.com/navidrome/navidrome/releases
+- `deluan/navidrome` via `navidrome_tag` (currently `0.63.2`) - https://github.com/navidrome/navidrome/releases
 
 ## Known upgrade constraints
 
@@ -14,7 +14,7 @@ None documented yet.
 
 ## Other notes
 
-`navidrome_tag` is currently `latest` (floating, unpinned) - a candidate for pinning.
+None.
 
 ## Manual steps required for an upgrade
 
