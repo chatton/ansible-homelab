@@ -9,5 +9,5 @@ mariadb_network: mariadb_net
 
 adminer_container_name: adminer
 adminer_image: adminer
-adminer_tag: latest
+adminer_tag: 6.0.1
 adminer_expose_port: 3307
