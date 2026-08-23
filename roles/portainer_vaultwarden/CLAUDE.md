@@ -6,7 +6,7 @@ Deploys Vaultwarden, a self-hosted Bitwarden-compatible password manager. This h
 
 ## Managed image(s)
 
-- `vaultwarden/server` via `vaultwarden_tag` (currently `1.37.1`) - https://github.com/dani-garcia/vaultwarden/releases
+- `vaultwarden/server` via `vaultwarden_tag` (currently `1.37.2`) - https://github.com/dani-garcia/vaultwarden/releases
 
 ## Known upgrade constraints
 
@@ -26,5 +26,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-23: 1.37.1 → 1.37.2, PR TBD
 
