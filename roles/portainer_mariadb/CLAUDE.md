@@ -6,7 +6,7 @@ Deploys a shared MariaDB instance plus Adminer (DB admin UI) on the `mariadb_net
 
 ## Managed image(s)
 
-- `mariadb` via `mariadb_tag` (currently `10.8.3`) - https://mariadb.com/kb/en/release-notes/
+- `mariadb` via `mariadb_tag` (currently `10.11.18`) - https://mariadb.com/kb/en/release-notes/
 - `adminer` via `adminer_tag` (currently `latest`)
 
 ## Known upgrade constraints
@@ -27,5 +27,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-23: 10.8.3 → 10.11.18, PR TBD
 
