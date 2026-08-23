@@ -7,7 +7,7 @@ Deploys a shared MariaDB instance plus Adminer (DB admin UI) on the `mariadb_net
 ## Managed image(s)
 
 - `mariadb` via `mariadb_tag` (currently `10.8.3`) - https://mariadb.com/kb/en/release-notes/
-- `adminer` via `adminer_tag` (currently `latest`)
+- `adminer` via `adminer_tag` (currently `6.0.1`) - https://hub.docker.com/_/adminer
 
 ## Known upgrade constraints
 
@@ -15,7 +15,7 @@ MariaDB major version upgrades need `mariadb-upgrade` run against existing data 
 
 ## Other notes
 
-`adminer_tag` is currently `latest` (floating, unpinned) - a candidate for pinning.
+None.
 
 ## Manual steps required for an upgrade
 
