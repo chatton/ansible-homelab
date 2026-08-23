@@ -2,7 +2,7 @@
 mariadb_portainer_stack_name: mariadb
 mariadb_state: present
 mariadb_image: mariadb
-mariadb_tag: 10.8.3
+mariadb_tag: 10.11.18
 mariadb_container_name: mariadb
 mariadb_expose_port: 3306
 mariadb_network: mariadb_net
