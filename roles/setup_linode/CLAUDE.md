@@ -22,5 +22,7 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- **2026-08-24**: Debian 11 (Bullseye) → Debian 12 (Bookworm) - PR #119
+  - Debian 11 LTS support ends 2026-08-31 (7 days from upgrade)
+  - Debian 12 has LTS support through 2028-06-30
 

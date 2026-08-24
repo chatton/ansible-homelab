@@ -8,7 +8,7 @@
     access_token: '{{ token }}'
     type: '{{ type }}'
     region: '{{ region }}'
-    image: linode/debian11
+    image: linode/debian12
     root_pass: '{{ password }}'
     authorized_keys: '{{ ssh_keys }}'
     group: servers
