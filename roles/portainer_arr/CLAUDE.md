@@ -6,7 +6,7 @@ Deploys the *arr media-automation stack (Sonarr, Radarr, Lidarr, Jackett, qBitto
 
 ## Managed image(s)
 
-- `ghcr.io/tprasadtp/protonwire` via `arr_vpn_tag` (currently `7.5.0`) - https://github.com/tprasadtp/protonvpn-docker/releases
+- `ghcr.io/tprasadtp/protonwire` via `arr_vpn_tag` (currently `7.5.3`) - https://github.com/tprasadtp/protonvpn-docker/releases
 - `lscr.io/linuxserver/qbittorrent` via `qbittorrent_tag` (currently `4.6.3`) - https://github.com/linuxserver/docker-qbittorrent/releases
 - `lscr.io/linuxserver/radarr` via `radarr_tag` (currently `5.26.2.10099-ls281`) - https://docs.linuxserver.io/images/docker-radarr/
 - `lscr.io/linuxserver/sonarr` via `sonarr_tag` (currently `4.0.15.2941-ls290`) - https://docs.linuxserver.io/images/docker-sonarr/
@@ -28,5 +28,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-24: ProtonWire `7.5.0` → `7.5.3`, PR #110
 
