@@ -28,7 +28,7 @@ radarr_pgid: 1000
 # Sonarr
 # https://docs.linuxserver.io/images/docker-sonarr/
 sonarr_image: lscr.io/linuxserver/sonarr
-sonarr_tag: 4.0.15.2941-ls290
+sonarr_tag: 4.0.19.2979-ls322
 sonarr_exposed_port: 8989
 sonarr_container_name: sonarr
 sonarr_puid: 1000
