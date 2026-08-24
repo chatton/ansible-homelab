@@ -6,7 +6,7 @@ Installs/upgrades the Portainer CE server itself. Every other `portainer_*` role
 
 ## Managed image(s)
 
-- `portainer/portainer-ce` via `portainer_version` (currently `2.20.3`) - https://github.com/portainer/portainer/releases
+- `portainer/portainer-ce` via `portainer_version` (currently `2.39.6`) - https://github.com/portainer/portainer/releases
 
 ## Known upgrade constraints
 
@@ -26,5 +26,8 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- **2026-08-24**: 2.20.3 → 2.39.6 (LTS) - PR #120
+  - Security improvements: SSRF protection, Go toolchain update (CVE-2026-42505, CVE-2026-39822)
+  - Bug fixes for Kubernetes API calls, Swarm stack deployment, registry authentication
+  - No breaking changes or deprecated features
 
