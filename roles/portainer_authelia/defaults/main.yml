@@ -1,7 +1,7 @@
 ---
 authelia_state: present
 authelia_image: authelia/authelia
-authelia_tag: 4.37
+authelia_tag: 4.38.9
 authelia_app_url: https://auth.cianhatton.ie
 authelia_expose_port: 9091
 authelia_container_name: authelia
