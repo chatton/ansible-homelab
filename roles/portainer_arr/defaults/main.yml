@@ -47,7 +47,7 @@ lidarr_pgid: 1000
 # Jackett
 # https://github.com/Jackett/Jackett/releases
 jackett_image: lscr.io/linuxserver/jackett
-jackett_tag: 0.21.2354
+jackett_tag: 0.24.2451
 jackett_exposed_port: 9117
 jackett_container_name: jackett
 jackett_puid: 1000

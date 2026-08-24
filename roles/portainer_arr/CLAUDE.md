@@ -11,7 +11,7 @@ Deploys the *arr media-automation stack (Sonarr, Radarr, Lidarr, Jackett, qBitto
 - `lscr.io/linuxserver/radarr` via `radarr_tag` (currently `5.26.2.10099-ls281`) - https://docs.linuxserver.io/images/docker-radarr/
 - `lscr.io/linuxserver/sonarr` via `sonarr_tag` (currently `4.0.15.2941-ls290`) - https://docs.linuxserver.io/images/docker-sonarr/
 - `blampe/lidarr` via `lidarr_tag` (currently `latest`) - https://docs.linuxserver.io/images/docker-lidarr/
-- `lscr.io/linuxserver/jackett` via `jackett_tag` (currently `0.21.2354`) - https://github.com/Jackett/Jackett/releases
+- `lscr.io/linuxserver/jackett` via `jackett_tag` (currently `0.24.2451`) - https://github.com/Jackett/Jackett/releases
 
 ## Known upgrade constraints
 
@@ -28,5 +28,5 @@ None documented yet.
 
 _(The maintenance agent should append an entry here whenever it opens a version-bump PR for this role: date, old version, new version, PR link.)_
 
-None yet.
+- 2026-08-24: Jackett `0.21.2354` → `0.24.2451`, PR #112
 
