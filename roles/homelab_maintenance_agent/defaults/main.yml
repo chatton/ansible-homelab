@@ -1,5 +1,5 @@
 ---
-homelab_maintenance_agent_cron_state: present # flip to present once a manual run looks right
+homelab_maintenance_agent_cron_state: absent # flip to present to re-enable
 homelab_maintenance_agent_cron_weekday: "5" # Friday
 homelab_maintenance_agent_cron_hour: "2"
 homelab_maintenance_agent_cron_minute: "0"

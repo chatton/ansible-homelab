@@ -70,6 +70,11 @@
     cron_file: homelab_maintenance_agent
     state: absent
 
+- name: Homelab Maintenance Agent | Remove legacy nightly entry from user crontab.
+  ansible.builtin.cron:
+    name: "homelab maintenance agent (nightly)"
+    state: absent
+
 - name: Homelab Maintenance Agent | Ensure weekly cron entry.
   become: true
   ansible.builtin.cron:
