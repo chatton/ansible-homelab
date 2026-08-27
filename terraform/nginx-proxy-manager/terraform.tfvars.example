@@ -1,0 +1,4 @@
+npm_url           = "http://qnap:8181"
+npm_username      = "your-npm-login-email@example.com"
+npm_password      = "your-npm-admin-password"
+letsencrypt_email = "your-letsencrypt-email@example.com"

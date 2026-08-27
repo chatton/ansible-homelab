@@ -5,3 +5,13 @@ linodehosts.ini
 test-playbook.yml
 #roles/sprat.mergerfs
 #collections
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+terraform.tfvars
+*.auto.tfvars
+*.auto.tfvars.json

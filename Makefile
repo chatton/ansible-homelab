@@ -52,3 +52,6 @@ cron:
 
 maintenance-agent:
 	ansible-playbook playbooks/homelab_maintenance_agent.yml
+
+npm-tf-apply:
+	cd terraform/nginx-proxy-manager && terraform apply
