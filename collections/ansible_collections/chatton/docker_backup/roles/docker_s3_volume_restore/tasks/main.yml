@@ -23,7 +23,7 @@
     aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
     aws_secret_key: "{{ docker_backup_aws_s3_aws_secret_key }}"
     region: "{{ docker_backup_aws_s3_region }}"
-    s3_url: "{{ docker_backup_aws_s3_url }}"
+    endpoint_url: "{{ docker_backup_aws_s3_url }}"
   register: s3_list_output
 
 - name: Fail as there no backups were found.
@@ -60,7 +60,7 @@
     aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
     aws_secret_key: "{{ docker_backup_aws_s3_aws_secret_key }}"
     region: "{{ docker_backup_aws_s3_region }}"
-    s3_url: "{{ docker_backup_aws_s3_url }}"
+    endpoint_url: "{{ docker_backup_aws_s3_url }}"
     mode: get
     dest: "/tmp/{{ container_s3_key }}"
   register: get_out

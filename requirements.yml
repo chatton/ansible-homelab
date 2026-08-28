@@ -12,4 +12,4 @@ collections:
     version: master
   - name: https://github.com/chatton/ansible-docker-backup.git
     type: git
-    version: master
+    version: v0.1.2

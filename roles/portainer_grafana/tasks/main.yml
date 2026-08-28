@@ -1,4 +1,11 @@
 ---
+- name: "Grafana | Restore any missing volumes from S3"
+  ansible.builtin.include_role:
+    name: chatton.docker_backup.docker_s3_volume_restore
+  vars:
+    docker_backup_s3_volume:
+      name: "{{ grafana_portainer_stack_name }}_data"
+
 - name: "Grafana | Update Portainer."
   chatton.portainer.portainer_stack:
     username: '{{ portainer_user }}'

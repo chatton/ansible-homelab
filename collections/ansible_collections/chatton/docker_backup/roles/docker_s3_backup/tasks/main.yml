@@ -45,7 +45,7 @@
 - name: Upload backups to S3
   register: upload_result
   amazon.aws.aws_s3:
-    s3_url: "{{ docker_backup_aws_s3_url }}"
+    endpoint_url: "{{ docker_backup_aws_s3_url }}"
     bucket: "{{ docker_backup_aws_s3_bucket }}"
     object: "{{ item.Name }}/{{ item.Name }}-{{ backup_time }}.tar.gz"
     src: "{{ docker_backup_host_backup_directory }}/{{ item.Name }}-{{ backup_time }}.tar.gz"
@@ -75,7 +75,7 @@
     aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
     aws_secret_key: "{{ docker_backup_aws_s3_aws_secret_key }}"
     region: "{{ docker_backup_aws_s3_region }}"
-    s3_url: "{{ docker_backup_aws_s3_url }}"
+    endpoint_url: "{{ docker_backup_aws_s3_url }}"
   register: s3_list_outputs
   with_items: "{{ volume_mounts }}"
 
@@ -91,7 +91,7 @@
     aws_access_key: "{{ docker_backup_aws_s3_aws_access_key }}"
     aws_secret_key: "{{ docker_backup_aws_s3_aws_secret_key }}"
     region: "{{ docker_backup_aws_s3_region }}"
-    s3_url: "{{ docker_backup_aws_s3_url }}"
+    endpoint_url: "{{ docker_backup_aws_s3_url }}"
     object: "{{ item }}"
     mode: delobj
   with_items: "{{ s3_keys_to_delete }}"
