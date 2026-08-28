@@ -70,5 +70,8 @@ portainer_roles:
 #  - role: portainer_minio
   - role: portainer_wireguard_easy
 
+monitoring_roles:
+  - role: portainer_alloy
+
 # WireGuard Easy configuration
 wireguard_easy_host: "remote.cianhatton.ie"

@@ -1,0 +1,9 @@
+---
+prometheus_state: present
+prometheus_image: prom/prometheus
+prometheus_tag: v2.54.1
+prometheus_container_name: prometheus
+prometheus_portainer_stack_name: prometheus
+prometheus_config_dir: /etc/config/prometheus
+prometheus_config_file: prometheus.yml
+prometheus_retention: 15d

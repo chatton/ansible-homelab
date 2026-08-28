@@ -36,6 +36,14 @@ docker_backup_restore_force: false
 
 portainer_user: admin
 
+# Monitoring stack: Prometheus/Loki/Grafana run centrally on dell; every
+# host runs a Grafana Alloy agent that remote-writes metrics/logs to them.
+monitoring_central_lan_ip: "10.4.5.201"
+prometheus_expose_port: 9095
+loki_expose_port: 3100
+grafana_expose_port: 3030
+alloy_expose_port: 12345
+
 directories:
   # path on qnap where downloads go
   downloads_dir: /mnt/ssd0/downloads

@@ -1,0 +1,8 @@
+---
+alloy_state: present
+alloy_image: grafana/alloy
+alloy_tag: v1.4.3
+alloy_container_name: alloy
+alloy_portainer_stack_name: alloy
+alloy_config_dir: /etc/config/alloy
+alloy_config_file: config.alloy

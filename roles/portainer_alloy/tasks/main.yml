@@ -1,0 +1,50 @@
+---
+- name: Create Alloy config directory.
+  ansible.builtin.file:
+    path: '{{ alloy_config_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: Template Alloy config file.
+  ansible.builtin.template:
+    src: "config.alloy.j2"
+    dest: '{{ alloy_config_dir }}/{{ alloy_config_file }}'
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart-alloy
+
+- name: "Alloy | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ alloy_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ alloy_state }}"
+    definition:
+      version: '3.3'
+      services:
+        alloy:
+          image: "{{ alloy_image }}:{{ alloy_tag }}"
+          container_name: "{{ alloy_container_name }}"
+          command:
+            - "run"
+            - "--server.http.listen-addr=0.0.0.0:12345"
+            - "/etc/alloy/config.alloy"
+          volumes:
+            - "{{ alloy_config_dir }}/{{ alloy_config_file }}:/etc/alloy/config.alloy:ro"
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "/proc:/host/proc:ro"
+            - "/sys:/host/sys:ro"
+            - "/:/host/root:ro"
+            # cAdvisor (prometheus.exporter.cadvisor) hardcodes these native
+            # paths for per-container discovery/stats — read-only, no
+            # privileged mode (trades away some disk-I/O/perf metrics).
+            - "/:/rootfs:ro"
+            - "/sys:/sys:ro"
+            - "/var/lib/docker:/var/lib/docker:ro"
+            - "/dev/disk:/dev/disk:ro"
+          ports:
+            - "{{ alloy_expose_port }}:12345"
+          restart: "{{ restart_policy }}"

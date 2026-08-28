@@ -15,6 +15,9 @@ services:
 portainer:
 	ansible-playbook playbooks/setup-homelab.yml --tags portainer
 
+monitoring:
+	ansible-playbook playbooks/setup-homelab.yml --tags monitoring
+
 qnap-services:
 	ansible-playbook playbooks/setup-homelab.yml --tags services --limit qnap
 
@@ -55,3 +58,6 @@ maintenance-agent:
 
 npm-tf-apply:
 	cd terraform/nginx-proxy-manager && terraform apply
+
+grafana-tf-apply:
+	cd terraform/grafana && terraform apply

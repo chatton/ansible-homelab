@@ -1,0 +1,41 @@
+---
+- name: Create Loki config directory.
+  ansible.builtin.file:
+    path: '{{ loki_config_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: Template Loki config file.
+  ansible.builtin.template:
+    src: "loki-config.yml.j2"
+    dest: '{{ loki_config_dir }}/{{ loki_config_file }}'
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart-loki
+
+- name: "Loki | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ loki_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ loki_state }}"
+    definition:
+      version: '3.3'
+      services:
+        loki:
+          image: "{{ loki_image }}:{{ loki_tag }}"
+          container_name: "{{ loki_container_name }}"
+          command:
+            - "-config.file=/etc/loki/loki-config.yml"
+          volumes:
+            - "{{ loki_config_dir }}/{{ loki_config_file }}:/etc/loki/loki-config.yml:ro"
+            - data:/loki
+          ports:
+            - "{{ loki_expose_port }}:3100"
+          restart: "{{ restart_policy }}"
+
+      volumes:
+        data:

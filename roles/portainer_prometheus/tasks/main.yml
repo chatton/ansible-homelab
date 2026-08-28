@@ -1,0 +1,44 @@
+---
+- name: Create Prometheus config directory.
+  ansible.builtin.file:
+    path: '{{ prometheus_config_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: Template Prometheus config file.
+  ansible.builtin.template:
+    src: "prometheus.yml.j2"
+    dest: '{{ prometheus_config_dir }}/{{ prometheus_config_file }}'
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart-prometheus
+
+- name: "Prometheus | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ prometheus_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ prometheus_state }}"
+    definition:
+      version: '3.3'
+      services:
+        prometheus:
+          image: "{{ prometheus_image }}:{{ prometheus_tag }}"
+          container_name: "{{ prometheus_container_name }}"
+          command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--storage.tsdb.retention.time={{ prometheus_retention }}"
+            - "--web.enable-remote-write-receiver"
+          volumes:
+            - "{{ prometheus_config_dir }}/{{ prometheus_config_file }}:/etc/prometheus/prometheus.yml:ro"
+            - data:/prometheus
+          ports:
+            - "{{ prometheus_expose_port }}:9090"
+          restart: "{{ restart_policy }}"
+
+      volumes:
+        data:

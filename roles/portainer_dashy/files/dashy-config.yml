@@ -73,6 +73,13 @@ sections:
         description: Personal finance and budgeting
         icon: hl-actual-budget
         url: https://budget.cianhatton.ie
+      - title: Grafana
+        description: Metrics, logs and alerting
+        icon: hl-grafana
+        url: http://10.4.5.201:3030
+      - title: Prometheus
+        icon: hl-prometheus
+        url: http://10.4.5.201:9095
   - name: Media Stack
     items:
       - title: Plex

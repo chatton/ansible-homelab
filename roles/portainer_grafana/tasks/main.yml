@@ -1,0 +1,27 @@
+---
+- name: "Grafana | Update Portainer."
+  chatton.portainer.portainer_stack:
+    username: '{{ portainer_user }}'
+    password: '{{ portainer.password }}'
+    base_url: '{{ portainer_base_url }}'
+    stack_name: '{{ grafana_portainer_stack_name }}'
+    endpoint_id: '{{ portainer_endpoint }}'
+    state: "{{ grafana_state }}"
+    definition:
+      version: '3.3'
+      services:
+        grafana:
+          labels: "{{ backup_labels }}"
+          image: "{{ grafana_image }}:{{ grafana_tag }}"
+          container_name: "{{ grafana_container_name }}"
+          environment:
+            - "GF_SECURITY_ADMIN_USER={{ grafana.admin_user }}"
+            - "GF_SECURITY_ADMIN_PASSWORD={{ grafana.admin_password }}"
+          volumes:
+            - data:/var/lib/grafana
+          ports:
+            - "{{ grafana_expose_port }}:3000"
+          restart: "{{ restart_policy }}"
+
+      volumes:
+        data:

@@ -1,0 +1,3 @@
+---
+- name: restart-alloy
+  ansible.builtin.command: docker restart {{ alloy_container_name }}

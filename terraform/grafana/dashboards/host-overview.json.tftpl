@@ -1,0 +1,95 @@
+{
+  "title": "Host Overview",
+  "uid": "homelab-host-overview",
+  "schemaVersion": 39,
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "host",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+        "query": { "query": "label_values(node_uname_info, host)", "refId": "host" },
+        "refresh": 2,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".+",
+        "current": {}
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "CPU Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "percent", "max": 100, "min": 0 }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "100 - (avg by (host) (rate(node_cpu_seconds_total{mode=\"idle\", host=~\"$host\"}[5m])) * 100)",
+          "legendFormat": "{{host}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Memory Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "percent", "max": 100, "min": 0 }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "avg by (host) ((1 - (node_memory_MemAvailable_bytes{host=~\"$host\"} / node_memory_MemTotal_bytes{host=~\"$host\"})) * 100)",
+          "legendFormat": "{{host}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Disk Usage (all real filesystems)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "percent", "max": 100, "min": 0 }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "max by (host, mountpoint) (100 - ((node_filesystem_avail_bytes{host=~\"$host\", fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"} * 100) / node_filesystem_size_bytes{host=~\"$host\", fstype!~\"tmpfs|devtmpfs|overlay|squashfs\"}))",
+          "legendFormat": "{{host}} {{mountpoint}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Network Traffic",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "Bps" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "sum by (host, device) (rate(node_network_receive_bytes_total{host=~\"$host\", device!=\"lo\"}[5m]))",
+          "legendFormat": "{{host}} rx {{device}}"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "sum by (host, device) (rate(node_network_transmit_bytes_total{host=~\"$host\", device!=\"lo\"}[5m]))",
+          "legendFormat": "{{host}} tx {{device}}"
+        }
+      ]
+    }
+  ]
+}

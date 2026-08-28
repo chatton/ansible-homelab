@@ -1,0 +1,5 @@
+grafana_url             = "http://10.4.5.201:3030"
+grafana_admin_user      = "admin"
+grafana_admin_password  = "changeme"
+gotify_base_url         = "http://10.4.5.201:7875" # internal LAN address, not the public domain -- avoids a NAT-hairpin round trip from the Grafana container
+gotify_api_token        = "changeme"

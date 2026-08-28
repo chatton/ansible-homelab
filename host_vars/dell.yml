@@ -36,3 +36,9 @@ portainer_roles:
   - role: portainer_gitea
   - role: portainer_habit_trove
   - role: portainer_actual_budget
+
+monitoring_roles:
+  - role: portainer_prometheus
+  - role: portainer_loki
+  - role: portainer_grafana
+  - role: portainer_alloy

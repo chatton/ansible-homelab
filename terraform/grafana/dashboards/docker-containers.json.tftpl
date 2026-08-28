@@ -1,0 +1,124 @@
+{
+  "title": "Docker Containers",
+  "uid": "homelab-docker-containers",
+  "schemaVersion": 39,
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "host",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+        "query": { "query": "label_values(container_last_seen, host)", "refId": "host" },
+        "refresh": 2,
+        "multi": false,
+        "includeAll": false,
+        "current": {}
+      },
+      {
+        "name": "container",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+        "query": { "query": "label_values(container_last_seen{host=\"$host\"}, name)", "refId": "container" },
+        "refresh": 2,
+        "multi": false,
+        "includeAll": false,
+        "current": {}
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "CPU Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "sum by (host, name) (rate(container_cpu_usage_seconds_total{host=\"$host\", name=\"$container\"}[5m]))",
+          "legendFormat": "{{host}} / {{name}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Memory Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "sum by (host, name) (container_memory_usage_bytes{host=\"$host\", name=\"$container\"})",
+          "legendFormat": "{{host}} / {{name}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Network Traffic",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "Bps" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "sum by (host, name) (rate(container_network_receive_bytes_total{host=\"$host\", name=\"$container\"}[5m]))",
+          "legendFormat": "{{host}} / {{name}} rx"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "sum by (host, name) (rate(container_network_transmit_bytes_total{host=\"$host\", name=\"$container\"}[5m]))",
+          "legendFormat": "{{host}} / {{name}} tx"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Restarts (last hour)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${prometheus_datasource_uid}" },
+          "expr": "changes(container_start_time_seconds{host=\"$host\", name=\"$container\"}[1h])",
+          "legendFormat": "{{host}} / {{name}}"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Container Logs ($host / $container)",
+      "type": "logs",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 16 },
+      "datasource": { "type": "loki", "uid": "${loki_datasource_uid}" },
+      "options": {
+        "showTime": true,
+        "sortOrder": "Descending",
+        "dedupStrategy": "none",
+        "enableLogDetails": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "${loki_datasource_uid}" },
+          "expr": "{host=\"$host\", container=\"$container\"}"
+        }
+      ]
+    }
+  ]
+}

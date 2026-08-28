@@ -1,0 +1,3 @@
+---
+- name: restart-prometheus
+  ansible.builtin.command: docker restart {{ prometheus_container_name }}

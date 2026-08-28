@@ -1,0 +1,6 @@
+---
+grafana_state: present
+grafana_image: grafana/grafana
+grafana_tag: 11.2.0
+grafana_container_name: grafana
+grafana_portainer_stack_name: grafana

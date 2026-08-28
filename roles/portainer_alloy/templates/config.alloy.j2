@@ -1,0 +1,68 @@
+// Host metrics (CPU/mem/disk/network for {{ inventory_hostname }})
+prometheus.exporter.unix "hostmetrics" {
+  rootfs_path = "/host/root"
+  procfs_path = "/host/proc"
+  sysfs_path  = "/host/sys"
+}
+
+prometheus.scrape "hostmetrics" {
+  targets         = prometheus.exporter.unix.hostmetrics.targets
+  forward_to      = [prometheus.remote_write.central.receiver]
+  scrape_interval = "30s"
+}
+
+// Per-container metrics (CPU/mem/network/restarts) for every container on this host
+prometheus.exporter.cadvisor "docker" {
+  docker_only = true
+}
+
+prometheus.scrape "docker" {
+  targets         = prometheus.exporter.cadvisor.docker.targets
+  forward_to      = [prometheus.remote_write.central.receiver]
+  scrape_interval = "30s"
+}
+
+// Every series gets a "host" label so dell/qnap are distinguishable once
+// centralized (the container's own hostname is a random container ID, not
+// useful for this — {{ inventory_hostname }} is the real ansible host).
+prometheus.remote_write "central" {
+  external_labels = {
+    host = "{{ inventory_hostname }}",
+  }
+
+  endpoint {
+    url = "http://{{ monitoring_central_lan_ip }}:{{ prometheus_expose_port }}/api/v1/write"
+  }
+}
+
+// Ship every container's logs to the central Loki instance, labeled by
+// container name so dashboards/alerts can filter with {container="..."}.
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+discovery.relabel "containers" {
+  targets = discovery.docker.containers.targets
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+}
+
+loki.source.docker "containers" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.containers.output
+  forward_to = [loki.write.central.receiver]
+}
+
+loki.write "central" {
+  external_labels = {
+    host = "{{ inventory_hostname }}",
+  }
+
+  endpoint {
+    url = "http://{{ monitoring_central_lan_ip }}:{{ loki_expose_port }}/loki/api/v1/push"
+  }
+}
