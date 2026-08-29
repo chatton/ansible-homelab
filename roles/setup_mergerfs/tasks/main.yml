@@ -1,4 +1,10 @@
 ---
+- name: Install smartmontools for disk health checks (smartctl).
+  ansible.builtin.apt:
+    name: smartmontools
+    state: present
+    update_cache: true
+
 - name: Mount Volumes
   ansible.builtin.mount:
     path: '{{ item.path }}'

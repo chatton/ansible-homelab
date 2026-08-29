@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Configures mergerfs storage pools (used to combine multiple disks into one mount on `qnap`).
+Configures mergerfs storage pools (used to combine multiple disks into one mount on `qnap`). Also installs `smartmontools` so disk health (`smartctl`) can be checked on the underlying drives.
 
 ## Managed image(s)
 
