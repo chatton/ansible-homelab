@@ -179,3 +179,61 @@ resource "grafana_rule_group" "infrastructure" {
     }
   }
 }
+
+resource "grafana_rule_group" "media_stack" {
+  name             = "Media Stack"
+  folder_uid       = grafana_folder.infrastructure.uid
+  interval_seconds = 300
+
+  rule {
+    name           = "Arr Import Failures"
+    for            = "5m"
+    condition      = "B"
+    no_data_state  = "OK"
+    exec_err_state = "Alerting"
+
+    annotations = {
+      summary = "{{ $labels.container }} has logged {{ $values.A }} import-failure lines in the last 15m — completed downloads may be stuck (e.g. the mergerfs/copy_file_range IOException, see roles/portainer_arr/CLAUDE.md)."
+    }
+    labels = {
+      severity = "warning"
+    }
+
+    # Catches the whole class of import failures (unhandled exceptions during
+    # move/copy, not just the current mergerfs bug specifically) so this keeps
+    # alerting value even after that bug is fixed. Matches sonarr/radarr only —
+    # qbittorrent/nzbget/jackett don't emit this log shape.
+    data {
+      ref_id         = "A"
+      query_type     = "range"
+      datasource_uid = grafana_data_source.loki.uid
+      relative_time_range {
+        from = 900
+        to   = 0
+      }
+      model = jsonencode({
+        expr    = "count_over_time({host=\"qnap\", container=~\"sonarr|radarr\"} |~ \"(?i)IOException|Couldn.t import (episode|movie)\" [15m])"
+        instant = true
+        refId   = "A"
+      })
+    }
+
+    data {
+      ref_id         = "B"
+      query_type     = ""
+      datasource_uid = "__expr__"
+      relative_time_range {
+        from = 0
+        to   = 0
+      }
+      model = jsonencode({
+        type       = "threshold"
+        expression = "A"
+        conditions = [{
+          evaluator = { type = "gt", params = [5] }
+        }]
+        refId = "B"
+      })
+    }
+  }
+}
