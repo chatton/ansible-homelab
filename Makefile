@@ -73,3 +73,8 @@ sonarr-tf-plan:
 
 sonarr-tf-apply:
 	cd terraform/sonarr && terraform apply -var-file=../common.tfvars -var-file=../common_secrets.tfvars
+
+days ?= 14
+stale-downloads:
+	scp roles/portainer_arr/files/find_stale_downloads.sh qnap:/tmp/find_stale_downloads.sh
+	ssh qnap "chmod +x /tmp/find_stale_downloads.sh && /tmp/find_stale_downloads.sh $(days)"
