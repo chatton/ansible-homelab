@@ -9,9 +9,6 @@ sections:
       - title: Uptime Kuma
         icon: hl-uptime-kuma
         url: https://uptime.cianhatton.ie
-      - title: Glances
-        icon: hl-glances
-        url: http://10.4.5.200:8083
       - title: Pihole
         icon: hl-pihole
         url: http://10.4.5.200:85/admin
@@ -32,6 +29,13 @@ sections:
       - title: Paperless
         icon: hl-paperless
         url: http://qnap:8001
+      - title: NZBGet
+        icon: hl-nzbget
+        url: http://10.4.5.200:6789
+      - title: Alloy
+        description: Metrics/logs collection agent
+        icon: fas fa-satellite-dish
+        url: http://10.4.5.200:12345
 
   - name: Docker Admin
     items:
@@ -80,6 +84,15 @@ sections:
       - title: Prometheus
         icon: hl-prometheus
         url: http://10.4.5.201:9095
+      - title: Loki
+        description: Log aggregation (no UI - browse via Grafana Explore)
+        icon: hl-grafana
+        url: http://10.4.5.201:3100
+        statusCheckUrl: http://10.4.5.201:3100/ready
+      - title: Alloy
+        description: Metrics/logs collection agent
+        icon: fas fa-satellite-dish
+        url: http://10.4.5.201:12345
   - name: Media Stack
     items:
       - title: Plex
@@ -110,9 +123,6 @@ sections:
         url: http://10.4.5.200:15000
   - name: QNAP
     widgets:
-      - type: gl-disk-space
-        options:
-          hostname: http://10.4.5.200:8083
       - type: crypto-watch-list
         options:
           currency: USD
@@ -121,13 +131,6 @@ sections:
             - bitcoin
             - ethereum
             - cosmos
-
-
-  - name: Dell
-    widgets:
-      - type: gl-disk-space
-        options:
-          hostname: http://10.4.5.201:8083
 
 
 appConfig:
