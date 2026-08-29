@@ -1,0 +1,20 @@
+resource "sonarr_download_client_nzbget" "nzbget" {
+  enable      = true
+  priority    = 1
+  name        = "NZBGet"
+  host        = var.qnap
+  port        = 6789
+  use_ssl     = false
+  username    = "nzbget"
+  password    = var.nzbget_password
+  tv_category = "Series"
+  url_base    = ""
+  tags        = []
+
+  recent_tv_priority = 0
+  older_tv_priority  = 0
+  add_paused         = false
+
+  remove_completed_downloads = true
+  remove_failed_downloads    = true
+}

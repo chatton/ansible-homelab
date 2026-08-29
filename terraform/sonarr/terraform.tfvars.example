@@ -1,0 +1,5 @@
+# qnap, nzbgeek_api_key, nzbget_username, nzbget_password come from
+# ../common.tfvars / ../common_secrets.tfvars, passed explicitly via
+# -var-file (see `make sonarr-tf-plan`/`sonarr-tf-apply` in the repo root
+# Makefile) - not set here.
+sonarr_api_key = "changeme"

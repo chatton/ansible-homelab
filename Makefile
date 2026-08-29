@@ -61,3 +61,15 @@ npm-tf-apply:
 
 grafana-tf-apply:
 	cd terraform/grafana && terraform apply
+
+radarr-tf-plan:
+	cd terraform/radarr && terraform plan -var-file=../common.tfvars -var-file=../common_secrets.tfvars
+
+radarr-tf-apply:
+	cd terraform/radarr && terraform apply -var-file=../common.tfvars -var-file=../common_secrets.tfvars
+
+sonarr-tf-plan:
+	cd terraform/sonarr && terraform plan -var-file=../common.tfvars -var-file=../common_secrets.tfvars
+
+sonarr-tf-apply:
+	cd terraform/sonarr && terraform apply -var-file=../common.tfvars -var-file=../common_secrets.tfvars

@@ -15,3 +15,4 @@ crash.*.log
 terraform.tfvars
 *.auto.tfvars
 *.auto.tfvars.json
+terraform/common_secrets.tfvars
