@@ -13,6 +13,18 @@
     - name: "{{ arr_portainer_stack_name }}_gluetun"
     - name: "{{ arr_portainer_stack_name }}_nzbget_config"
 
+- name: "Arr | Ensure arr-scripts directory exists."
+  ansible.builtin.file:
+    path: "{{ directories.docker_compose_directory }}/arr-scripts"
+    state: directory
+    mode: "0755"
+
+- name: "Arr | Deploy Radarr/Sonarr import script (works around the mergerfs copy_file_range bug - see CLAUDE.md)."
+  ansible.builtin.copy:
+    src: import.sh
+    dest: "{{ directories.docker_compose_directory }}/arr-scripts/import.sh"
+    mode: "0755"
+
 - name: "Arr | Update Portainer."
   chatton.portainer.portainer_stack:
     username: '{{ portainer_user }}'
@@ -101,6 +113,7 @@
             - radarr_config:/config
             - "{{ directories.movies_dir }}:/movies"
             - "{{ directories.downloads_dir }}:/downloads"
+            - "{{ directories.docker_compose_directory }}/arr-scripts:/scripts:ro"
           restart: unless-stopped
 
         sonarr:
@@ -118,6 +131,7 @@
             - sonarr_config:/config
             - "{{ directories.tv_dir }}:/tv"
             - "{{ directories.downloads_dir }}:/downloads"
+            - "{{ directories.docker_compose_directory }}/arr-scripts:/scripts:ro"
           restart: unless-stopped
 
         lidarr:
@@ -174,3 +188,51 @@
          jackett_config: {}
          gluetun: {}
          nzbget_config: {}
+
+- name: "Arr | Get Radarr media management config."
+  ansible.builtin.uri:
+    url: "http://localhost:{{ radarr_exposed_port }}/api/v3/config/mediamanagement/1"
+    headers:
+      X-Api-Key: "{{ radarr_api_key }}"
+    return_content: true
+  register: radarr_mediamanagement_current
+  retries: 5
+  delay: 5
+  until: radarr_mediamanagement_current.status == 200
+
+- name: "Arr | Enable useScriptImport on Radarr (works around the mergerfs copy_file_range IOException - see CLAUDE.md)."
+  ansible.builtin.uri:
+    url: "http://localhost:{{ radarr_exposed_port }}/api/v3/config/mediamanagement/1"
+    method: PUT
+    headers:
+      X-Api-Key: "{{ radarr_api_key }}"
+    body_format: json
+    body: "{{ radarr_mediamanagement_current.json | combine({'useScriptImport': true, 'scriptImportPath': '/scripts/import.sh'}) }}"
+    status_code: 200
+  when: >-
+    not radarr_mediamanagement_current.json.useScriptImport or
+    radarr_mediamanagement_current.json.scriptImportPath != '/scripts/import.sh'
+
+- name: "Arr | Get Sonarr media management config."
+  ansible.builtin.uri:
+    url: "http://localhost:{{ sonarr_exposed_port }}/api/v3/config/mediamanagement/1"
+    headers:
+      X-Api-Key: "{{ sonarr_api_key }}"
+    return_content: true
+  register: sonarr_mediamanagement_current
+  retries: 5
+  delay: 5
+  until: sonarr_mediamanagement_current.status == 200
+
+- name: "Arr | Enable useScriptImport on Sonarr (works around the mergerfs copy_file_range IOException - see CLAUDE.md)."
+  ansible.builtin.uri:
+    url: "http://localhost:{{ sonarr_exposed_port }}/api/v3/config/mediamanagement/1"
+    method: PUT
+    headers:
+      X-Api-Key: "{{ sonarr_api_key }}"
+    body_format: json
+    body: "{{ sonarr_mediamanagement_current.json | combine({'useScriptImport': true, 'scriptImportPath': '/scripts/import.sh'}) }}"
+    status_code: 200
+  when: >-
+    not sonarr_mediamanagement_current.json.useScriptImport or
+    sonarr_mediamanagement_current.json.scriptImportPath != '/scripts/import.sh'
