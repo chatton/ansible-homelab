@@ -16,3 +16,50 @@ ssh-keygen -t ed25519 -C "ansible"
 # replace the user/hostname with whatever you need to connect to.
 ssh-copy-id -i ~/.ssh/ansible.pub cianhatton@qnap
 ```
+
+## Proxmox host (pve) bootstrap
+
+`pve` (10.4.5.202) is a System76 Serval WS running Proxmox VE, repurposed
+for server duty. It's intentionally kept out of `[servers]` in `hosts.ini`
+so the docker/portainer/samba/mergerfs plays never target it - see
+`roles/proxmox_bootstrap`.
+
+1. **First time only** - bootstrap, connecting as root (password auth,
+   since the admin user doesn't exist yet):
+
+   ```bash
+   ansible-playbook -i hosts.ini playbooks/bootstrap-proxmox.yml -u root --ask-pass
+   # or: make bootstrap-proxmox
+   ```
+
+   This creates the `cianhatton` user, installs the same SSH public key
+   used elsewhere in this repo (`~/.ssh/id_rsa_personal.pub`) for both
+   `cianhatton` and root, grants `cianhatton` passwordless sudo, disables
+   SSH password authentication, creates a matching Proxmox VE user
+   (`cianhatton@pam`), disables lid-switch suspend behavior, and (if
+   supported) sets battery charge thresholds - all in this one run. Root
+   SSH login is restricted to key-based only (`prohibit-password`) but not
+   fully disabled, and the same key is installed for root above, so you
+   still have a way in if something about the `cianhatton` login is wrong.
+   Pass `-e proxmox_ssh_harden_disable_root_login=true` if you want to
+   fully disable direct root SSH login as well.
+
+2. Verify key-based login as the admin user, and passwordless sudo:
+
+   ```bash
+   ssh cianhatton@10.4.5.202
+   sudo -n true
+   ```
+
+3. **Regular/reconciliation runs** - every run after that uses `cianhatton`
+   and the existing key automatically (the repo's `ansible.cfg` already
+   sets `remote_user=cianhatton` and `private_key_file=~/.ssh/id_rsa_personal`).
+   `proxmox_bootstrap` is part of the regular homelab playbook
+   (`hosts: proxmox` in `playbooks/setup-homelab.yml`), so every run
+   re-verifies/enforces the user, SSH config, and power-management
+   ("laptop") settings, same as every other host gets its own upkeep:
+
+   ```bash
+   ansible-playbook -i hosts.ini playbooks/setup-homelab.yml --limit pve
+   # or: make proxmox
+   ```

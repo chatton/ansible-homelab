@@ -1,14 +1,22 @@
 ---
 - name: Update packages and ensure users on all hosts.
-  hosts: all
+  hosts: servers
   become: true
   gather_facts: false
   strategy: free
   roles:
     - role: setup_users
 
+- name: Bootstrap Proxmox host(s) - admin user, sudo, SSH key, power management.
+  hosts: proxmox
+  become: true
+  strategy: free
+  tags: [proxmox]
+  roles:
+    - role: proxmox_bootstrap
+
 - name: Install go on all hosts.
-  hosts: all
+  hosts: servers
   become: true
   strategy: free
   roles:
@@ -25,7 +33,7 @@
       tags: [mergerfs]
 
 - name: Configure samba shares.
-  hosts: all
+  hosts: servers
   strategy: free
   become: true
   roles:

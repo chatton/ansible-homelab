@@ -1,0 +1,21 @@
+---
+# Same admin username used elsewhere in the repo (see group_vars/servers.yml).
+homelab_user: cianhatton
+
+# Whether to install the same SSH public key into root's authorized_keys
+# during bootstrap (root password/SSH login is not disabled by this role -
+# see roles/proxmox_bootstrap/tasks/ssh_harden.yml for that phase).
+proxmox_bootstrap_install_root_key: true
+
+# Proxmox VE role granted to the {{ homelab_user }}@pam user on / .
+proxmox_pve_user_role: Administrator
+
+# Only applied if the disable-root-login is explicitly requested when
+# running the ssh_harden phase (see playbooks/harden-proxmox-ssh.yml).
+proxmox_ssh_harden_disable_root_login: false
+
+# System76 Serval WS (serw13) battery charge thresholds - only applied if
+# the kernel exposes the charge_control_{start,end}_threshold sysfs
+# attributes (see tasks/main.yml).
+battery_charge_start_threshold: 40
+battery_charge_end_threshold: 80

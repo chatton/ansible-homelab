@@ -1,0 +1,7 @@
+---
+- name: Bootstrap the Proxmox host (admin user, sudo, SSH key, power management).
+  hosts: pve
+  become: false
+  gather_facts: true
+  roles:
+    - role: proxmox_bootstrap

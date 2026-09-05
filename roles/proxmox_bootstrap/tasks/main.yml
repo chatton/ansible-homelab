@@ -1,0 +1,291 @@
+---
+# Everything in this file is idempotent and runs on every play against
+# `pve` - the very first run (playbooks/bootstrap-proxmox.yml, connecting
+# as root with --ask-pass) and every regular/reconciliation run afterwards
+# (playbooks/setup-homelab.yml, connecting as homelab_user) execute the
+# exact same tasks, re-verifying/enforcing the full state each time.
+
+# Stock Proxmox VE installs enable the enterprise apt repos (pve-enterprise,
+# and a ceph one if present), which 401 without a paid subscription and
+# break every apt task below. Disable them and use the free
+# no-subscription repos instead (PVE 9/trixie deb822 .sources format).
+- name: Check for the Proxmox VE enterprise apt repo.
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/pve-enterprise.sources
+  register: proxmox_pve_enterprise_repo_stat
+
+- name: Disable the Proxmox VE enterprise apt repo (requires a paid subscription).
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/pve-enterprise.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb
+      URIs: https://enterprise.proxmox.com/debian/pve
+      Suites: trixie
+      Components: pve-enterprise
+      Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+      Enabled: false
+  when: proxmox_pve_enterprise_repo_stat.stat.exists
+
+- name: Ensure the Proxmox VE no-subscription apt repo is configured.
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/pve-no-subscription.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb
+      URIs: http://download.proxmox.com/debian/pve
+      Suites: trixie
+      Components: pve-no-subscription
+      Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+  when: proxmox_pve_enterprise_repo_stat.stat.exists
+
+- name: Check for the Proxmox VE enterprise Ceph apt repo.
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/ceph.sources
+  register: proxmox_ceph_enterprise_repo_stat
+
+- name: Disable the Proxmox VE enterprise Ceph apt repo (requires a paid subscription).
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/ceph.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb
+      URIs: https://enterprise.proxmox.com/debian/ceph-squid
+      Suites: trixie
+      Components: enterprise
+      Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+      Enabled: false
+  when: proxmox_ceph_enterprise_repo_stat.stat.exists
+
+- name: Ensure the Proxmox VE no-subscription Ceph apt repo is configured.
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/ceph-no-subscription.sources
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      Types: deb
+      URIs: http://download.proxmox.com/debian/ceph-squid
+      Suites: trixie
+      Components: no-subscription
+      Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+  when: proxmox_ceph_enterprise_repo_stat.stat.exists
+
+- name: Ensure sudo is installed.
+  ansible.builtin.apt:
+    name: sudo
+    state: present
+    update_cache: true
+
+- name: Ensure admin user group exists.
+  ansible.builtin.group:
+    name: "{{ homelab_user }}"
+    state: present
+
+- name: Ensure admin user exists.
+  ansible.builtin.user:
+    name: "{{ homelab_user }}"
+    comment: "{{ homelab_user }} user"
+    group: "{{ homelab_user }}"
+    shell: /bin/bash
+    create_home: true
+
+- name: Install the existing SSH public key for the admin user.
+  ansible.posix.authorized_key:
+    user: "{{ homelab_user }}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa_personal.pub') }}"
+
+- name: Grant the admin user passwordless sudo.
+  ansible.builtin.template:
+    src: sudoers.j2
+    dest: "/etc/sudoers.d/{{ homelab_user }}"
+    mode: "0440"
+    validate: "visudo -cf %s"
+
+- name: Install the same SSH public key for root.
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa_personal.pub') }}"
+  when: proxmox_bootstrap_install_root_key | bool
+
+# SSH hardening. This runs every time (including the very first bootstrap
+# run) - the same SSH key is installed for both homelab_user and root just
+# above, so key-based access survives even if password authentication is
+# disabled in this same play. Full root lockout is opt-in only, via
+# -e proxmox_ssh_harden_disable_root_login=true.
+- name: Disable SSH password authentication.
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+    validate: '/usr/sbin/sshd -t -f %s'
+  notify: restart-ssh
+  tags: [ssh_hardening]
+
+- name: Restrict root SSH login to key-based only.
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin prohibit-password'
+    validate: '/usr/sbin/sshd -t -f %s'
+  notify: restart-ssh
+  tags: [ssh_hardening]
+  when: not (proxmox_ssh_harden_disable_root_login | bool)
+
+- name: Fully disable direct root SSH login.
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin no'
+    validate: '/usr/sbin/sshd -t -f %s'
+  notify: restart-ssh
+  tags: [ssh_hardening]
+  when: proxmox_ssh_harden_disable_root_login | bool
+
+# Proxmox VE user (PAM realm) so the admin user can also log into the
+# Proxmox web UI/API using the same Linux account. This runs locally on the
+# node as root, so it needs no API token/credentials.
+- name: List existing Proxmox VE users.
+  ansible.builtin.command: pveum user list --output-format json
+  register: proxmox_pve_users_raw
+  changed_when: false
+
+- name: Determine whether the Proxmox VE user for the admin user already exists.
+  ansible.builtin.set_fact:
+    proxmox_pve_user_exists: >-
+      {{ (proxmox_pve_users_raw.stdout | from_json
+          | selectattr('userid', 'equalto', homelab_user ~ '@pam') | list | length) > 0 }}
+
+- name: Create the Proxmox VE user for the admin user (PAM realm).
+  ansible.builtin.command: >-
+    pveum user add {{ homelab_user }}@pam
+    --comment "Managed by ansible - linked to the {{ homelab_user }} PAM/Linux account"
+  when: not proxmox_pve_user_exists
+
+- name: List existing Proxmox VE ACL entries.
+  ansible.builtin.command: pvesh get /access/acl --output-format json
+  register: proxmox_pve_acl_raw
+  changed_when: false
+
+- name: Determine whether the admin user already holds the Proxmox VE role on /.
+  ansible.builtin.set_fact:
+    proxmox_pve_user_acl_present: >-
+      {{ (proxmox_pve_acl_raw.stdout | from_json
+          | selectattr('ugid', 'equalto', homelab_user ~ '@pam')
+          | selectattr('roleid', 'equalto', proxmox_pve_user_role)
+          | selectattr('path', 'equalto', '/') | list | length) > 0 }}
+
+- name: Grant the admin user's Proxmox VE user access on /.
+  ansible.builtin.command: >-
+    pveum acl modify / --roles {{ proxmox_pve_user_role }} --users {{ homelab_user }}@pam
+  when: not proxmox_pve_user_acl_present
+
+- name: Ensure logind lid-switch override directory exists.
+  ansible.builtin.file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Configure lid-switch behavior for server duty.
+  ansible.builtin.copy:
+    dest: /etc/systemd/logind.conf.d/lid.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Login]
+      HandleLidSwitch=ignore
+      HandleLidSwitchExternalPower=ignore
+      HandleLidSwitchDocked=ignore
+  notify: restart-systemd-logind
+
+- name: Mask sleep/suspend/hibernate targets so the lid/power state can't suspend the host.
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    masked: true
+  loop:
+    - sleep.target
+    - suspend.target
+    - hibernate.target
+    - hybrid-sleep.target
+
+# Battery longevity (System76 Serval WS / serw13). Only touches the kernel
+# sysfs charge-threshold attributes if present - never installs
+# system76-power just for this.
+- name: Check whether battery charge-threshold sysfs interfaces are present.
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - /sys/class/power_supply/BAT0/charge_control_start_threshold
+    - /sys/class/power_supply/BAT0/charge_control_end_threshold
+  register: battery_threshold_stat
+
+- name: Determine whether battery charge-threshold sysfs interfaces are supported.
+  ansible.builtin.set_fact:
+    battery_threshold_supported: "{{ battery_threshold_stat.results | map(attribute='stat.exists') | list is all }}"
+
+- name: Note that battery charge-threshold sysfs interfaces are unsupported.
+  ansible.builtin.debug:
+    msg: >-
+      /sys/class/power_supply/BAT0/charge_control_{start,end}_threshold are
+      not present on this host - skipping battery longevity configuration.
+      This kernel/firmware doesn't expose the standard charge-threshold
+      sysfs interface (system76-power is intentionally not being installed
+      just for this).
+  when: not battery_threshold_supported
+
+- name: Read current battery charge thresholds.
+  ansible.builtin.command: "cat {{ item }}"
+  loop:
+    - /sys/class/power_supply/BAT0/charge_control_start_threshold
+    - /sys/class/power_supply/BAT0/charge_control_end_threshold
+  register: battery_threshold_current
+  changed_when: false
+  when: battery_threshold_supported
+
+- name: Set battery charge start threshold.
+  ansible.builtin.copy:
+    dest: /sys/class/power_supply/BAT0/charge_control_start_threshold
+    content: "{{ battery_charge_start_threshold }}\n"
+    # sysfs only exposes the kernel-defined attribute files - it rejects
+    # the temp file copy's atomic write normally uses, so write directly.
+    unsafe_writes: true
+  when:
+    - battery_threshold_supported
+    - battery_threshold_current.results[0].stdout | trim != battery_charge_start_threshold | string
+
+- name: Set battery charge stop threshold.
+  ansible.builtin.copy:
+    dest: /sys/class/power_supply/BAT0/charge_control_end_threshold
+    content: "{{ battery_charge_end_threshold }}\n"
+    unsafe_writes: true
+  when:
+    - battery_threshold_supported
+    - battery_threshold_current.results[1].stdout | trim != battery_charge_end_threshold | string
+
+- name: Verify battery charge thresholds.
+  ansible.builtin.command: "cat {{ item }}"
+  loop:
+    - /sys/class/power_supply/BAT0/charge_control_start_threshold
+    - /sys/class/power_supply/BAT0/charge_control_end_threshold
+  register: battery_threshold_verify
+  changed_when: false
+  when: battery_threshold_supported
+
+- name: Show battery charge thresholds.
+  ansible.builtin.debug:
+    msg: "{{ item.item }} = {{ item.stdout }}"
+  loop: "{{ battery_threshold_verify.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when: battery_threshold_supported

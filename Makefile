@@ -9,6 +9,12 @@ qnap:
 dell:
 	ansible-playbook playbooks/setup-homelab.yml --limit dell
 
+proxmox:
+	ansible-playbook playbooks/setup-homelab.yml --limit pve
+
+bootstrap-proxmox:
+	ansible-playbook playbooks/bootstrap-proxmox.yml -u root --ask-pass
+
 services:
 	ansible-playbook playbooks/setup-homelab.yml --tags services
 
